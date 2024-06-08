@@ -7,12 +7,29 @@ using System.Text;
 
 namespace WcfChat
 {
-    // ПРИМЕЧАНИЕ. Команду "Переименовать" в меню "Рефакторинг" можно использовать для одновременного изменения имени класса "ServiceChat" в коде и файле конфигурации.
+    /// <summary>
+    /// InstanceContextMode.Single - создает наш сервис в единственном экземпляре
+    /// </summary>
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class ServiceChat : IServiceChat
     {
-        public int Connect()
+        List<ServerUser> users = new List<ServerUser>();
+        int nextId = 1;
+
+        public int Connect(string name)
         {
-            throw new NotImplementedException();
+           var user = new ServerUser()
+           {
+               ID = nextId,
+               Name = name,
+               operationContext = OperationContext.Current
+           };
+            nextId++;
+            users.Add(user);
+
+            SendMsg($"{user.Name} подключился к чату!");
+
+            return user.ID;
         }
 
         public void Disconnect(int id)
