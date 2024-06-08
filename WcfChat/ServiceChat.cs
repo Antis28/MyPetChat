@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
@@ -24,10 +23,9 @@ namespace WcfChat
                 Name = name,
                 operationContext = OperationContext.Current
             };
-            nextId++;
+            nextId++;   
+            SendMsg($" {user.Name} подключился к чату!", 0);
             users.Add(user);
-
-            SendMsg($"{user.Name} подключился к чату!", 0);
             Console.WriteLine($"{user.Name} подключился к чату!");
             return user.ID;
         }
@@ -38,7 +36,7 @@ namespace WcfChat
             if (user == null) return;
 
             users.Remove(user);
-            SendMsg($"{user.Name} покинул чат!", 0);
+            SendMsg($" {user.Name} покинул чат!", 0);
         }
 
         public void SendMsg(string msg, int id)

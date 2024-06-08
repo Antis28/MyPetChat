@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ChatClientWPF.ServiceChat;
 
 namespace ChatClientWPF
@@ -35,11 +23,14 @@ namespace ChatClientWPF
         {
             if (!isConnected)
             {
+                btnConDiscon.Content = "Disconnect";
+                isConnected = true;
+
                 client = new ServiceChatClient(new System.ServiceModel.InstanceContext(this));
                 ID = client.Connect(tbUserName.Text);
                 tbUserName.IsEnabled = false;
-                btnConDiscon.Content = "Disconnect";
-                isConnected = true;
+               
+                
             }
         }
         void DisconnectUser()
@@ -47,6 +38,7 @@ namespace ChatClientWPF
             if (isConnected)
             {
                 client.Disconnect(ID);
+                client = null;
                 tbUserName.IsEnabled = true;
                 btnConDiscon.Content = "Connect";
                 isConnected = false;
@@ -68,6 +60,17 @@ namespace ChatClientWPF
         {
             DisconnectUser();
         }
-       
+
+        private void tbMessege_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (client == null) return;
+               
+                client.SendMsg(tbMessege.Text, ID);
+                tbMessege.Text = string.Empty;
+            }
+        }
+
     }
 }
