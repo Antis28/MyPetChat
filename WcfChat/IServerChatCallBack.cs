@@ -9,7 +9,7 @@ namespace WcfChat
 {
     public interface IServerChatCallBack
     {
-        [OperationContract]
-        void MsgCallBack();
+        [OperationContract(IsOneWay = true)]
+        void MsgCallBack(string msg);
     }
 }

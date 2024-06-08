@@ -18,16 +18,16 @@ namespace WcfChat
 
         public int Connect(string name)
         {
-           var user = new ServerUser()
-           {
-               ID = nextId,
-               Name = name,
-               operationContext = OperationContext.Current
-           };
+            var user = new ServerUser()
+            {
+                ID = nextId,
+                Name = name,
+                operationContext = OperationContext.Current
+            };
             nextId++;
             users.Add(user);
 
-            SendMsg($"{user.Name} подключился к чату!");
+            SendMsg($"{user.Name} подключился к чату!", 0);
 
             return user.ID;
         }
@@ -36,14 +36,26 @@ namespace WcfChat
         {
             var user = users.FirstOrDefault(x => x.ID == id);
             if (user == null) return;
-            
+
             users.Remove(user);
-            SendMsg($"{user.Name} покинул чат!");
+            SendMsg($"{user.Name} покинул чат!", 0);
         }
 
-        public void SendMsg(string msg)
+        public void SendMsg(string msg, int id)
         {
-            throw new NotImplementedException();
+            foreach (var item in users)
+            {
+                StringBuilder answer = new StringBuilder();
+                answer.Append(DateTime.Now.ToShortTimeString());
+
+                var user = users.FirstOrDefault(x => x.ID == id);
+                answer.Append($": {user.Name} " ?? "");
+
+                answer.Append(msg);
+
+                item.operationContext.GetCallbackChannel<IServerChatCallBack>().MsgCallBack(answer.ToString());
+            }
+
         }
     }
 }
