@@ -25,5 +25,8 @@ namespace WcfChat
 
         [OperationContract(IsOneWay = true)]
         void SendMsgPrivate(string msg, int fromId,int toId);
+
+        [OperationContract]
+        List<string> GetMesseges();
     }
 }
