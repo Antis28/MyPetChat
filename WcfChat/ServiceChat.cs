@@ -25,7 +25,8 @@ namespace WcfChat
             };
             nextId++;   
             SendMsg($" {user.Name} подключился к чату!", 0);
-            serverUsers.Add(user);  
+            serverUsers.Add(user);
+            serverUsers = serverUsers.OrderBy(x => x.Name.ToLower()).ToList();
             Console.WriteLine($"{user.Name} подключился к чату!");
             NotificationClients(user.ID);
             return user.ID;
@@ -44,7 +45,7 @@ namespace WcfChat
         }
 
         public List<ClientUser> GetUsers()
-        {
+        {            
             List<ClientUser> cu = ConvertUsersList();
             return cu;
         }
@@ -94,7 +95,7 @@ namespace WcfChat
 
         private void NotificationClients(int ID)
         {
-            var cu = ConvertUsersList();
+            var cu = ConvertUsersList();            
             foreach (var item in serverUsers)
             {
                 if (ID == item.ID) continue;

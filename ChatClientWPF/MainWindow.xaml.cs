@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -62,7 +63,6 @@ namespace ChatClientWPF
             catch (System.Exception ex)
             {
                 lbChat.Items.Add(ex.Message);
-                throw;
             }
            
         }
@@ -120,6 +120,13 @@ namespace ChatClientWPF
         {
             UpdateUserList(new List<ClientUser>(users));
 
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var names = new string[] { "Biser", "Tiser", "Ruser", "Niser", "Miser" };
+            var r = new Random((int)DateTime.Now.Ticks);
+            tbUserName.Text = names[ r.Next(names.Length)];
         }
     }
 }

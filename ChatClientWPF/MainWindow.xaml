@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClientWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
+        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing" Loaded="Window_Loaded">
     <Grid>
         <TextBox x:Name="tbUserName" Text="User name" HorizontalAlignment="Left" Margin="264,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="217" Height="30" FontSize="16"/>
         <Button x:Name="btnConDiscon" Content="Подключить" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="240" Click="btnConDiscon_Click" FontSize="16"/>
