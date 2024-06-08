@@ -31,7 +31,7 @@ namespace WcfChat
         /// </summary>
         /// <param name="user"></param>
         [OperationContract(IsOneWay = true)]
-        void UserListUpdatedCallBack(List<ClientUser> users);
+        void UserListUpdatedCallBack(ClientUser[] users);
 
     }
 }

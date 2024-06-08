@@ -48,13 +48,23 @@ namespace ChatClientWPF
                 tbUserName.IsEnabled = true;
                 btnConDiscon.Content = "Подключить";
                 isConnected = false;
+                lbUsers.Items.Clear();
             }
         }
 
         private void btnConDiscon_Click(object sender, RoutedEventArgs e)
         {
-            if (isConnected) DisconnectUser();
-            else ConnectUser();
+            try
+            {
+                if (isConnected) DisconnectUser();
+                else ConnectUser();
+            }
+            catch (System.Exception ex)
+            {
+                lbChat.Items.Add(ex.Message);
+                throw;
+            }
+           
         }
 
         public void MsgCallBack(string msg)

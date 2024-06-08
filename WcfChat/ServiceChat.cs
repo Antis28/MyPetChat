@@ -27,8 +27,7 @@ namespace WcfChat
             SendMsg($" {user.Name} подключился к чату!", 0);
             serverUsers.Add(user);  
             Console.WriteLine($"{user.Name} подключился к чату!");
-
-            //NotificationClients();
+            NotificationClients(user.ID);
             return user.ID;
         }
 
@@ -41,7 +40,7 @@ namespace WcfChat
             SendMsg($" {user.Name} покинул чат!", 0);
             Console.WriteLine($"{user.Name} покинул чат!");
             
-            NotificationClients();
+            NotificationClients(id);
         }
 
         public List<ClientUser> GetUsers()
@@ -93,12 +92,14 @@ namespace WcfChat
             user.operationContext.GetCallbackChannel<IServerChatCallBack>().MsgCallBack(answer.ToString());
         }
 
-        private void NotificationClients()
+        private void NotificationClients(int ID)
         {
             var cu = ConvertUsersList();
             foreach (var item in serverUsers)
-            {                
-                item.operationContext.GetCallbackChannel<IServerChatCallBack>().UserListUpdatedCallBack(cu);
+            {
+                if (ID == item.ID) continue;
+                
+                item.operationContext.GetCallbackChannel<IServerChatCallBack>().UserListUpdatedCallBack(cu.ToArray());
             }
         }
     }
