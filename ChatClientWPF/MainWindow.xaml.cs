@@ -20,9 +20,35 @@ namespace ChatClientWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        bool isConnected;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        void ConnectUser()
+        {
+            if (!isConnected)
+            {
+                tbUserName.IsEnabled = false;
+                btnConDiscon.Content = "Disconnect";
+                isConnected = true;
+            }
+        }
+        void DisconnectUser()
+        {
+            if (isConnected)
+            {
+                tbUserName.IsEnabled = true;
+                btnConDiscon.Content = "Connect";
+                isConnected = false;
+            }
+        }
+
+        private void btnConDiscon_Click(object sender, RoutedEventArgs e)
+        {
+            if (isConnected) DisconnectUser();
+            else ConnectUser();
         }
     }
 }
