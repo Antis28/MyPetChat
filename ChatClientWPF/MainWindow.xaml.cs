@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
 using ChatClientWPF.ServiceChat;
@@ -30,17 +31,15 @@ namespace ChatClientWPF
                 btnConDiscon.Content = "Отключить";
                 isConnected = true;
 
-                client = new ServiceChatClient(new System.ServiceModel.InstanceContext(this));
+                client = new ServiceChatClient(new InstanceContext(this));
+                
                 ID = client.Connect(tbUserName.Text);
 
                 clientUsers = new List<ClientUser>(client.GetUsers());
 
                 FillMessegeList(client.GetMesseges());
-               
-
                 
                 UpdateUserList(clientUsers);
-
 
                 tbUserName.IsEnabled = false;
             }
@@ -75,7 +74,11 @@ namespace ChatClientWPF
         public void MsgCallBack(string msg)
         {
             lbChat.Items.Add(msg);
-            lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
+            if (lbChat.Items.Count > 0)
+            {
+                lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
+            }
+            
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -110,7 +113,10 @@ namespace ChatClientWPF
             {
                 lbChat.Items.Add(item);
             }
-            lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
+            if (lbChat.Items.Count > 0)
+            {
+                lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
+            }
         }
 
         public void ArrivedUserCallBack(ClientUser user)
