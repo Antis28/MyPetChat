@@ -29,16 +29,13 @@ namespace ChatClientWPF
         {
             InitializeComponent();
         }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            client = new ServiceChatClient(new System.ServiceModel.InstanceContext(this));
-        }
+       
 
         void ConnectUser()
         {
             if (!isConnected)
             {
+                client = new ServiceChatClient(new System.ServiceModel.InstanceContext(this));
                 ID = client.Connect(tbUserName.Text);
                 tbUserName.IsEnabled = false;
                 btnConDiscon.Content = "Disconnect";
@@ -71,5 +68,6 @@ namespace ChatClientWPF
         {
             DisconnectUser();
         }
+       
     }
 }
