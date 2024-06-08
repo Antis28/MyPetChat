@@ -54,6 +54,7 @@ namespace ChatClientWPF
         public void MsgCallBack(string msg)
         {
             lbChat.Items.Add(msg);
+            lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count-1]);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
