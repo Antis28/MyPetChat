@@ -34,6 +34,7 @@
       <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WcfChat" />
+      <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IServiceChat_Connect_InputMessage">
@@ -59,6 +60,12 @@
   </wsdl:message>
   <wsdl:message name="IServiceChat_SendMsgPrivate_InputMessage">
     <wsdl:part name="parameters" element="tns:SendMsgPrivate" />
+  </wsdl:message>
+  <wsdl:message name="IServiceChat_GetMesseges_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMesseges" />
+  </wsdl:message>
+  <wsdl:message name="IServiceChat_GetMesseges_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessegesResponse" />
   </wsdl:message>
   <wsdl:message name="IServiceChat_MsgCallBack_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:MsgCallBack" />
@@ -90,6 +97,10 @@
     </wsdl:operation>
     <wsdl:operation name="SendMsgPrivate">
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceChat/SendMsgPrivate" message="tns:IServiceChat_SendMsgPrivate_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMesseges">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServiceChat/GetMesseges" message="tns:IServiceChat_GetMesseges_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceChat/GetMessegesResponse" message="tns:IServiceChat_GetMesseges_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="MsgCallBack">
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceChat/MsgCallBack" message="tns:IServiceChat_MsgCallBack_OutputCallbackMessage" />
@@ -145,6 +156,15 @@
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="GetMesseges">
+      <soap12:operation soapAction="http://tempuri.org/IServiceChat/GetMesseges" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="MsgCallBack">
       <soap12:operation soapAction="http://tempuri.org/IServiceChat/MsgCallBack" style="document" />

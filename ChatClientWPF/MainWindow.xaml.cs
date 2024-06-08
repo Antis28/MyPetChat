@@ -35,7 +35,12 @@ namespace ChatClientWPF
 
                 clientUsers = new List<ClientUser>(client.GetUsers());
 
+                FillMessegeList(client.GetMesseges());
+               
+
+                
                 UpdateUserList(clientUsers);
+
 
                 tbUserName.IsEnabled = false;
             }
@@ -64,7 +69,7 @@ namespace ChatClientWPF
             {
                 lbChat.Items.Add(ex.Message);
             }
-           
+
         }
 
         public void MsgCallBack(string msg)
@@ -97,6 +102,16 @@ namespace ChatClientWPF
             }
 
         }
+        void FillMessegeList(string[] messeges)
+        {
+            
+            lbChat.Items.Clear();
+            foreach (var item in messeges)
+            {
+                lbChat.Items.Add(item);
+            }
+            lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
+        }
 
         public void ArrivedUserCallBack(ClientUser user)
         {
@@ -119,14 +134,13 @@ namespace ChatClientWPF
         public void UserListUpdatedCallBack(ClientUser[] users)
         {
             UpdateUserList(new List<ClientUser>(users));
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var names = new string[] { "Biser", "Tiser", "Ruser", "Niser", "Miser" };
             var r = new Random((int)DateTime.Now.Ticks);
-            tbUserName.Text = names[ r.Next(names.Length)];
+            tbUserName.Text = names[r.Next(names.Length)];
         }
     }
 }

@@ -13,6 +13,7 @@ namespace WcfChat
     public class ServiceChat : IServiceChat
     {
         List<ServerUser> serverUsers = new List<ServerUser>();
+        List<string> meseges = new List<string>();
         int nextId = 1;
 
         public int Connect(string name)
@@ -76,6 +77,8 @@ namespace WcfChat
 
                 answer.Append(msg);
 
+                meseges.Add(answer.ToString());
+
                 item.operationContext.GetCallbackChannel<IServerChatCallBack>().MsgCallBack(answer.ToString());
             }
 
@@ -102,6 +105,11 @@ namespace WcfChat
                 
                 item.operationContext.GetCallbackChannel<IServerChatCallBack>().UserListUpdatedCallBack(cu.ToArray());
             }
+        }
+
+        public List<string> GetMesseges()
+        {
+            return meseges;
         }
     }
 }

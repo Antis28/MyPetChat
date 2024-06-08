@@ -107,6 +107,12 @@ namespace ChatClientWPF.ServiceChat {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServiceChat/SendMsgPrivate")]
         System.Threading.Tasks.Task SendMsgPrivateAsync(string msg, int fromId, int toId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServiceChat/GetMesseges", ReplyAction="http://tempuri.org/IServiceChat/GetMessegesResponse")]
+        string[] GetMesseges();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServiceChat/GetMesseges", ReplyAction="http://tempuri.org/IServiceChat/GetMessegesResponse")]
+        System.Threading.Tasks.Task<string[]> GetMessegesAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -191,6 +197,14 @@ namespace ChatClientWPF.ServiceChat {
         
         public System.Threading.Tasks.Task SendMsgPrivateAsync(string msg, int fromId, int toId) {
             return base.Channel.SendMsgPrivateAsync(msg, fromId, toId);
+        }
+        
+        public string[] GetMesseges() {
+            return base.Channel.GetMesseges();
+        }
+        
+        public System.Threading.Tasks.Task<string[]> GetMessegesAsync() {
+            return base.Channel.GetMessegesAsync();
         }
     }
 }
