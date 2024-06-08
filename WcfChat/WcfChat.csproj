@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientUser.cs" />
     <Compile Include="IServerChatCallBack.cs" />
     <Compile Include="IServiceChat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -33,6 +33,7 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WcfChat" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IServiceChat_Connect_InputMessage">
@@ -47,11 +48,29 @@
   <wsdl:message name="IServiceChat_Disconnect_OutputMessage">
     <wsdl:part name="parameters" element="tns:DisconnectResponse" />
   </wsdl:message>
+  <wsdl:message name="IServiceChat_GetUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUsers" />
+  </wsdl:message>
+  <wsdl:message name="IServiceChat_GetUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUsersResponse" />
+  </wsdl:message>
   <wsdl:message name="IServiceChat_SendMsg_InputMessage">
     <wsdl:part name="parameters" element="tns:SendMsg" />
   </wsdl:message>
+  <wsdl:message name="IServiceChat_SendMsgPrivate_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendMsgPrivate" />
+  </wsdl:message>
   <wsdl:message name="IServiceChat_MsgCallBack_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:MsgCallBack" />
+  </wsdl:message>
+  <wsdl:message name="IServiceChat_ArrivedUserCallBack_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:ArrivedUserCallBack" />
+  </wsdl:message>
+  <wsdl:message name="IServiceChat_GoneUserCallBack_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:GoneUserCallBack" />
+  </wsdl:message>
+  <wsdl:message name="IServiceChat_UserListUpdatedCallBack_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:UserListUpdatedCallBack" />
   </wsdl:message>
   <wsdl:portType name="IServiceChat">
     <wsdl:operation name="Connect">
@@ -62,11 +81,27 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceChat/Disconnect" message="tns:IServiceChat_Disconnect_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceChat/DisconnectResponse" message="tns:IServiceChat_Disconnect_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetUsers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServiceChat/GetUsers" message="tns:IServiceChat_GetUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceChat/GetUsersResponse" message="tns:IServiceChat_GetUsers_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="SendMsg">
       <wsdl:input wsaw:Action="http://tempuri.org/IServiceChat/SendMsg" message="tns:IServiceChat_SendMsg_InputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="SendMsgPrivate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServiceChat/SendMsgPrivate" message="tns:IServiceChat_SendMsgPrivate_InputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="MsgCallBack">
       <wsdl:output wsaw:Action="http://tempuri.org/IServiceChat/MsgCallBack" message="tns:IServiceChat_MsgCallBack_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ArrivedUserCallBack">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceChat/ArrivedUserCallBack" message="tns:IServiceChat_ArrivedUserCallBack_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GoneUserCallBack">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceChat/GoneUserCallBack" message="tns:IServiceChat_GoneUserCallBack_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UserListUpdatedCallBack">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServiceChat/UserListUpdatedCallBack" message="tns:IServiceChat_UserListUpdatedCallBack_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_IServiceChat" type="tns:IServiceChat">
@@ -90,14 +125,47 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetUsers">
+      <soap12:operation soapAction="http://tempuri.org/IServiceChat/GetUsers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SendMsg">
       <soap12:operation soapAction="http://tempuri.org/IServiceChat/SendMsg" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
+    <wsdl:operation name="SendMsgPrivate">
+      <soap12:operation soapAction="http://tempuri.org/IServiceChat/SendMsgPrivate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
     <wsdl:operation name="MsgCallBack">
       <soap12:operation soapAction="http://tempuri.org/IServiceChat/MsgCallBack" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ArrivedUserCallBack">
+      <soap12:operation soapAction="http://tempuri.org/IServiceChat/ArrivedUserCallBack" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GoneUserCallBack">
+      <soap12:operation soapAction="http://tempuri.org/IServiceChat/GoneUserCallBack" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserListUpdatedCallBack">
+      <soap12:operation soapAction="http://tempuri.org/IServiceChat/UserListUpdatedCallBack" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

@@ -9,8 +9,9 @@
     <Grid>
         <TextBox x:Name="tbUserName" Text="User name" HorizontalAlignment="Left" Margin="264,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="217" Height="30" FontSize="16"/>
         <Button x:Name="btnConDiscon" Content="Подключить" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="240" Click="btnConDiscon_Click" FontSize="16"/>
-        <ListBox x:Name="lbChat" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,54,10,90"/>
+        <ListBox x:Name="lbChat" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,54,199,90"/>
         <TextBox x:Name="tbMessege" Text="Your message" VerticalAlignment="Bottom" Margin="5,0,10,5" TextWrapping="Wrap" Height="58" KeyDown="tbMessege_KeyDown"/>
+        <ListBox x:Name="lbUsers" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="606,54,10,90"/>
 
     </Grid>
 </Window>

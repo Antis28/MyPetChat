@@ -9,7 +9,70 @@
 //------------------------------------------------------------------------------
 
 namespace ChatClientWPF.ServiceChat {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ClientUser", Namespace="http://schemas.datacontract.org/2004/07/WcfChat")]
+    [System.SerializableAttribute()]
+    public partial class ClientUser : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ID {
+            get {
+                return this.IDField;
+            }
+            set {
+                if ((this.IDField.Equals(value) != true)) {
+                    this.IDField = value;
+                    this.RaisePropertyChanged("ID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceChat.IServiceChat", CallbackContract=typeof(ChatClientWPF.ServiceChat.IServiceChatCallback))]
@@ -27,11 +90,23 @@ namespace ChatClientWPF.ServiceChat {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServiceChat/Disconnect", ReplyAction="http://tempuri.org/IServiceChat/DisconnectResponse")]
         System.Threading.Tasks.Task DisconnectAsync(int id);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServiceChat/GetUsers", ReplyAction="http://tempuri.org/IServiceChat/GetUsersResponse")]
+        ChatClientWPF.ServiceChat.ClientUser[] GetUsers();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServiceChat/GetUsers", ReplyAction="http://tempuri.org/IServiceChat/GetUsersResponse")]
+        System.Threading.Tasks.Task<ChatClientWPF.ServiceChat.ClientUser[]> GetUsersAsync();
+        
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServiceChat/SendMsg")]
         void SendMsg(string msg, int id);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServiceChat/SendMsg")]
         System.Threading.Tasks.Task SendMsgAsync(string msg, int id);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServiceChat/SendMsgPrivate")]
+        void SendMsgPrivate(string msg, int fromId, int toId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServiceChat/SendMsgPrivate")]
+        System.Threading.Tasks.Task SendMsgPrivateAsync(string msg, int fromId, int toId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -39,6 +114,15 @@ namespace ChatClientWPF.ServiceChat {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServiceChat/MsgCallBack")]
         void MsgCallBack(string msg);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServiceChat/ArrivedUserCallBack")]
+        void ArrivedUserCallBack(ChatClientWPF.ServiceChat.ClientUser user);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServiceChat/GoneUserCallBack")]
+        void GoneUserCallBack(ChatClientWPF.ServiceChat.ClientUser user);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServiceChat/UserListUpdatedCallBack")]
+        void UserListUpdatedCallBack(ChatClientWPF.ServiceChat.ClientUser[] users);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -85,12 +169,28 @@ namespace ChatClientWPF.ServiceChat {
             return base.Channel.DisconnectAsync(id);
         }
         
+        public ChatClientWPF.ServiceChat.ClientUser[] GetUsers() {
+            return base.Channel.GetUsers();
+        }
+        
+        public System.Threading.Tasks.Task<ChatClientWPF.ServiceChat.ClientUser[]> GetUsersAsync() {
+            return base.Channel.GetUsersAsync();
+        }
+        
         public void SendMsg(string msg, int id) {
             base.Channel.SendMsg(msg, id);
         }
         
         public System.Threading.Tasks.Task SendMsgAsync(string msg, int id) {
             return base.Channel.SendMsgAsync(msg, id);
+        }
+        
+        public void SendMsgPrivate(string msg, int fromId, int toId) {
+            base.Channel.SendMsgPrivate(msg, fromId, toId);
+        }
+        
+        public System.Threading.Tasks.Task SendMsgPrivateAsync(string msg, int fromId, int toId) {
+            return base.Channel.SendMsgPrivateAsync(msg, fromId, toId);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using ChatClientWPF.ServiceChat;
 
@@ -11,13 +13,14 @@ namespace ChatClientWPF
     {
         bool isConnected;
         ServiceChatClient client;
+        List<ClientUser> clientUsers = new List<ClientUser>();
         int ID;
 
         public MainWindow()
         {
             InitializeComponent();
         }
-       
+
 
         void ConnectUser()
         {
@@ -28,9 +31,12 @@ namespace ChatClientWPF
 
                 client = new ServiceChatClient(new System.ServiceModel.InstanceContext(this));
                 ID = client.Connect(tbUserName.Text);
+
+                clientUsers = new List<ClientUser>(client.GetUsers());
+
+                UpdateUserList(clientUsers);
+
                 tbUserName.IsEnabled = false;
-               
-                
             }
         }
         void DisconnectUser()
@@ -54,7 +60,7 @@ namespace ChatClientWPF
         public void MsgCallBack(string msg)
         {
             lbChat.Items.Add(msg);
-            lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count-1]);
+            lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -67,11 +73,43 @@ namespace ChatClientWPF
             if (e.Key == Key.Enter)
             {
                 if (client == null) return;
-               
+
                 client.SendMsg(tbMessege.Text, ID);
                 tbMessege.Text = string.Empty;
             }
         }
+        void UpdateUserList(List<ClientUser> clientUsers)
+        {
+            lbUsers.Items.Clear();
+            foreach (var item in clientUsers)
+            {
+                lbUsers.Items.Add(item.Name);
+            }
 
+        }
+
+        public void ArrivedUserCallBack(ClientUser user)
+        {
+            clientUsers.Add(user);
+            var userSerch = clientUsers.FirstOrDefault(x => x.ID == user.ID);
+            if (userSerch == null) return;
+
+            UpdateUserList(clientUsers);
+        }
+
+        public void GoneUserCallBack(ClientUser user)
+        {
+            var userSerch = clientUsers.FirstOrDefault(x => x.ID == user.ID);
+            if (userSerch == null) return;
+
+            clientUsers.Remove(user);
+            UpdateUserList(clientUsers);
+        }
+
+        public void UserListUpdatedCallBack(ClientUser[] users)
+        {
+            UpdateUserList(new List<ClientUser>(users));
+
+        }
     }
 }

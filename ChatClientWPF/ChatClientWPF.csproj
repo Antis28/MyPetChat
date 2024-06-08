@@ -93,10 +93,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Connected Services\ServiceChat\ChatClientWPF.ServiceChat.ClientUser.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\ServiceChat\item.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\ServiceChat\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceChat\item2.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\ServiceChat\ServiceChat.wsdl" />

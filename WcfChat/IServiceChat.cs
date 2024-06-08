@@ -17,7 +17,13 @@ namespace WcfChat
         [OperationContract]
         void Disconnect(int id);
 
+        [OperationContract]
+        List<ClientUser> GetUsers();
+
         [OperationContract(IsOneWay = true)]
         void SendMsg(string msg, int id);
+
+        [OperationContract(IsOneWay = true)]
+        void SendMsgPrivate(string msg, int fromId,int toId);
     }
 }
