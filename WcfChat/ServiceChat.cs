@@ -34,7 +34,11 @@ namespace WcfChat
 
         public void Disconnect(int id)
         {
-            throw new NotImplementedException();
+            var user = users.FirstOrDefault(x => x.ID == id);
+            if (user == null) return;
+            
+            users.Remove(user);
+            SendMsg($"{user.Name} покинул чат!");
         }
 
         public void SendMsg(string msg)
