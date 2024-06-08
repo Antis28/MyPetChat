@@ -23,7 +23,7 @@ namespace ChatClientWPF
         {
             if (!isConnected)
             {
-                btnConDiscon.Content = "Disconnect";
+                btnConDiscon.Content = "Отключить";
                 isConnected = true;
 
                 client = new ServiceChatClient(new System.ServiceModel.InstanceContext(this));
@@ -40,7 +40,7 @@ namespace ChatClientWPF
                 client.Disconnect(ID);
                 client = null;
                 tbUserName.IsEnabled = true;
-                btnConDiscon.Content = "Connect";
+                btnConDiscon.Content = "Подключить";
                 isConnected = false;
             }
         }

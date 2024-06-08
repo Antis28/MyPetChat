@@ -37,6 +37,7 @@ namespace WcfChat
 
             users.Remove(user);
             SendMsg($" {user.Name} покинул чат!", 0);
+            Console.WriteLine($"{user.Name} покинул чат!");
         }
 
         public void SendMsg(string msg, int id)
