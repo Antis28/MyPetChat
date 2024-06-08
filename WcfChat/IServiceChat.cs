@@ -8,16 +8,22 @@ using System.Text;
 namespace WcfChat
 {
 
-    [ServiceContract(CallbackContract =typeof(IServerChatCallBack))]
+    [ServiceContract(CallbackContract = typeof(IServerChatCallBack))]
     public interface IServiceChat
     {
         [OperationContract]
-        int Connect();
+        int Connect(string name);
 
         [OperationContract]
         void Disconnect(int id);
 
+        [OperationContract]
+        List<ClientUser> GetUsers();
+
         [OperationContract(IsOneWay = true)]
-        void SendMsg(string msg);
+        void SendMsg(string msg, int id);
+
+        [OperationContract(IsOneWay = true)]
+        void SendMsgPrivate(string msg, int fromId,int toId);
     }
 }
