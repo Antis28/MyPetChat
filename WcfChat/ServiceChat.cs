@@ -28,7 +28,7 @@ namespace WcfChat
             users.Add(user);
 
             SendMsg($"{user.Name} подключился к чату!", 0);
-
+            Console.WriteLine($"{user.Name} подключился к чату!");
             return user.ID;
         }
 
@@ -49,7 +49,10 @@ namespace WcfChat
                 answer.Append(DateTime.Now.ToShortTimeString());
 
                 var user = users.FirstOrDefault(x => x.ID == id);
-                answer.Append($": {user.Name} " ?? "");
+                if (user != null)
+                {
+                    answer.Append($": {user.Name} ");
+                }
 
                 answer.Append(msg);
 
