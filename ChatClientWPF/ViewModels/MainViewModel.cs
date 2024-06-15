@@ -5,20 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using DevExpress.Mvvm.CodeGenerators;
 
-namespace ChatClientWPF
+namespace ChatClientWPF.ViewModels
 {
     [GenerateViewModel]
     public partial class MainViewModel 
     {
         [GenerateProperty]
-        string username;
+        string userName;
         [GenerateProperty]
         public string ip;
+        [GenerateProperty]
+        public string port;
         [GenerateProperty]
         string status;
 
         [GenerateCommand]
-        void Login() => Status = "User: " + Username;
-        bool CanLogin() => !string.IsNullOrEmpty(Username);
+        void Login() => Status = "User: " + userName;
+        bool CanLogin() => !string.IsNullOrEmpty(userName);
+        void ConnectCommand() => Status = "";
     }
 }
