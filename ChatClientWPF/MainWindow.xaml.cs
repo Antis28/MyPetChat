@@ -84,10 +84,8 @@ namespace ChatClientWPF
         {
             if (e.Key == Key.Enter)
             {
-                if (client == null) return;
-
-                client.SendMsg(tbMessege.Text, ID);
-                tbMessege.Text = string.Empty;
+                //client.SendMsg(tbMessege.Text, ID);
+                //tbMessege.Text = string.Empty;
             }
         }
         void UpdateUserList(List<ClientUser> clientUsers)
