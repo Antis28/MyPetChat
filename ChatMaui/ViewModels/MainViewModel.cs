@@ -70,7 +70,11 @@ namespace ChatMaui.ViewModels
         }
 
         public string Message { get; set; }
-        public ObservableCollection<string> chat = new ObservableCollection<string>();
+        public ObservableCollection<string> Chat { get; set; } = new();
+        public ObservableCollection<string> UserNames { get; set; } = new();
+        public string message;
+
+
 
         TcpClient _client;
         StreamReader _reader;
@@ -149,7 +153,36 @@ namespace ChatMaui.ViewModels
                 //}, () => _client == null || _client?.Connected == false);
             }
         }
+        public ICommand SendCommand
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    SendMsgAsync($"{UserName}: {Message}");
 
+                });
+                //}, () => _client?.Connected == true);
+            }
+        }
+
+        private Task SendMsgAsync(string msg)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    _writer.WriteLine(msg);
+                    PrintInUI(msg);
+                    Message = string.Empty;
+
+                }
+                catch (Exception ex)
+                {
+                    PrintInUI($"Ошибка: {ex.Message}");
+                }
+            });
+        }
         private string RandomeseUserName()
         {
 
@@ -160,6 +193,7 @@ namespace ChatMaui.ViewModels
 
         private void PrintInUI(string message)
         {
+            Chat.Add(message);
             //App.Current.Dispatcher.Invoke(() =>
             //{
             //    Chat.Add(message);

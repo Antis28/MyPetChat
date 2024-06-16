@@ -112,6 +112,7 @@ namespace ChatClientWPF.ViewModels
                 try
                 {
                     _writer.WriteLine(msg);
+                    PrintInUI(msg);
                     Message = string.Empty;
 
                 }

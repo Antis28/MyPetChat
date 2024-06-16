@@ -10,38 +10,35 @@
     <ScrollView>
         <VerticalStackLayout            
             VerticalOptions="Center"
-            BackgroundColor="Coral"
+            BackgroundColor="White"
             Padding="5"
             Spacing="10"
-            >
-            <VerticalStackLayout>
-                <Entry Placeholder="Enter name" Text="{Binding Name}" />
-                <Entry Placeholder="Enter age" Text="{Binding Age}"/>
-                <Button Text="Save" WidthRequest="100" HorizontalOptions="Start"
-                        Command="{Binding AddCommand}"  />
-            </VerticalStackLayout>
-            <ListView ItemsSource="{Binding People}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Name}" />
-                                <Label Text="{Binding Age}" />
-                            </VerticalStackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Label Text="{Binding Name}"/>
-            <Editor Text="{Binding chat}" HeightRequest="400" IsReadOnly="False" />
-            <Editor Text="{Binding Message}"/>
-            <Button
-    x:Name="CounterBtn"
-    Text="Connect"
-    Command="{Binding ConnectCommand}"
-    SemanticProperties.Hint="Counts the number of times you click"                
-    HorizontalOptions="Center" />
+            >  
+            <Label Text="{Binding Name, Mode=OneWay }" LineHeight="20" />
 
+            <CollectionView ItemsSource="{Binding Chat}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding}" FontSize="16" TextColor="#1565C0" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+            <Editor Text="{Binding Message}"/>
+            <StackLayout Orientation="Horizontal">
+                <Button
+                    x:Name="CounterBtn"
+                    Text="Connect"
+                    Command="{Binding ConnectCommand}"
+                    SemanticProperties.Hint="Counts the number of times you click"                
+                    HorizontalOptions="Center" />
+                <Button               
+                    Text="Send"
+                    Command="{Binding SendCommand}"
+                    SemanticProperties.Hint="Counts the number of times you click"                
+                    HorizontalOptions="Center" />
+            </StackLayout>
         </VerticalStackLayout>
     </ScrollView>
 
