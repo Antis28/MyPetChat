@@ -5,9 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatClientWPF.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="150" d:DesignWidth="400">
     <Grid>
-        <ListBox x:Name="lbChat" ItemsSource="{Binding Chat}" d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.ColumnSpan="2" />
-        <ListBox x:Name="lbUsers" d:ItemsSource="{d:SampleData ItemCount=5}" MaxWidth="300" Grid.Column="3"  />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>           
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>      
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Chat" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16"/>
+        <TextBlock Text="Users" Grid.Row="0" Grid.Column="3" FontSize="16"/>
+        <ListBox x:Name="lbChat" ItemsSource="{Binding Chat}" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.ColumnSpan="2" />
+        <ListBox x:Name="lbUsers" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Row="1" MinWidth="200" Grid.Column="3"  />
     </Grid>
 </UserControl>

@@ -17,13 +17,11 @@ using TcpServer;
 namespace ChatHost
 {
     internal class Program
-    {
-       
-
+    {     
         static void Main(string[] args)
         {
             CoreServer.StartServer(new Logger());
-
+            Console.ReadLine();
 
             //using (var host = new ServiceHost(typeof(WcfChat.ServiceChat)))
             //{

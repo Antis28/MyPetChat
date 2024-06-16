@@ -54,7 +54,7 @@ namespace TcpServer
             {
                 var line = streamReader.ReadLine();
 
-                var searchString = "Login ";
+                var searchString = "Login: ";
                 var nick = line.Replace(searchString, "");
                 if (line.Contains(searchString) && !string.IsNullOrWhiteSpace(nick))
                 {
@@ -72,7 +72,7 @@ namespace TcpServer
                     _loger.ShowMessage($"Пользователь {nick} уже в чате.");
                     client.Client.Disconnect(false);
                 }
-            }
+            }            
         }
 
         private static async void SendToAllClients(string message)

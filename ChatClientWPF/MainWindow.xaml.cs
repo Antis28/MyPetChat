@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Channels;
+
 //using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
@@ -21,7 +23,9 @@ namespace ChatClientWPF
         public MainWindow()
         {
             InitializeComponent();
+            //System.Windows.Threading.Dispatcher.Run();
         }
+
 
 
         void ConnectUser()
@@ -68,6 +72,8 @@ namespace ChatClientWPF
             //}
             
         }
+
+        
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
