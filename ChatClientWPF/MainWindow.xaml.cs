@@ -7,6 +7,7 @@ using System.ServiceModel.Channels;
 using System.Windows;
 using System.Windows.Input;
 using ChatClientWPF.ServiceChat;
+using ChatClientWPF.ViewModels;
 
 namespace ChatClientWPF
 {
@@ -77,7 +78,13 @@ namespace ChatClientWPF
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            DisconnectUser();
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.DisconnectCommandCommand.Execute(this);
+                e.Cancel = false; // Не отменяем закрытие окна
+            }
+
+           // DisconnectUser();
         }
 
         private void tbMessege_KeyDown(object sender, KeyEventArgs e)

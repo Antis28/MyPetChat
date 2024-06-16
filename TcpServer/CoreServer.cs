@@ -14,6 +14,8 @@ namespace TcpServer
         static List<ConnectedClient> _clients = new List<ConnectedClient>();
         static ILogger _loger;
 
+        static private string _closecmd = "Close connection";
+
         public static void StartServer(ILogger loger)
         {
             _listener.Start();
@@ -30,26 +32,6 @@ namespace TcpServer
                     ClientHandler(connectedClient, streamReader);
                 });
             }
-        }
-
-        private static void ClientHandler(ConnectedClient connectedClient, StreamReader streamReader)
-        {
-            var client = connectedClient.Client;
-            while (client.Connected)
-            {
-                try
-                {
-                    streamReader = new StreamReader(client.GetStream());
-                    var line = streamReader.ReadLine();
-                    _loger.ShowMessage($"{line}");
-                    SendToAllClients(line);
-                }
-                catch (Exception ex)
-                {
-                    _loger.ShowError(ex.Message);
-                }
-
-            }            
         }
 
         private static ConnectedClient Loginning(TcpClient client, StreamReader streamReader)
@@ -82,34 +64,75 @@ namespace TcpServer
             throw new Exception("Not Loginning");
         }
 
-        private static async void SendToAllClients(string message)
+        private static async void ClientHandler(ConnectedClient connectedClient, StreamReader streamReader)
         {
-            await Task.Factory.StartNew(() =>
+            var client = connectedClient.Client;
+
+            while (client.Connected)
             {
-                for (int i = 0; i < _clients.Count; i++)
+                try
                 {
-                    try
-                    {
-                        if (_clients[i].Client.Connected)
-                        {
-                            var streamWriter = new StreamWriter(_clients[i].Client.GetStream());
-                            streamWriter.AutoFlush = true;
-                            streamWriter.WriteLine(message);
-                        }
-                        else
-                        {
-                            _clients.RemoveAt(i);
-                            _loger.ShowMessage($"Пользователь {_clients[i].Name} вышел из чата.");
-                        }
+                    streamReader = new StreamReader(client.GetStream());
 
+                    var line = streamReader.ReadLine();
 
-                    }
-                    catch (Exception ex)
+                    var searchString = _closecmd;
+                    if (line.Contains(searchString))
                     {
-                        _loger.ShowError(ex.Message);
+
+                        _loger.ShowMessage( $"{connectedClient.Name} вышел из чата!");
+                        await SendToAllClientsAsync(connectedClient, $"{connectedClient.Name} вышел из чата!");
+                        client.Close();
+                        break;
                     }
+
+                    _loger.ShowMessage($"{line}");
+                   await SendToAllClientsAsync(connectedClient, line);
                 }
+                catch (Exception ex)
+                {
+                    _loger.ShowError(ex.Message);
+                }
+            }
+        }
+
+
+
+        private static Task SendToAllClientsAsync(ConnectedClient connectedClient, string message)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                SendToAllClients(connectedClient,message);
             });
+        }
+
+        private static void SendToAllClients(ConnectedClient connectedClient, string message)
+        {
+            for (int i = 0; i < _clients.Count; i++)
+            {
+                if (_clients[i].Name == connectedClient.Name) continue;
+                try
+                {
+                    if (_clients[i].Client.Connected)
+                    {
+
+                        var streamWriter = new StreamWriter(_clients[i].Client.GetStream());
+                        streamWriter.AutoFlush = true;
+                        streamWriter.WriteLine(message);
+                    }
+                    else
+                    {
+                        _clients.RemoveAt(i);
+                        _loger.ShowMessage($"Пользователь {_clients[i].Name} вышел из чата.");
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    _loger.ShowError(ex.Message);
+                }
+            }
         }
     }
 }

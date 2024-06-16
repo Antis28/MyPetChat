@@ -7,8 +7,10 @@
         xmlns:viewmodels="clr-namespace:ChatClientWPF.ViewModels"
         xmlns:views="clr-namespace:ChatClientWPF.Views"        
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="450" MinWidth="200" Closing="Window_Closing" Loaded="Window_Loaded">
-
+        SizeToContent="WidthAndHeight"
+        Closing="Window_Closing"
+        Title="MainWindow" MinHeight="400" MinWidth="600"  Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    
     <Window.DataContext>
         <viewmodels:MainViewModel/>
     </Window.DataContext>
@@ -36,17 +38,17 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        
+
         <views:MyControlPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
         <views:ChatAndUsers Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"/>
-                    
+
         <UniformGrid Columns="1" Grid.Row="2" Grid.ColumnSpan="3">
-            <TextBox x:Name="tbMessege" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" MinWidth="200" Height="58" FontSize="14" TextAlignment="Left">
+            <TextBox x:Name="tbMessege" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" MinWidth="200" MinHeight="40" FontSize="14" TextAlignment="Left">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Return" Command="{Binding SendCommand}"/>
                 </TextBox.InputBindings>
             </TextBox>
-         </UniformGrid>
-        
+        </UniformGrid>
+
     </Grid>
 </Window>

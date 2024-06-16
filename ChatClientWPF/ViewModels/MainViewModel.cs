@@ -9,12 +9,15 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Threading;
 using System.Diagnostics;
 using System.Windows.Shapes;
+using System.Windows;
 
 namespace ChatClientWPF.ViewModels
 {
     [GenerateViewModel]
     public partial class MainViewModel : ViewModelBase
     {
+        private string closecmd = "Close connection";
+
         [GenerateProperty]
         string userName;
         [GenerateProperty]
@@ -80,32 +83,43 @@ namespace ChatClientWPF.ViewModels
             }
         }
 
+        [GenerateCommand]
+        void DisconnectCommand(object obj) {
+            if (_client == null) return;
+                        
+            SendMsgAsync(closecmd);          
+        }
+
         public AsyncCommand SendCommand
         {
             get
             {
                 return new AsyncCommand(() =>
                 {
-                    return Task.Factory.StartNew(() =>
-                    {
-                        try
-                        {
+                    return SendMsgAsync($"{UserName}: {Message}");
 
-                            _writer.WriteLine($"{UserName}: {Message}");
-                            Message = string.Empty;
-
-                        }
-                        catch (Exception ex)
-                        {
-                            PrintInUI($"Ошибка: {ex.Message}");
-                        }
-                    });
-
-                //});
+                    //});
                 }, () => _client?.Connected == true, !string.IsNullOrWhiteSpace(Message));
 
 
             }
+        }
+
+        private Task SendMsgAsync(string msg)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    _writer.WriteLine(msg);
+                    Message = string.Empty;
+
+                }
+                catch (Exception ex)
+                {
+                    PrintInUI($"Ошибка: {ex.Message}");
+                }
+            });
         }
 
         private void StartClient()
