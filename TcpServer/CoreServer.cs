@@ -19,14 +19,17 @@ namespace TcpServer
             _listener.Start();
             _loger = loger;
             _loger.ShowMessage("Сервер запущен!");
-            var client = _listener.AcceptTcpClient();
-            Task.Factory.StartNew(() =>
+            while (true)
             {
-                var streamReader = new StreamReader(client.GetStream());
+                var client = _listener.AcceptTcpClient();
+                Task.Factory.StartNew(() =>
+                {
+                    var streamReader = new StreamReader(client.GetStream());
 
-                ConnectedClient connectedClient = Loginning(client, streamReader);
-                ClientHandler(connectedClient, streamReader);
-            });
+                    ConnectedClient connectedClient = Loginning(client, streamReader);
+                    ClientHandler(connectedClient, streamReader);
+                });
+            }
         }
 
         private static void ClientHandler(ConnectedClient connectedClient, StreamReader streamReader)

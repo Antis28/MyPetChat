@@ -101,8 +101,8 @@ namespace ChatClientWPF.ViewModels
                         }
                     });
 
-                });
-                // }, () => _client?.Connected == true, !string.IsNullOrWhiteSpace(Message));
+                //});
+                }, () => _client?.Connected == true, !string.IsNullOrWhiteSpace(Message));
 
 
             }
