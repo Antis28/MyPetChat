@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.Windows.Shapes;
 
 namespace ChatClientWPF.ViewModels
 {
     [GenerateViewModel]
-    public partial class MainViewModel //: ViewModelBase
+    public partial class MainViewModel : ViewModelBase
     {
         [GenerateProperty]
         string userName;
@@ -25,12 +26,13 @@ namespace ChatClientWPF.ViewModels
 
         [GenerateProperty]
         ObservableCollection<string> chat = new ObservableCollection<string>();
-       
+
         [GenerateProperty]
         ObservableCollection<string> userNames;
-        
+
         [GenerateProperty]
         string message;
+
 
 
         TcpClient _client;
@@ -40,7 +42,7 @@ namespace ChatClientWPF.ViewModels
         [GenerateCommand]
         void Login() => Status = "User: " + userName;
         bool CanLogin() => !string.IsNullOrEmpty(userName);
-          
+
         public MainViewModel()
         {
             ip = "192.168.1.105";
@@ -66,6 +68,7 @@ namespace ChatClientWPF.ViewModels
                             _writer = new StreamWriter(_client.GetStream());
                             _writer.AutoFlush = true;
                             _writer.WriteLine($"Login: {userName}");
+                            PrintInUI($"Подключение успешно!");
                         }
                         catch (Exception ex)
                         {
@@ -87,8 +90,10 @@ namespace ChatClientWPF.ViewModels
                     {
                         try
                         {
-                            _writer.WriteLine($"{userName}: {Message}");
+
+                            _writer.WriteLine($"{UserName}: {Message}");
                             Message = string.Empty;
+
                         }
                         catch (Exception ex)
                         {
@@ -96,25 +101,27 @@ namespace ChatClientWPF.ViewModels
                         }
                     });
 
-                }, () => _client.Connected, !string.IsNullOrWhiteSpace(Message));
+                });
+                // }, () => _client?.Connected == true, !string.IsNullOrWhiteSpace(Message));
+
+
             }
         }
 
         private void StartClient()
         {
-            
-            Task.Factory.StartNew(async () => {
+            Task.Factory.StartNew(async () =>
+            {
                 while (true)
                 {
                     try
                     {
                         if ((_client?.Connected) == true)
                         {
-                            PrintInUI($"Подключение успешно!");
                             var line = _reader.ReadLine();
                             if (line != null)
                             {
-                                PrintInUI(line);                                
+                                PrintInUI(line);
                             }
                             else
                             {
@@ -122,14 +129,14 @@ namespace ChatClientWPF.ViewModels
                                 PrintInUI("Ошибка подключения!");
                             }
                         }
-                       await Task.Delay(500);
+                        await Task.Delay(500);
                     }
                     catch (Exception ex)
                     {
                         PrintInUI($"Ошибка: {ex.Message}");
                     }
                 }
-            
+
             });
         }
 
@@ -145,6 +152,14 @@ namespace ChatClientWPF.ViewModels
             {
                 Chat.Add(message);
             });
+        }
+        private void RunInUi(Action action)
+        {
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                action();
+            });
+
         }
     }
 }

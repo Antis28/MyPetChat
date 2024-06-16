@@ -41,11 +41,11 @@
         <views:ChatAndUsers Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"/>
                     
         <UniformGrid Columns="1" Grid.Row="2" Grid.ColumnSpan="3">
-            <TextBox x:Name="tbMessege" Text="{Binding Message}" TextWrapping="Wrap" MinWidth="200" Height="58" KeyDown="tbMessege_KeyDown" FontSize="14" TextAlignment="Left">
+            <TextBox x:Name="tbMessege" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" MinWidth="200" Height="58" FontSize="14" TextAlignment="Left">
                 <TextBox.InputBindings>
-                    <KeyBinding Key="Return" Command="{Binding views.SendCommand}"/>
+                    <KeyBinding Key="Return" Command="{Binding SendCommand}"/>
                 </TextBox.InputBindings>
-            </TextBox>>
+            </TextBox>
          </UniformGrid>
         
     </Grid>

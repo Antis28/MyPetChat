@@ -11,7 +11,7 @@ namespace TcpServer
     public class CoreServer
     {
         static TcpListener _listener = new TcpListener(System.Net.IPAddress.Any, 5050);
-        static List<ConnectedClients> _clients = new List<ConnectedClients>();
+        static List<ConnectedClient> _clients = new List<ConnectedClient>();
         static ILogger _loger;
 
         public static void StartServer(ILogger loger)
@@ -24,20 +24,21 @@ namespace TcpServer
             {
                 var streamReader = new StreamReader(client.GetStream());
 
-                Loginning(client, streamReader);
-                ClientHandler(client, streamReader);
+                ConnectedClient connectedClient = Loginning(client, streamReader);
+                ClientHandler(connectedClient, streamReader);
             });
         }
 
-        private static void ClientHandler(TcpClient client, StreamReader streamReader)
+        private static void ClientHandler(ConnectedClient connectedClient, StreamReader streamReader)
         {
+            var client = connectedClient.Client;
             while (client.Connected)
             {
                 try
                 {
                     streamReader = new StreamReader(client.GetStream());
                     var line = streamReader.ReadLine();
-
+                    _loger.ShowMessage($"{line}");
                     SendToAllClients(line);
                 }
                 catch (Exception ex)
@@ -48,7 +49,7 @@ namespace TcpServer
             }            
         }
 
-        private static void Loginning(TcpClient client, StreamReader streamReader)
+        private static ConnectedClient Loginning(TcpClient client, StreamReader streamReader)
         {
             while (client.Connected)
             {
@@ -60,9 +61,11 @@ namespace TcpServer
                 {
                     if (_clients.FirstOrDefault(s => s.Name == nick) == null)
                     {
-                        _clients.Add(new ConnectedClients(client, nick));
+                        var connectedClient = new ConnectedClient(client, nick);
+                        _clients.Add(connectedClient);
                         _loger.ShowMessage($"Подключен пользователь {nick}.");
-                        break;
+
+                        return connectedClient;
                     }
                 }
                 else
@@ -72,7 +75,8 @@ namespace TcpServer
                     _loger.ShowMessage($"Пользователь {nick} уже в чате.");
                     client.Client.Disconnect(false);
                 }
-            }            
+            }
+            throw new Exception("Not Loginning");
         }
 
         private static async void SendToAllClients(string message)

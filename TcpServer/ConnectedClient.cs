@@ -2,11 +2,11 @@
 
 namespace TcpServer
 {
-    internal class ConnectedClients
+    internal class ConnectedClient
     {
         public TcpClient Client { get; set; }
         public string Name { get; set; }
-        public ConnectedClients(TcpClient tcpClient, string name)
+        public ConnectedClient(TcpClient tcpClient, string name)
         {
             Client = tcpClient;
             Name = name;
