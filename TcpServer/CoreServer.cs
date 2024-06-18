@@ -16,7 +16,7 @@ namespace TcpServer
         static ILogger _loger;
 
         static private string _closecmd = "Close connection";
-        ChatJsonConverter chatJsonConverter = new ChatJsonConverter();
+        static ChatJsonConverter chatJsonConverter = new ChatJsonConverter();
 
 
         public static void StartServer(ILogger loger)
@@ -42,7 +42,7 @@ namespace TcpServer
             {
                 _loger.ShowError(e.Message);
             }
-            
+
         }
 
         private static ConnectedClient Loginning(TcpClient client, StreamReader streamReader)
@@ -50,11 +50,12 @@ namespace TcpServer
             while (client.Connected)
             {
                 var line = streamReader.ReadLine();
+                var cmd = chatJsonConverter.ReadFromJson(line);
+                var nick = cmd.Argument;
 
-                var searchString = "Login: ";
-                var nick = line.Replace(searchString, "");
-                if (line.Contains(searchString) && !string.IsNullOrWhiteSpace(nick))
+                if (cmd.Command == "Login" && !string.IsNullOrWhiteSpace(nick))
                 {
+
                     if (_clients.FirstOrDefault(s => s.Name == nick) == null)
                     {
                         var connectedClient = new ConnectedClient(client, nick);
@@ -66,11 +67,30 @@ namespace TcpServer
                 }
                 else
                 {
-                    var streamWriter = new StreamWriter(client.GetStream());
-                    streamWriter.AutoFlush = true;
                     _loger.ShowMessage($"Пользователь {nick} уже в чате.");
                     client.Client.Disconnect(false);
                 }
+
+                //var searchString = "Login: ";
+                //var nick = line.Replace(searchString, "");
+                //if (line.Contains(searchString) && !string.IsNullOrWhiteSpace(nick))
+                //{
+                //    if (_clients.FirstOrDefault(s => s.Name == nick) == null)
+                //    {
+                //        var connectedClient = new ConnectedClient(client, nick);
+                //        _clients.Add(connectedClient);
+                //        _loger.ShowMessage($"Подключен пользователь {nick}.");
+
+                //        return connectedClient;
+                //    }
+                //}
+                //else
+                //{
+                //    var streamWriter = new StreamWriter(client.GetStream());
+                //    streamWriter.AutoFlush = true;
+                //    _loger.ShowMessage($"Пользователь {nick} уже в чате.");
+                //    client.Client.Disconnect(false);
+                //}
             }
             throw new Exception("Not Loginning");
         }
@@ -83,13 +103,16 @@ namespace TcpServer
                 while (client.Connected)
                 {
                     StreamReader streamReader = new StreamReader(connectedClient.Client.GetStream());
-                    var line = streamReader.ReadLine();
+                    //var line = streamReader.ReadLine();
+                    //Encoding.UTF8.GetString(
+                    var t1 = await streamReader.ReadToEndAsync();
+                    var cmd = chatJsonConverter.ReadFromJson(t1);
+                    var t = "";
+                    //var connected = await isClosed(line, connectedClient);
+                    //if (!connected) break;
 
-                    var connected = await isClosed(line, connectedClient);
-                    if (!connected) break;
-
-                    _loger.ShowMessage($"{line}");
-                    await SendToAllClientsAsync(connectedClient, line);
+                    //_loger.ShowMessage($"{line}");
+                    //await SendToAllClientsAsync(connectedClient, line);
                 }
             }
             catch (Exception ex)
@@ -101,7 +124,7 @@ namespace TcpServer
 
         private static async Task<bool> isClosed(string line, ConnectedClient connectedClient)
         {
-            
+
 
             // Команда закрытия соединения
             var searchString = _closecmd;
@@ -159,6 +182,14 @@ namespace TcpServer
                     _loger.ShowError(ex.Message);
                 }
             }
+        }
+
+
+        private void Handler(ConnectedClient connectedClient)
+        {
+            var cl = connectedClient.Client.Client;
+            byte[] sizeBuf = new byte[1024];
+            cl.Receive(sizeBuf, 0, sizeBuf.Length, 0);
         }
     }
 }

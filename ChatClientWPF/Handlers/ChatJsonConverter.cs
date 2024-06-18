@@ -1,34 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
+using System;
 using System.Text;
-using System.Threading.Tasks;
 using TcpServer.Models;
-using Newtonsoft.Json;
 
 namespace TcpServer.Handlers
 {
     internal class ChatJsonConverter
     {
-        public void ReadFromJson(String jsonString)
+        public CommandMessage ReadFromJson(String jsonString)
         {
-            CommandMessage deserializedMessage;
-            try { deserializedMessage = JsonConvert.DeserializeObject<CommandMessage>(jsonString); }
-            catch (Exception e)
-            {
-                return;
-            }
+            return JsonConvert.DeserializeObject<CommandMessage>(jsonString);
         }
-        public void WriteToJson(CommandMessage commandMessage)
+        public string WriteToJson(CommandMessage commandMessage)
         {
+            string serializedMsg = JsonConvert.SerializeObject(commandMessage, Formatting.None);
+           
+            return serializedMsg;
+        }
 
-            string serializedMsg = JsonConvert.SerializeObject(commandMessage, Formatting.Indented);
+        public void test(string serializedMsg)
+        {
             byte[] messageBytes = Encoding.UTF8.GetBytes(serializedMsg);
-        }
-
-        public void test()
-        {
-            
         }
     }
 }

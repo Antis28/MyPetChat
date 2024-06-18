@@ -5,11 +5,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using System.Windows.Threading;
-using System.Diagnostics;
-using System.Windows.Shapes;
-using System.Windows;
+using TcpServer.Handlers;
+using TcpServer.Models;
 
 namespace ChatClientWPF.ViewModels
 {
@@ -41,6 +38,7 @@ namespace ChatClientWPF.ViewModels
         TcpClient _client;
         StreamReader _reader;
         StreamWriter _writer;
+        ChatJsonConverter chatJsonConverter = new ChatJsonConverter();
 
         [GenerateCommand]
         void Login() => Status = "User: " + userName;
@@ -70,7 +68,16 @@ namespace ChatClientWPF.ViewModels
                             _reader = new StreamReader(_client.GetStream());
                             _writer = new StreamWriter(_client.GetStream());
                             _writer.AutoFlush = true;
-                            _writer.WriteLine($"Login: {userName}");
+
+                            var cmd = chatJsonConverter.WriteToJson(new CommandMessage()
+                            {
+                                Command = "Login",
+                                Argument = userName
+                            });
+
+                            //_writer.WriteLine($"Login: {userName}");
+                            _writer.WriteLine(cmd);
+
                             PrintInUI($"Подключение успешно!");
                         }
                         catch (Exception ex)
