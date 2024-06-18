@@ -95,7 +95,7 @@ namespace TcpServer
             throw new Exception("Not Loginning");
         }
 
-        private static void ClientHandler(ConnectedClient connectedClient)
+        private static async void ClientHandler(ConnectedClient connectedClient)
         {
             var client = connectedClient.Client;
             try
@@ -108,16 +108,16 @@ namespace TcpServer
 
                     //var t1 = await streamReader.ReadToEndAsync();
                     
-                    var t = HandlerBigBuffer(connectedClient);
-                    var cmd = chatJsonConverter.ReadFromJson(t);
+                    var line = HandlerBigBuffer(connectedClient);
+                    // var cmd = chatJsonConverter.ReadFromJson(t);
 
 
 
-                    //var connected = await isClosed(line, connectedClient);
-                    //if (!connected) break;
+                    var connected = await isClosed(line, connectedClient);
+                    if (!connected) break;
 
-                    //_loger.ShowMessage($"{line}");
-                    //await SendToAllClientsAsync(connectedClient, line);
+                    _loger.ShowMessage($"{line}");
+                    await SendToAllClientsAsync(connectedClient, line);
                 }
             }
             catch (Exception ex)
