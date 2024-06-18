@@ -1,10 +1,13 @@
-﻿using DevExpress.Mvvm;
+﻿using ChatClientWPF.Handlers;
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 using TcpServer.Handlers;
 using TcpServer.Models;
 
@@ -91,10 +94,28 @@ namespace ChatClientWPF.ViewModels
         }
 
         [GenerateCommand]
-        void DisconnectCommand(object obj) {
+        void DisconnectCommand(object obj)
+        {
             if (_client == null) return;
-                        
-            SendMsgAsync(closecmd);          
+
+            SendMsgAsync(closecmd);
+        }
+
+
+        public AsyncCommand OpenFileCommand
+        {
+            get
+            {
+                return new AsyncCommand(() =>
+                {
+                    return Task.Factory.StartNew(() =>
+                    {
+                        //OpenFile.open();
+                        //FileDialogs.Save();
+                        FileDialogs.msg();
+                    });
+                });
+            }
         }
 
         public AsyncCommand SendCommand
@@ -118,7 +139,16 @@ namespace ChatClientWPF.ViewModels
             {
                 try
                 {
-                    _writer.WriteLine(msg);
+                    //_writer.WriteLine(msg);
+
+                    var cmd = chatJsonConverter.WriteToJson(new CommandMessage()
+                    {
+                        Command = "Message",
+                        Argument = msg
+                    });
+
+
+                    SendBigSize(msg);
                     PrintInUI(msg);
                     Message = string.Empty;
 
@@ -182,6 +212,15 @@ namespace ChatClientWPF.ViewModels
                 action();
             });
 
+        }
+
+
+        private void SendBigSize(string text)
+        {
+            var socket = _client.Client;
+            byte[] data = Encoding.Default.GetBytes(text);
+            socket.Send(BitConverter.GetBytes(data.Length), 0, 4,0);
+            socket.Send(data);
         }
     }
 }

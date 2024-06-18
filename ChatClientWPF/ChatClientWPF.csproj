@@ -70,6 +70,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Handlers\ChatJsonConverter.cs" />
+    <Compile Include="Handlers\FileDialogs.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Models\CommandMessage.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

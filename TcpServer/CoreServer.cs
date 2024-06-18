@@ -95,7 +95,7 @@ namespace TcpServer
             throw new Exception("Not Loginning");
         }
 
-        private static async void ClientHandler(ConnectedClient connectedClient)
+        private static void ClientHandler(ConnectedClient connectedClient)
         {
             var client = connectedClient.Client;
             try
@@ -105,9 +105,14 @@ namespace TcpServer
                     StreamReader streamReader = new StreamReader(connectedClient.Client.GetStream());
                     //var line = streamReader.ReadLine();
                     //Encoding.UTF8.GetString(
-                    var t1 = await streamReader.ReadToEndAsync();
-                    var cmd = chatJsonConverter.ReadFromJson(t1);
-                    var t = "";
+
+                    //var t1 = await streamReader.ReadToEndAsync();
+                    
+                    var t = HandlerBigBuffer(connectedClient);
+                    var cmd = chatJsonConverter.ReadFromJson(t);
+
+
+
                     //var connected = await isClosed(line, connectedClient);
                     //if (!connected) break;
 
@@ -190,7 +195,7 @@ namespace TcpServer
         /// </summary>
         /// <param name="connectedClient"></param>
         /// <returns></returns>
-        private string Handler(ConnectedClient connectedClient)
+        private static string HandlerBigBuffer(ConnectedClient connectedClient)
         {
             var cl = connectedClient.Client.Client;
             byte[] sizeBuf = new byte[4];
