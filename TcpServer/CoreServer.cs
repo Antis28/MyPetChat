@@ -67,32 +67,43 @@ namespace TcpServer
         private static async void ClientHandler(ConnectedClient connectedClient, StreamReader streamReader)
         {
             var client = connectedClient.Client;
-
-            while (client.Connected)
+            try
             {
-                try
+                while (client.Connected)
                 {
                     streamReader = new StreamReader(client.GetStream());
 
                     var line = streamReader.ReadLine();
 
+                    // Команда закрытия соединения
                     var searchString = _closecmd;
                     if (line.Contains(searchString))
                     {
 
-                        _loger.ShowMessage( $"{connectedClient.Name} вышел из чата!");
+                        _loger.ShowMessage($"{connectedClient.Name} вышел из чата!");
+                        await SendToAllClientsAsync(connectedClient, $"{connectedClient.Name} вышел из чата!");
+                        client.Close();
+                        break;
+                    }
+                    var searchString2 = "List users";
+                    if (line.Contains(searchString2))
+                    {
+
+                        _loger.ShowMessage($"{connectedClient.Name} вышел из чата!");
                         await SendToAllClientsAsync(connectedClient, $"{connectedClient.Name} вышел из чата!");
                         client.Close();
                         break;
                     }
 
                     _loger.ShowMessage($"{line}");
-                   await SendToAllClientsAsync(connectedClient, line);
+                    await SendToAllClientsAsync(connectedClient, line);
+
                 }
-                catch (Exception ex)
-                {
-                    _loger.ShowError(ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                _loger.ShowError(ex.Message);
+                client = null;
             }
         }
 
@@ -102,7 +113,7 @@ namespace TcpServer
         {
             return Task.Factory.StartNew(() =>
             {
-                SendToAllClients(connectedClient,message);
+                SendToAllClients(connectedClient, message);
             });
         }
 
