@@ -185,11 +185,41 @@ namespace TcpServer
         }
 
 
-        private void Handler(ConnectedClient connectedClient)
+        /// <summary>
+        /// Server Buff handler
+        /// </summary>
+        /// <param name="connectedClient"></param>
+        /// <returns></returns>
+        private string Handler(ConnectedClient connectedClient)
         {
             var cl = connectedClient.Client.Client;
-            byte[] sizeBuf = new byte[1024];
+            byte[] sizeBuf = new byte[4];
+
+            // Получаем размер первой порции
             cl.Receive(sizeBuf, 0, sizeBuf.Length, 0);
+            // Преобразуем в целое число
+            int size = BitConverter.ToInt32(sizeBuf, 0);
+            MemoryStream memoryStream = new MemoryStream();
+
+            while (size > 0)
+            {
+                byte[] buffer;
+                // Проверяем чтобы буфер был не меньше необходимого для принятия
+                if (size < cl.ReceiveBufferSize) buffer = new byte[size];
+                else buffer = new byte[cl.ReceiveBufferSize];
+
+                // Получим данные в буфер
+                int rec = cl.Receive(buffer, 0, buffer.Length, 0);
+                // Вычитаем размер принятых данных из общего размера
+                size -= rec;
+                // записываем в поток памяти
+                memoryStream.Write(buffer, 0, buffer.Length);
+            }
+            memoryStream.Close();
+            byte[] data = memoryStream.ToArray();
+            memoryStream.Dispose();
+
+            return Encoding.Default.GetString(data);
         }
     }
 }
