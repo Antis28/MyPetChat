@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using TcpServer.Handlers;
 
 namespace TcpServer
 {
@@ -15,23 +16,33 @@ namespace TcpServer
         static ILogger _loger;
 
         static private string _closecmd = "Close connection";
+        ChatJsonConverter chatJsonConverter = new ChatJsonConverter();
+
 
         public static void StartServer(ILogger loger)
         {
-            _listener.Start();
-            _loger = loger;
-            _loger.ShowMessage("Сервер запущен!");
-            while (true)
+            try
             {
-                var client = _listener.AcceptTcpClient();
-                Task.Factory.StartNew(() =>
+                _listener.Start();
+                _loger = loger;
+                _loger.ShowMessage("Сервер запущен!");
+                while (true)
                 {
-                    var streamReader = new StreamReader(client.GetStream());
+                    var client = _listener.AcceptTcpClient();
+                    Task.Factory.StartNew(() =>
+                    {
+                        var streamReader = new StreamReader(client.GetStream());
 
-                    ConnectedClient connectedClient = Loginning(client, streamReader);
-                    ClientHandler(connectedClient, streamReader);
-                });
+                        ConnectedClient connectedClient = Loginning(client, streamReader);
+                        ClientHandler(connectedClient);
+                    });
+                }
             }
+            catch (Exception e)
+            {
+                _loger.ShowError(e.Message);
+            }
+            
         }
 
         private static ConnectedClient Loginning(TcpClient client, StreamReader streamReader)
@@ -64,40 +75,21 @@ namespace TcpServer
             throw new Exception("Not Loginning");
         }
 
-        private static async void ClientHandler(ConnectedClient connectedClient, StreamReader streamReader)
+        private static async void ClientHandler(ConnectedClient connectedClient)
         {
             var client = connectedClient.Client;
             try
             {
                 while (client.Connected)
                 {
-                    streamReader = new StreamReader(client.GetStream());
-
+                    StreamReader streamReader = new StreamReader(connectedClient.Client.GetStream());
                     var line = streamReader.ReadLine();
 
-                    // Команда закрытия соединения
-                    var searchString = _closecmd;
-                    if (line.Contains(searchString))
-                    {
-
-                        _loger.ShowMessage($"{connectedClient.Name} вышел из чата!");
-                        await SendToAllClientsAsync(connectedClient, $"{connectedClient.Name} вышел из чата!");
-                        client.Close();
-                        break;
-                    }
-                    var searchString2 = "List users";
-                    if (line.Contains(searchString2))
-                    {
-
-                        _loger.ShowMessage($"{connectedClient.Name} вышел из чата!");
-                        await SendToAllClientsAsync(connectedClient, $"{connectedClient.Name} вышел из чата!");
-                        client.Close();
-                        break;
-                    }
+                    var connected = await isClosed(line, connectedClient);
+                    if (!connected) break;
 
                     _loger.ShowMessage($"{line}");
                     await SendToAllClientsAsync(connectedClient, line);
-
                 }
             }
             catch (Exception ex)
@@ -107,7 +99,30 @@ namespace TcpServer
             }
         }
 
+        private static async Task<bool> isClosed(string line, ConnectedClient connectedClient)
+        {
+            
 
+            // Команда закрытия соединения
+            var searchString = _closecmd;
+            if (line.Contains(searchString))
+            {
+                _loger.ShowMessage($"{connectedClient.Name} вышел из чата!");
+                await SendToAllClientsAsync(connectedClient, $"{connectedClient.Name} вышел из чата!");
+                connectedClient.Client.Close();
+                return false;
+            }
+            //var searchString2 = "List users";
+            //if (line.Contains(searchString2))
+            //{
+
+            //    _loger.ShowMessage($"{connectedClient.Name} вышел из чата!");
+            //    await SendToAllClientsAsync(connectedClient, $"{connectedClient.Name} вышел из чата!");
+            //    connectedClient.Client.Close();
+            //    return false;
+            //}           
+            return true;
+        }
 
         private static Task SendToAllClientsAsync(ConnectedClient connectedClient, string message)
         {
