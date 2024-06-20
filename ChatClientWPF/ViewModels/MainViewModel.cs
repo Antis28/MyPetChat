@@ -113,6 +113,7 @@ namespace ChatClientWPF.ViewModels
                         //OpenFile.open();
                         //FileDialogs.Save();
                         FileDialogs.msg();
+                        SendFileAsync(FileDialogs.open());
                     });
                 });
             }
@@ -148,8 +149,35 @@ namespace ChatClientWPF.ViewModels
                     });
 
 
-                    SendBigSize(msg);
+                    SendBigSize(cmd);
+
                     PrintInUI(msg);
+                    Message = string.Empty;
+
+                }
+                catch (Exception ex)
+                {
+                    PrintInUI($"Ошибка: {ex.Message}");
+                }
+            });
+        }
+
+        private Task SendFileAsync(string fileName)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {                    
+
+                    var cmd = chatJsonConverter.WriteToJson(new CommandMessage()
+                    {
+                        Command = "FileTransfer",
+                        Argument = fileName
+                    });
+                    SendBigSize(cmd);
+                    SendFileInByte(fileName);
+
+                    PrintInUI(fileName);
                     Message = string.Empty;
 
                 }
@@ -220,6 +248,19 @@ namespace ChatClientWPF.ViewModels
             var socket = _client.Client;
             byte[] data = Encoding.Default.GetBytes(text);
             socket.Send(BitConverter.GetBytes(data.Length), 0, 4,0);
+            socket.Send(data);
+        }
+
+        private void SendFileInByte(string fileName)
+        {
+            var stream = File.Open(fileName, FileMode.Open);
+            //stream.Read
+           
+
+
+            var socket = _client.Client;
+            byte[] data = Encoding.Default.GetBytes(text);
+            socket.Send(BitConverter.GetBytes(data.Length), 0, 4, 0);
             socket.Send(data);
         }
     }
