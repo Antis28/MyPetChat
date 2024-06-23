@@ -258,10 +258,10 @@ namespace ChatClientWPF.ViewModels
            
 
 
-            var socket = _client.Client;
-            byte[] data = Encoding.Default.GetBytes(text);
-            socket.Send(BitConverter.GetBytes(data.Length), 0, 4, 0);
-            socket.Send(data);
+            //var socket = _client.Client;
+            //byte[] data = Encoding.Default.GetBytes(text);
+            //socket.Send(BitConverter.GetBytes(data.Length), 0, 4, 0);
+            //socket.Send(data);
         }
     }
 }
