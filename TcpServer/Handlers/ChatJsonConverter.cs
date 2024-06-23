@@ -5,7 +5,7 @@ using TcpServer.Models;
 
 namespace TcpServer.Handlers
 {
-    internal class ChatJsonConverter
+    public class ChatJsonConverter
     {
         public CommandMessage ReadFromJson(String jsonString)
         {

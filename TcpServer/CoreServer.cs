@@ -20,30 +20,11 @@ namespace TcpServer
         static ChatJsonConverter chatJsonConverter = new ChatJsonConverter();
 
 
-        public static void StartServer(ILogger loger)
+        public static async Task StartServer(ILogger loger)
         {
-            try
-            {
-                _listener.Start();
-                _loger = loger;
-                _loger.ShowMessage("Сервер запущен!");
-                while (true)
-                {
-                    var client = _listener.AcceptTcpClient();
-                    Task.Factory.StartNew(() =>
-                    {
-                        var streamReader = new StreamReader(client.GetStream());
-
-                        ConnectedClient connectedClient = Loginning(client, streamReader);
-                        ClientHandler(connectedClient);
-                    });
-                }
-            }
-            catch (Exception e)
-            {
-                _loger.ShowError(e.Message);
-            }
-
+            _loger = loger;
+            ServerObject server = new ServerObject(loger);// создаем сервер
+            await server.ListenAsync(); // запускаем сервер
         }
 
         private static ConnectedClient Loginning(TcpClient client, StreamReader streamReader)
@@ -110,8 +91,6 @@ namespace TcpServer
 
         private static async Task<bool> isClosed(string line, ConnectedClient connectedClient)
         {
-
-
             // Команда закрытия соединения
             var searchString = _closecmd;
             if (line.Contains(searchString))

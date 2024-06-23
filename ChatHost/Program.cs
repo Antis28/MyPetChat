@@ -20,7 +20,10 @@ namespace ChatHost
     {     
         static void Main(string[] args)
         {
-            CoreServer.StartServer(new Logger());
+            Task.Factory.StartNew(async () =>
+            {
+                await CoreServer.StartServer(new Logger());
+            });
             Console.ReadLine();
 
             //using (var host = new ServiceHost(typeof(WcfChat.ServiceChat)))
@@ -30,8 +33,6 @@ namespace ChatHost
             //    Console.WriteLine("Host started!");
             //    Console.ReadLine();
             //}
-
-
         }
     }
 }

@@ -10,14 +10,20 @@ namespace TcpServer.ViewModels
 {
     internal class ServerObject
     {
-        TcpListener tcpListener = new TcpListener(IPAddress.Any, 8888); // сервер для прослушивания
-        List<ClientObject> clients = new List<ClientObject>(); // все подключения
+        TcpListener _tcpListener = new TcpListener(System.Net.IPAddress.Any, 5050); // сервер для прослушивания
+        List<ClientObject> _clients = new List<ClientObject>(); // все подключения
+        ILogger _loger;
+
+        public ServerObject(ILogger logger)
+        {
+            _loger = logger;
+        }
         protected internal void RemoveConnection(string id)
         {
             // получаем по id закрытое подключение
-            var client = clients.FirstOrDefault(c => c.Id == id);
+            var client = _clients.FirstOrDefault(c => c.Id == id);
             // и удаляем его из списка подключений
-            if (client != null) clients.Remove(client);
+            if (client != null) _clients.Remove(client);
             client?.Close();
         }
         // прослушивание входящих подключений
@@ -25,16 +31,17 @@ namespace TcpServer.ViewModels
         {
             try
             {
-                tcpListener.Start();
-                Console.WriteLine("Сервер запущен. Ожидание подключений...");
+                _tcpListener.Start();
+                _loger.ShowMessage("Сервер запущен. Ожидание подключений...");
 
                 while (true)
                 {
-                    TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
+                    TcpClient tcpClient = await _tcpListener.AcceptTcpClientAsync();
 
-                    ClientObject clientObject = new ClientObject(tcpClient, this);
-                    clients.Add(clientObject);
-                    await Task.Run(clientObject.ProcessAsync);
+                    ClientObject clientObject = new ClientObject(tcpClient, this, _loger);
+                    _clients.Add(clientObject);
+
+                    await Task.Factory.StartNew(clientObject.ProcessAsync, TaskCreationOptions.LongRunning);
                 }
             }
             catch (Exception ex)
@@ -50,7 +57,7 @@ namespace TcpServer.ViewModels
         // трансляция сообщения подключенным клиентам
         protected internal async Task BroadcastMessageAsync(string message, string id)
         {
-            foreach (var client in clients)
+            foreach (var client in _clients)
             {
                 if (client.Id != id) // если id клиента не равно id отправителя
                 {
@@ -62,11 +69,11 @@ namespace TcpServer.ViewModels
         // отключение всех клиентов
         protected internal void Disconnect()
         {
-            foreach (var client in clients)
+            foreach (var client in _clients)
             {
                 client.Close(); //отключение клиента
             }
-            tcpListener.Stop(); //остановка сервера
+            _tcpListener.Stop(); //остановка сервера
         }
     }
 }

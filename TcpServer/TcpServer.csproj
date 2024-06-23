@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\CommandsHandler.cs" />
+    <Compile Include="Models\TcpCommands.cs" />
     <Compile Include="ViewModels\ConnectedClient.cs" />
     <Compile Include="CoreServer.cs" />
     <Compile Include="Handlers\ChatJsonConverter.cs" />
