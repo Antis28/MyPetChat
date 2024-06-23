@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace TcpServer
+namespace TcpServer.ViewModels
 {
     internal class ConnectedClient
     {
