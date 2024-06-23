@@ -14,62 +14,13 @@ namespace ChatClientWPF
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IServiceChatCallback
+    public partial class MainWindow : Window
     {
-        List<ClientUser> clientUsers = new List<ClientUser>();
-        int ID;
+        List<ClientUser> clientUsers = new List<ClientUser>();        
 
         public MainWindow()
         {
-            InitializeComponent();
-            //System.Windows.Threading.Dispatcher.Run();
-        }
-
-
-
-        void ConnectUser()
-        {
-            //if (!isConnected)
-            //{
-            //    btnConDiscon.Content = "Отключить";
-            //    isConnected = true;
-
-            //    client = new ServiceChatClient(new InstanceContext(this));
-                
-            //    ID = client.Connect(tbUserName.Text);
-
-            //    clientUsers = new List<ClientUser>(client.GetUsers());
-
-            //    FillMessegeList(client.GetMesseges());
-                
-            //    UpdateUserList(clientUsers);
-
-            //    tbUserName.IsEnabled = false;
-            //}
-        }
-        void DisconnectUser()
-        {
-            //if (isConnected)
-            //{
-            //    client.Disconnect(ID);
-            //    client = null;
-            //    tbUserName.IsEnabled = true;
-            //    btnConDiscon.Content = "Подключить";
-            //    isConnected = false;
-            //    lbUsers.Items.Clear();
-            //}
-        }
-
-        
-
-        public void MsgCallBack(string msg)
-        {
-            //lbChat.Items.Add(msg);
-            //if (lbChat.Items.Count > 0)
-            //{
-            //    lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
-            //}
-            
+            InitializeComponent();           
         }
                
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -79,39 +30,6 @@ namespace ChatClientWPF
                 viewModel.DisconnectCommandCommand.Execute(this);
                 e.Cancel = false; // Не отменяем закрытие окна
             }
-
-           // DisconnectUser();
-        }
-
-        private void tbMessege_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                //client.SendMsg(tbMessege.Text, ID);
-                //tbMessege.Text = string.Empty;
-            }
-        }
-        void UpdateUserList(List<ClientUser> clientUsers)
-        {
-            //lbUsers.Items.Clear();
-            //foreach (var item in clientUsers)
-            //{
-            //    lbUsers.Items.Add(item.Name);
-            //}
-
-        }
-        void FillMessegeList(string[] messeges)
-        {
-            
-            //lbChat.Items.Clear();
-            //foreach (var item in messeges)
-            //{
-            //    lbChat.Items.Add(item);
-            //}
-            //if (lbChat.Items.Count > 0)
-            //{
-            //    lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
-            //}
         }
 
         /// <summary>
@@ -127,6 +45,11 @@ namespace ChatClientWPF
             UpdateUserList(clientUsers);
         }
 
+        private void UpdateUserList(List<ClientUser> clientUsers)
+        {
+            throw new NotImplementedException();
+        }
+
         public void GoneUserCallBack(ClientUser user)
         {
             var userSerch = clientUsers.FirstOrDefault(x => x.ID == user.ID);
@@ -136,16 +59,10 @@ namespace ChatClientWPF
             UpdateUserList(clientUsers);
         }
 
-        public void UserListUpdatedCallBack(ClientUser[] users)
-        {
-            UpdateUserList(new List<ClientUser>(users));
-        }
+        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var names = new string[] { "Biser", "Tiser", "Ruser", "Niser", "Miser" };
-            var r = new Random((int)DateTime.Now.Ticks);
-           // tbUserName.Text = names[r.Next(names.Length)];
         }
     }
 }

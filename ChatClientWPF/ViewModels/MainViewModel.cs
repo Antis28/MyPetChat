@@ -24,8 +24,6 @@ namespace ChatClientWPF.ViewModels
     [GenerateViewModel]
     public partial class MainViewModel : ViewModelBase
     {
-        private string closecmd = "Close connection";
-
         [GenerateProperty]
         string userName;
         [GenerateProperty]
@@ -60,8 +58,7 @@ namespace ChatClientWPF.ViewModels
         {
             ip = "192.168.1.105";
             port = 5050;
-            userName = RandomeUserName();
-            PrintInUI($"ip:{ip}:{port}");
+            userName = RandomeUserName();            
             StartClient();
         }
 
@@ -77,6 +74,7 @@ namespace ChatClientWPF.ViewModels
                         {
                             _client = new TcpClient();
                             _client.Connect(Ip, Port);
+                            PrintInUI($"Подключение к ip:{ip}:{port}");
                             _reader = new StreamReader(_client.GetStream());
                             _writer = new StreamWriter(_client.GetStream());
                             _writer.AutoFlush = true;
@@ -171,8 +169,6 @@ namespace ChatClientWPF.ViewModels
                     });
 
                     SendBigSizeTCP(cmd);
-
-                    PrintInUI(cmd);
                     Message = string.Empty;
 
                 }
@@ -331,8 +327,7 @@ namespace ChatClientWPF.ViewModels
             });
 
             SendBigSizeTCP(cmd);
-
-            PrintInUI(cmd);
+            
             Message = string.Empty;
         }
 
@@ -408,6 +403,14 @@ namespace ChatClientWPF.ViewModels
             RunInUi(() =>
             {
                 userNames.Clear();
+                //foreach (var item in messeges)
+                //{
+                //    lbChat.Items.Add(item);
+                //}
+                //if (lbChat.Items.Count > 0)
+                //{
+                //    lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
+                //}
                 foreach (var item in co)
                 {
                     userNames.Add(item.UserName);

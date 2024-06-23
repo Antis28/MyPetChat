@@ -72,10 +72,7 @@ namespace ChatMaui.ViewModels
         public string Message { get; set; }
         public ObservableCollection<string> Chat { get; set; } = new();
         public ObservableCollection<string> UserNames { get; set; } = new();
-        public string message;
-
-
-
+        
         TcpClient _client;
         StreamReader _reader;
         StreamWriter _writer;

@@ -46,7 +46,7 @@ namespace TcpServer.ViewModels
             try
             {
                 var connected = _client.Connected;
-                while (_client.Connected || !connected)
+                while (_client.Connected && connected)
                 {
                     var message = ReceivingBigBufferTCP();
 
@@ -63,6 +63,8 @@ namespace TcpServer.ViewModels
             {
                 // в случае выхода из цикла закрываем ресурсы
                 _server.RemoveConnection(Id);
+                var message = $"{UserName} покинул чат!";
+                _logger.ShowMessage(message);
                 Close();
             }
         }
