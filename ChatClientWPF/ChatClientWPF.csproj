@@ -73,6 +73,7 @@
     <Compile Include="Handlers\CommandsHandler.cs" />
     <Compile Include="Handlers\FileDialogs.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
+    <Compile Include="Models\ClientObject.cs" />
     <Compile Include="Models\CommandMessage.cs" />
     <Compile Include="Models\TcpCommands.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

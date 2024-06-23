@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ChatClientWPF.Views"
+             xmlns:local="clr-namespace:ChatClientWPF.Views" xmlns:viewmodels="clr-namespace:ChatClientWPF.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
              mc:Ignorable="d" 
              d:MinHeight="30" d:MinWidth="100">
     <StackPanel Orientation="Vertical">
@@ -17,6 +17,7 @@
             <TextBox x:Name="tbAdress" Text="{Binding Ip}"  TextWrapping="Wrap" Height="30" FontSize="16"/>
             <TextBox x:Name="tbPort" Text="{Binding Port}"  TextWrapping="Wrap" Height="30" FontSize="16" PreviewTextInput="NumericTextBox_PreviewTextInput" DataObject.Pasting="NumericTextBox_Pasting" />
             <Button x:Name="btnConDiscon" Command="{Binding ConnectCommand}" Content="Подключить" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="100"  FontSize="16"/>
+            <Button  Command="{Binding GetUsersCommand}" Content="Users" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
             <Button x:Name="btnOpenFile" Command="{Binding OpenFileCommand}" Content="open file" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
         </UniformGrid>
     </StackPanel>

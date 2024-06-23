@@ -11,6 +11,11 @@ namespace TcpServer.Handlers
         {
             return JsonConvert.DeserializeObject<CommandMessage>(jsonString);
         }
+        public T ReadFromJson<T>(String jsonString)
+        {
+            return JsonConvert.DeserializeObject<T>(jsonString);
+        }
+
         public string WriteToJson(CommandMessage commandMessage)
         {
             string serializedMsg = JsonConvert.SerializeObject(commandMessage, Formatting.None);

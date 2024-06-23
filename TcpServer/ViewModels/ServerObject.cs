@@ -13,9 +13,11 @@ namespace TcpServer.ViewModels
     internal class ServerObject
     {
         TcpListener _tcpListener = new TcpListener(System.Net.IPAddress.Any, 5050); // сервер для прослушивания
-        List<ClientObject> _clients = new List<ClientObject>(); // все подключения
+        List<ClientObject> _clients = new(); // все подключения
         ILogger _logger;
         static ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
+
+        internal List<ClientObject> Clients { get => _clients;}
 
         public ServerObject(ILogger logger)
         {

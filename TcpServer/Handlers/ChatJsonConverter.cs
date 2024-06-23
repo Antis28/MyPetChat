@@ -17,6 +17,12 @@ namespace TcpServer.Handlers
 
             return serializedMsg;
         }
+        public string WriteToJson(object obj)
+        {
+            string serializedMsg = JsonConvert.SerializeObject(obj, Formatting.None);
+
+            return serializedMsg;
+        }
 
         public void test(string serializedMsg)
         {

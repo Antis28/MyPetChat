@@ -1,8 +1,11 @@
 ﻿using ChatClientWPF.Handlers;
+using ChatClientWPF.Models;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Native;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
@@ -12,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Interop;
 using System.Windows.Markup;
+using System.Windows.Shapes;
 using TcpServer.Handlers;
 using TcpServer.Models;
 
@@ -45,7 +49,8 @@ namespace ChatClientWPF.ViewModels
         TcpClient _client;
         StreamReader _reader;
         StreamWriter _writer;
-        ChatJsonConverter chatJsonConverter = new ChatJsonConverter();
+        ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
+        CommandsHandler _commandsHandler = new CommandsHandler();
 
         [GenerateCommand]
         void Login() => Status = "User: " + userName;
@@ -76,7 +81,7 @@ namespace ChatClientWPF.ViewModels
                             _writer = new StreamWriter(_client.GetStream());
                             _writer.AutoFlush = true;
 
-                            var cmd = chatJsonConverter.WriteToJson(new CommandMessage()
+                            var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
                             {
                                 Command = "Login",
                                 Argument = userName
@@ -95,6 +100,37 @@ namespace ChatClientWPF.ViewModels
                     });
                     // Если не подключен к серверу
                 }, () => _client == null || _client?.Connected == false);
+            }
+        }
+
+        public AsyncCommand GetUsersCommand
+        {
+            get
+            {
+                return new AsyncCommand(() =>
+                {
+                    return Task.Factory.StartNew(() =>
+                    {
+                        try
+                        {
+                            var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
+                            {
+                                Command = _commandsHandler.CommandToString(TcpCommands.GetUsers),
+                                Argument = null
+                            });
+
+                            SendBigSizeTCP(cmd);
+
+                            PrintInUI(cmd);
+                            Message = string.Empty;
+                        }
+                        catch (Exception ex)
+                        {
+                            PrintInUI($"Ошибка: {ex.Message}");
+                        }
+                    });
+                    // Если не подключен к серверу
+                }, () => _client != null || !(_client?.Connected == false));
             }
         }
 
@@ -145,16 +181,14 @@ namespace ChatClientWPF.ViewModels
             {
                 try
                 {
-                    //_writer.WriteLine(msg);
-
-                    var cmd = chatJsonConverter.WriteToJson(new CommandMessage()
+                   
+                    var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
                     {
-                        Command = new CommandsHandler().CommandToString(TcpCommands.CloseConnection),
+                        Command = _commandsHandler.CommandToString(TcpCommands.CloseConnection),
                         Argument = null
                     });
 
                     SendBigSizeTCP(cmd);
-                    //SendBigSize(cmd);
 
                     PrintInUI(cmd);
                     Message = string.Empty;
@@ -173,16 +207,14 @@ namespace ChatClientWPF.ViewModels
             {
                 try
                 {
-                    //_writer.WriteLine(msg);
 
-                    var cmd = chatJsonConverter.WriteToJson(new CommandMessage()
+                    var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
                     {
                         Command = "Message",
                         Argument = msg
                     });
 
-                    SendBigSizeTCP(cmd);
-                    //SendBigSize(cmd);
+                    SendBigSizeTCP(cmd); 
 
                     PrintInUI(msg);
                     Message = string.Empty;
@@ -202,7 +234,7 @@ namespace ChatClientWPF.ViewModels
                 try
                 {
 
-                    var cmd = chatJsonConverter.WriteToJson(new CommandMessage()
+                    var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
                     {
                         Command = "FileTransfer",
                         Argument = fileName
@@ -231,14 +263,13 @@ namespace ChatClientWPF.ViewModels
                     {
                         if ((_client?.Connected) == true)
                         {
-                            //Прием данных от сервера
-                            //var line = _reader.ReadLine();
+                            //Прием данных от сервера                           
                             var line = ReceivingBigBufferTCP();
-                            var cmd = chatJsonConverter.ReadFromJson(line);
+                            var cmd = _chatJsonConverter.ReadFromJson(line);
 
-                            if (!string.IsNullOrEmpty( line))
+                            if (!string.IsNullOrEmpty(line))
                             {
-                                PrintInUI(cmd.Argument);
+                                HandleMessage(cmd);                                
                             }
                             else
                             {
@@ -255,6 +286,30 @@ namespace ChatClientWPF.ViewModels
                 }
 
             });
+        }
+        /// <summary>
+        /// Обработка данных с сервера
+        /// </summary>
+        /// <param name="message"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void HandleMessage(CommandMessage cmd)
+        {
+            var tcpCmd = _commandsHandler.RecognizeCommand(cmd.Command);
+          
+            switch (tcpCmd)
+            {
+                case TcpCommands.CloseConnection:
+                    return ;
+                case TcpCommands.GetUsers:
+                    var co = _chatJsonConverter.ReadFromJson<List<ClientObject>>(cmd.Argument);
+                    
+                    break;
+                case TcpCommands.Message:
+                    PrintInUI(cmd.Argument);
+                    break;
+                default:
+                    break;
+            }            
         }
 
         private string RandomeUserName()

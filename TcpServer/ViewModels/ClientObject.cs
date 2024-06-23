@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,13 +15,13 @@ namespace TcpServer.ViewModels
 {
     internal class ClientObject
     {
-        protected internal string Id { get; } = Guid.NewGuid().ToString();
-        protected string UserName { get; set; }
+        public string Id { get; } = Guid.NewGuid().ToString();
+        public string UserName { get; set; }
         protected internal StreamWriter Writer { get; }
         protected internal StreamReader Reader { get; }
 
-        ChatJsonConverter chatJsonConverter = new ChatJsonConverter();
-        CommandsHandler commandsHandler = new CommandsHandler();
+        ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
+        CommandsHandler _commandsHandler = new CommandsHandler();
         ILogger _logger;
 
         TcpClient _client;
@@ -84,7 +85,7 @@ namespace TcpServer.ViewModels
                 var message = $"{UserName} вошел в чат";
                 // посылаем сообщение о входе в чат всем подключенным пользователям
                 _logger.ShowMessage(message);
-                var cmdMessage = chatJsonConverter.WriteToJson(new()
+                var cmdMessage = _chatJsonConverter.WriteToJson(new()
                 {
                     Command = "Message",
                     Argument = message,
@@ -184,17 +185,30 @@ namespace TcpServer.ViewModels
 
         private bool HandleMessage(string line)
         {
-            var cmd = chatJsonConverter.ReadFromJson(line);
-            var cm = commandsHandler.RecognizeCommand(cmd.Command);
-            _logger.ShowMessage($"HandleMessage: {cmd.Command}-{cmd.Argument}");
+            var cmd = _chatJsonConverter.ReadFromJson(line);
+            var cm = _commandsHandler.RecognizeCommand(cmd.Command);
+            //_logger.ShowMessage($"HandleMessage: {cmd.Command}-{cmd.Argument}");
             switch (cm)
             {
                 case TcpCommands.CloseConnection:
-                    return false;                    
+                    return false;
                 case TcpCommands.Login:
                     Loginning(cmd);
                     break;
                 case TcpCommands.GetUsers:
+
+
+                    var rtrtr = JsonConvert.SerializeObject(_server.Clients, Formatting.None);
+                    var getUsersCommand = new CommandMessage()
+                    {
+                        Command = _commandsHandler.CommandToString(TcpCommands.GetUsers),
+                        Argument = JsonConvert.SerializeObject(_server.Clients, Formatting.None)
+                    };
+                   var message = _chatJsonConverter.WriteToJson(getUsersCommand);
+
+                    SendBigSizeTCP(message);
+
+
                     break;
                 case TcpCommands.Message:
                     _server.BroadcastMessage(line, Id);
