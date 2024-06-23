@@ -7,10 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 using TcpServer.Handlers;
 using TcpServer.Models;
 
@@ -53,7 +55,7 @@ namespace ChatClientWPF.ViewModels
         {
             ip = "192.168.1.105";
             port = 5050;
-            userName = RandomeUserName();            
+            userName = RandomeUserName();
             StartClient();
         }
 
@@ -127,7 +129,7 @@ namespace ChatClientWPF.ViewModels
                 {
                     return Task.Factory.StartNew(() =>
                     {
-                        
+
                         //FileDialogs.Save();
                         //FileDialogs.msg();
                         SendFileAsync(FileDialogs.open());
@@ -210,12 +212,13 @@ namespace ChatClientWPF.ViewModels
                     var cmdJs = _chatJsonConverter.WriteToJson(new CommandMessage()
                     {
                         Command = _commandsHandler.CommandToString(TcpCommands.FileTransfer),
-                        Argument = System.IO.Path.GetFileName( fileName)
+                        Argument = System.IO.Path.GetFileName(fileName)
                     });
-                    
+
                     SendBigSizeTCP(cmdJs);
-                    SendFile(fileName);
-                    
+                    SendBigSizeFileTCP(fileName);
+                    //SendFile(fileName);
+
                     //SendBigSize(cmd);
                     //SendFileInByte(fileName);
 
@@ -228,23 +231,6 @@ namespace ChatClientWPF.ViewModels
                     PrintInUI($"Ошибка: {ex.Message}");
                 }
             });
-        }
-
-        private void SendFile(string fileName)
-        {
-            using (FileStream fileStream = File.OpenRead(fileName))
-            {
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                NetworkStream stream = _client.GetStream();
-                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
-                {                   
-                    stream.Write(buffer, 0, bytesRead);
-                }
-                stream.Flush();
-                fileStream.Close();
-                //stream.Close();
-            }
         }
 
         private void StartClient()
@@ -343,7 +329,7 @@ namespace ChatClientWPF.ViewModels
             });
 
             SendBigSizeTCP(cmd);
-            
+
             Message = string.Empty;
         }
 
@@ -393,20 +379,48 @@ namespace ChatClientWPF.ViewModels
         /// Отправка данных
         /// </summary>
         /// <param name="message">сообщение для отправки</param>
-        private void SendBigSizeTCP(byte[] data, int size1)
+        private void SendBigSizeFileTCP(string fileName)
         {
-            // получаем NetworkStream для взаимодействия с сервером
+            // получаем NetworkStream для взаимодействия с принимающей стороной
             var stream = _client.GetStream();
-            // считыванием строку в массив байт
-            //byte[] data = Encoding.UTF8.GetBytes(message);
+            using (FileStream fileStream = File.OpenRead(fileName))
+            {
+               // byte[] buffer = new byte[4096];
+                //int bytesRead;
+                var length = fileStream.Length;
+                byte[] size = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(length));
+                stream.Write(size,0, size.Length);
+                // отправляем данные
+                fileStream.CopyTo(stream);
+                //stream.Write(data, 0, data.Length);
+            }
+
+
+            //var f1 = size1;
+            //var f2 = data.Length;
             //// определяем размер данных
-            var f1 = size1;
-            var f2 = data.Length;
-            byte[] size = BitConverter.GetBytes(data.Length);
+            //byte[] size = BitConverter.GetBytes(data.Length);
             // отправляем размер данных
-            stream.Write(size, 0, 4);
+            //stream.Write(size, 0, 4);
             // отправляем данные
-            stream.Write(data, 0, data.Length);
+           // stream.Write(data, 0, data.Length);
+        }
+
+        private void SendFile(string fileName)
+        {
+            using (FileStream fileStream = File.OpenRead(fileName))
+            {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                NetworkStream stream = _client.GetStream();
+                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    stream.Write(buffer, 0, bytesRead);
+                }
+                stream.Flush();
+                fileStream.Close();
+                //stream.Close();
+            }
         }
 
 
