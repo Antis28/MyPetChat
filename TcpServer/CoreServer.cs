@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using TcpServer.Handlers;
+using TcpServer.ViewModels;
 
 namespace TcpServer
 {
@@ -70,27 +71,7 @@ namespace TcpServer
                     _loger.ShowMessage($"Пользователь {nick} уже в чате.");
                     client.Client.Disconnect(false);
                 }
-
-                //var searchString = "Login: ";
-                //var nick = line.Replace(searchString, "");
-                //if (line.Contains(searchString) && !string.IsNullOrWhiteSpace(nick))
-                //{
-                //    if (_clients.FirstOrDefault(s => s.Name == nick) == null)
-                //    {
-                //        var connectedClient = new ConnectedClient(client, nick);
-                //        _clients.Add(connectedClient);
-                //        _loger.ShowMessage($"Подключен пользователь {nick}.");
-
-                //        return connectedClient;
-                //    }
-                //}
-                //else
-                //{
-                //    var streamWriter = new StreamWriter(client.GetStream());
-                //    streamWriter.AutoFlush = true;
-                //    _loger.ShowMessage($"Пользователь {nick} уже в чате.");
-                //    client.Client.Disconnect(false);
-                //}
+               
             }
             throw new Exception("Not Loginning");
         }
