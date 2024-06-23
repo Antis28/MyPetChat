@@ -80,16 +80,8 @@ namespace ChatClientWPF.ViewModels
                             _reader = new StreamReader(_client.GetStream());
                             _writer = new StreamWriter(_client.GetStream());
                             _writer.AutoFlush = true;
-
-                            var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
-                            {
-                                Command = "Login",
-                                Argument = userName
-                            });
-
-                            //////////////////////////////////////////////////////////////////
-                            //_writer.WriteLine(cmd);
-                            SendBigSizeTCP(cmd);
+                            
+                            Logining();
 
                             PrintInUI($"Подключение успешно!");
                         }
@@ -113,16 +105,7 @@ namespace ChatClientWPF.ViewModels
                     {
                         try
                         {
-                            var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
-                            {
-                                Command = _commandsHandler.CommandToString(TcpCommands.GetUsers),
-                                Argument = null
-                            });
-
-                            SendBigSizeTCP(cmd);
-
-                            PrintInUI(cmd);
-                            Message = string.Empty;
+                            GetUsers();
                         }
                         catch (Exception ex)
                         {
@@ -133,7 +116,7 @@ namespace ChatClientWPF.ViewModels
                 }, () => _client != null || !(_client?.Connected == false));
             }
         }
-
+        
         [GenerateCommand]
         void DisconnectCommand(object obj)
         {
@@ -181,7 +164,6 @@ namespace ChatClientWPF.ViewModels
             {
                 try
                 {
-
                     var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
                     {
                         Command = _commandsHandler.CommandToString(TcpCommands.CloseConnection),
@@ -287,6 +269,20 @@ namespace ChatClientWPF.ViewModels
 
             });
         }
+
+        private void Logining()
+        {
+            var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
+            {
+                Command = "Login",
+                Argument = userName
+            });
+            SendBigSizeTCP(cmd);
+
+            GetUsers();
+        }
+
+
         /// <summary>
         /// Обработка данных с сервера
         /// </summary>
@@ -311,41 +307,29 @@ namespace ChatClientWPF.ViewModels
             }
         }
 
-        private void VisualiseUserList(CommandMessage cmd)
-        {
-            var co = _chatJsonConverter.ReadFromJson<List<ClientObject>>(cmd.Argument);
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                userNames.Clear();
-                foreach (var item in co)
-                {
-                    userNames.Add(item.UserName);
-                }
-            });
-        }
-
         private string RandomeUserName()
         {
             var names = new string[] { "Biser", "Tiser", "Ruser", "Niser", "Miser", "Cuser", "User", "Diser" };
             var r = new Random((int)DateTime.Now.Ticks);
             return names[r.Next(names.Length)];
         }
-        private void PrintInUI(string message)
+        
+        /// <summary>
+        /// Запрос списка пользователей
+        /// </summary>
+        private void GetUsers()
         {
-            App.Current.Dispatcher.Invoke(() =>
+            var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
             {
-                Chat.Add(message);
-            });
-        }
-        private void RunInUi(Action action)
-        {
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                action();
+                Command = _commandsHandler.CommandToString(TcpCommands.GetUsers),
+                Argument = null
             });
 
-        }
+            SendBigSizeTCP(cmd);
 
+            PrintInUI(cmd);
+            Message = string.Empty;
+        }
 
         private void SendBigSize(string text)
         {
@@ -355,6 +339,19 @@ namespace ChatClientWPF.ViewModels
             socket.Send(data);
         }
 
+        #region LowLevel transfer
+        private void SendFileInByte(string fileName)
+        {
+            var stream = File.Open(fileName, FileMode.Open);
+            //stream.Read
+
+
+
+            //var socket = _client.Client;
+            //byte[] data = Encoding.Default.GetBytes(text);
+            //socket.Send(BitConverter.GetBytes(data.Length), 0, 4, 0);
+            //socket.Send(data);
+        }
         /// <summary>
         /// Отправка данных серверу
         /// </summary>
@@ -375,7 +372,6 @@ namespace ChatClientWPF.ViewModels
             stream.Write(data, 0, data.Length);
             // Console.WriteLine("Сообщение отправлено");
         }
-
         /// <summary>
         /// Прием данных от сервера
         /// </summary>
@@ -398,19 +394,35 @@ namespace ChatClientWPF.ViewModels
             var message = Encoding.UTF8.GetString(data, 0, bytes);
             return message;
         }
+        #endregion
 
-
-        private void SendFileInByte(string fileName)
+        #region Visualise
+        private void VisualiseUserList(CommandMessage cmd)
         {
-            var stream = File.Open(fileName, FileMode.Open);
-            //stream.Read
-
-
-
-            //var socket = _client.Client;
-            //byte[] data = Encoding.Default.GetBytes(text);
-            //socket.Send(BitConverter.GetBytes(data.Length), 0, 4, 0);
-            //socket.Send(data);
+            var co = _chatJsonConverter.ReadFromJson<List<ClientObject>>(cmd.Argument);
+            RunInUi (() =>
+            {
+                userNames.Clear();
+                foreach (var item in co)
+                {
+                    userNames.Add(item.UserName);
+                }
+            });
         }
+
+        private void PrintInUI(string message)
+        {
+            RunInUi(() => Chat.Add(message));
+        }
+
+        private void RunInUi(Action action)
+        {
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                action();
+            });
+
+        }
+        #endregion
     }
 }
