@@ -39,7 +39,7 @@ namespace ChatClientWPF.ViewModels
         ObservableCollection<string> chat = new ObservableCollection<string>();
 
         [GenerateProperty]
-        ObservableCollection<string> userNames;
+        ObservableCollection<string> userNames = new ObservableCollection<string>();
 
         [GenerateProperty]
         string message;
@@ -181,7 +181,7 @@ namespace ChatClientWPF.ViewModels
             {
                 try
                 {
-                   
+
                     var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
                     {
                         Command = _commandsHandler.CommandToString(TcpCommands.CloseConnection),
@@ -214,7 +214,7 @@ namespace ChatClientWPF.ViewModels
                         Argument = msg
                     });
 
-                    SendBigSizeTCP(cmd); 
+                    SendBigSizeTCP(cmd);
 
                     PrintInUI(msg);
                     Message = string.Empty;
@@ -269,7 +269,7 @@ namespace ChatClientWPF.ViewModels
 
                             if (!string.IsNullOrEmpty(line))
                             {
-                                HandleMessage(cmd);                                
+                                HandleMessage(cmd);
                             }
                             else
                             {
@@ -295,21 +295,33 @@ namespace ChatClientWPF.ViewModels
         private void HandleMessage(CommandMessage cmd)
         {
             var tcpCmd = _commandsHandler.RecognizeCommand(cmd.Command);
-          
+
             switch (tcpCmd)
             {
                 case TcpCommands.CloseConnection:
-                    return ;
+                    return;
                 case TcpCommands.GetUsers:
-                    var co = _chatJsonConverter.ReadFromJson<List<ClientObject>>(cmd.Argument);
-                    
+                    VisualiseUserList(cmd);
                     break;
                 case TcpCommands.Message:
                     PrintInUI(cmd.Argument);
                     break;
                 default:
                     break;
-            }            
+            }
+        }
+
+        private void VisualiseUserList(CommandMessage cmd)
+        {
+            var co = _chatJsonConverter.ReadFromJson<List<ClientObject>>(cmd.Argument);
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                userNames.Clear();
+                foreach (var item in co)
+                {
+                    userNames.Add(item.UserName);
+                }
+            });
         }
 
         private string RandomeUserName()

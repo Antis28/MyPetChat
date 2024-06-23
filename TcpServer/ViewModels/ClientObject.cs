@@ -196,19 +196,7 @@ namespace TcpServer.ViewModels
                     Loginning(cmd);
                     break;
                 case TcpCommands.GetUsers:
-
-
-                    var rtrtr = JsonConvert.SerializeObject(_server.Clients, Formatting.None);
-                    var getUsersCommand = new CommandMessage()
-                    {
-                        Command = _commandsHandler.CommandToString(TcpCommands.GetUsers),
-                        Argument = JsonConvert.SerializeObject(_server.Clients, Formatting.None)
-                    };
-                   var message = _chatJsonConverter.WriteToJson(getUsersCommand);
-
-                    SendBigSizeTCP(message);
-
-
+                    SenUserList();
                     break;
                 case TcpCommands.Message:
                     _server.BroadcastMessage(line, Id);
@@ -217,6 +205,19 @@ namespace TcpServer.ViewModels
                     break;
             }
             return true;
+        }
+
+        private void SenUserList()
+        {
+            var rtrtr = JsonConvert.SerializeObject(_server.Clients, Formatting.None);
+            var getUsersCommand = new CommandMessage()
+            {
+                Command = _commandsHandler.CommandToString(TcpCommands.GetUsers),
+                Argument = JsonConvert.SerializeObject(_server.Clients, Formatting.None)
+            };
+            var message = _chatJsonConverter.WriteToJson(getUsersCommand);
+
+            SendBigSizeTCP(message);
         }
 
         private void HandleUserList()
