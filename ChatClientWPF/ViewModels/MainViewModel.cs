@@ -80,7 +80,7 @@ namespace ChatClientWPF.ViewModels
                             _reader = new StreamReader(_client.GetStream());
                             _writer = new StreamWriter(_client.GetStream());
                             _writer.AutoFlush = true;
-                            
+
                             Logining();
 
                             PrintInUI($"Подключение успешно!");
@@ -116,7 +116,7 @@ namespace ChatClientWPF.ViewModels
                 }, () => _client != null || !(_client?.Connected == false));
             }
         }
-        
+
         [GenerateCommand]
         void DisconnectCommand(object obj)
         {
@@ -302,6 +302,11 @@ namespace ChatClientWPF.ViewModels
                 case TcpCommands.Message:
                     PrintInUI(cmd.Argument);
                     break;
+                case
+                    TcpCommands.Login:
+                    PrintInUI(cmd.Argument);
+                    GetUsers();
+                    break;
                 default:
                     break;
             }
@@ -313,7 +318,7 @@ namespace ChatClientWPF.ViewModels
             var r = new Random((int)DateTime.Now.Ticks);
             return names[r.Next(names.Length)];
         }
-        
+
         /// <summary>
         /// Запрос списка пользователей
         /// </summary>
@@ -400,7 +405,7 @@ namespace ChatClientWPF.ViewModels
         private void VisualiseUserList(CommandMessage cmd)
         {
             var co = _chatJsonConverter.ReadFromJson<List<ClientObject>>(cmd.Argument);
-            RunInUi (() =>
+            RunInUi(() =>
             {
                 userNames.Clear();
                 foreach (var item in co)

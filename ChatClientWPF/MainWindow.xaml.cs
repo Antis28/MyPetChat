@@ -16,8 +16,6 @@ namespace ChatClientWPF
     /// </summary>
     public partial class MainWindow : Window, IServiceChatCallback
     {
-        bool isConnected;
-        ServiceChatClient client;
         List<ClientUser> clientUsers = new List<ClientUser>();
         int ID;
 

@@ -87,7 +87,7 @@ namespace TcpServer.ViewModels
                 _logger.ShowMessage(message);
                 var cmdMessage = _chatJsonConverter.WriteToJson(new()
                 {
-                    Command = "Message",
+                    Command = _commandsHandler.CommandToString(TcpCommands.Login),
                     Argument = message,
                 });
                 _server.BroadcastMessage(cmdMessage, Id);
