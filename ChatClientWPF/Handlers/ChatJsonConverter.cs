@@ -5,7 +5,7 @@ using TcpServer.Models;
 
 namespace TcpServer.Handlers
 {
-    internal class ChatJsonConverter
+    public class ChatJsonConverter
     {
         public CommandMessage ReadFromJson(String jsonString)
         {
@@ -14,7 +14,7 @@ namespace TcpServer.Handlers
         public string WriteToJson(CommandMessage commandMessage)
         {
             string serializedMsg = JsonConvert.SerializeObject(commandMessage, Formatting.None);
-           
+
             return serializedMsg;
         }
 

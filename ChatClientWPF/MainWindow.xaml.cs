@@ -73,9 +73,7 @@ namespace ChatClientWPF
             //}
             
         }
-
-        
-
+               
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (DataContext is MainViewModel viewModel)
@@ -118,6 +116,10 @@ namespace ChatClientWPF
             //}
         }
 
+        /// <summary>
+        /// полученный
+        /// </summary>
+        /// <param name="user"></param>
         public void ArrivedUserCallBack(ClientUser user)
         {
             clientUsers.Add(user);

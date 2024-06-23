@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TcpServer.Models;
@@ -13,6 +14,7 @@ namespace TcpServer.Handlers
         private const string loginCommand = "Login";
         private const string getUsersCommand = "Get users";
         private const string messageCommand = "Message";
+
 
         /// <summary>
         /// Распознать команду
@@ -51,9 +53,8 @@ namespace TcpServer.Handlers
                     return messageCommand;
                 default:
                     break;
-            }            
+            }
             throw new Exception("Команда не распознана");
-        }
-
+        } 
     }
 }

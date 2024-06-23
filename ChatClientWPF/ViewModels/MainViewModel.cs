@@ -1,12 +1,16 @@
 ﻿using ChatClientWPF.Handlers;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
+using DevExpress.Mvvm.Native;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Net.Http;
 using System.Net.Sockets;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Interop;
 using System.Windows.Markup;
 using TcpServer.Handlers;
 using TcpServer.Models;
@@ -78,8 +82,9 @@ namespace ChatClientWPF.ViewModels
                                 Argument = userName
                             });
 
-                            //_writer.WriteLine($"Login: {userName}");
-                            _writer.WriteLine(cmd);
+                            //////////////////////////////////////////////////////////////////
+                            //_writer.WriteLine(cmd);
+                            SendBigSizeTCP(cmd);
 
                             PrintInUI($"Подключение успешно!");
                         }
@@ -98,7 +103,7 @@ namespace ChatClientWPF.ViewModels
         {
             if (_client == null) return;
 
-            SendMsgAsync(closecmd);
+            SendCloseAsync();
         }
 
 
@@ -134,6 +139,34 @@ namespace ChatClientWPF.ViewModels
             }
         }
 
+        private Task SendCloseAsync()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    //_writer.WriteLine(msg);
+
+                    var cmd = chatJsonConverter.WriteToJson(new CommandMessage()
+                    {
+                        Command = new CommandsHandler().CommandToString(TcpCommands.CloseConnection),
+                        Argument = null
+                    });
+
+                    SendBigSizeTCP(cmd);
+                    //SendBigSize(cmd);
+
+                    PrintInUI(cmd);
+                    Message = string.Empty;
+
+                }
+                catch (Exception ex)
+                {
+                    PrintInUI($"Ошибка: {ex.Message}");
+                }
+            });
+        }
+
         private Task SendMsgAsync(string msg)
         {
             return Task.Factory.StartNew(() =>
@@ -148,8 +181,8 @@ namespace ChatClientWPF.ViewModels
                         Argument = msg
                     });
 
-
-                    SendBigSize(cmd);
+                    SendBigSizeTCP(cmd);
+                    //SendBigSize(cmd);
 
                     PrintInUI(msg);
                     Message = string.Empty;
@@ -167,7 +200,7 @@ namespace ChatClientWPF.ViewModels
             return Task.Factory.StartNew(() =>
             {
                 try
-                {                    
+                {
 
                     var cmd = chatJsonConverter.WriteToJson(new CommandMessage()
                     {
@@ -198,10 +231,14 @@ namespace ChatClientWPF.ViewModels
                     {
                         if ((_client?.Connected) == true)
                         {
-                            var line = _reader.ReadLine();
-                            if (line != null)
+                            //Прием данных от сервера
+                            //var line = _reader.ReadLine();
+                            var line = ReceivingBigBufferTCP();
+                            var cmd = chatJsonConverter.ReadFromJson(line);
+
+                            if (!string.IsNullOrEmpty( line))
                             {
-                                PrintInUI(line);
+                                PrintInUI(cmd.Argument);
                             }
                             else
                             {
@@ -247,15 +284,60 @@ namespace ChatClientWPF.ViewModels
         {
             var socket = _client.Client;
             byte[] data = Encoding.Default.GetBytes(text);
-            socket.Send(BitConverter.GetBytes(data.Length), 0, 4,0);
+            socket.Send(BitConverter.GetBytes(data.Length), 0, 4, 0);
             socket.Send(data);
         }
+
+        /// <summary>
+        /// Отправка данных серверу
+        /// </summary>
+        /// <param name="text"></param>
+        private void SendBigSizeTCP(string text)
+        {
+            // сообщение для отправки
+            var message = text; // "Hello METANIT.COM";
+            // получаем NetworkStream для взаимодействия с сервером
+            var stream = _client.GetStream();
+            // считыванием строку в массив байт
+            byte[] data = Encoding.UTF8.GetBytes(message);
+            // определяем размер данных
+            byte[] size = BitConverter.GetBytes(data.Length);
+            // отправляем размер данных
+            stream.Write(size, 0, 4);
+            // отправляем данные
+            stream.Write(data, 0, data.Length);
+            // Console.WriteLine("Сообщение отправлено");
+        }
+
+        /// <summary>
+        /// Прием данных от сервера
+        /// </summary>
+        /// <returns></returns>
+        private string ReceivingBigBufferTCP()
+        {
+            // получаем объект NetworkStream для взаимодействия с клиентом
+            var stream = _client.GetStream();
+            // буфер для считывания размера данных
+            byte[] sizeBuffer = new byte[4];
+            // сначала считываем размер данных
+            var i = stream.Read(sizeBuffer, 0, sizeBuffer.Length);
+            // узнаем размер и создаем соответствующий буфер
+            int size = BitConverter.ToInt32(sizeBuffer, 0);
+            // создаем соответствующий буфер
+            byte[] data = new byte[size];
+            // считываем собственно данные
+            int bytes = stream.Read(data, 0, size);
+
+            var message = Encoding.UTF8.GetString(data, 0, bytes);
+            return message;
+        }
+
 
         private void SendFileInByte(string fileName)
         {
             var stream = File.Open(fileName, FileMode.Open);
             //stream.Read
-           
+
 
 
             //var socket = _client.Client;

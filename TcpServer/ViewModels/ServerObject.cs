@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using TcpServer.Handlers;
 
 namespace TcpServer.ViewModels
 {
@@ -14,6 +15,7 @@ namespace TcpServer.ViewModels
         TcpListener _tcpListener = new TcpListener(System.Net.IPAddress.Any, 5050); // сервер для прослушивания
         List<ClientObject> _clients = new List<ClientObject>(); // все подключения
         ILogger _logger;
+        static ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
 
         public ServerObject(ILogger logger)
         {
@@ -43,7 +45,7 @@ namespace TcpServer.ViewModels
                     _clients.Add(clientObject);
 
                     _logger.ShowMessage($"ListenAsync Thread: {Thread.CurrentThread.ManagedThreadId}");
-                    Task.Run(clientObject.Process);                   
+                    Task.Run(clientObject.Process);
                 }
             }
             catch (Exception ex)
@@ -63,11 +65,13 @@ namespace TcpServer.ViewModels
             {
                 if (client.Id != id) // если id клиента не равно id отправителя
                 {
-                    client.Writer.WriteLine(message); //передача данных
-                    client.Writer.Flush();
+                    client.SendBigSizeTCP(message);
                 }
             }
         }
+        
+
+
         // отключение всех клиентов
         protected internal void Disconnect()
         {

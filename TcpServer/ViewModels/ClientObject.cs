@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -36,15 +37,20 @@ namespace TcpServer.ViewModels
             Reader = new StreamReader(stream);
             // создаем StreamWriter для отправки данных
             Writer = new StreamWriter(stream);
-        }        
+        }
 
         public void Process()
         {
             _logger.ShowMessage($"Process Thread: {Thread.CurrentThread.ManagedThreadId}");
             try
             {
-                Loginning();
-                ClientHandler();
+                var connected = _client.Connected;
+                while (_client.Connected || !connected)
+                {
+                    var message = ReceivingBigBufferTCP();
+
+                    connected = HandleMessage(message);
+                }
             }
             catch (Exception e)
             {
@@ -56,6 +62,7 @@ namespace TcpServer.ViewModels
             {
                 // в случае выхода из цикла закрываем ресурсы
                 _server.RemoveConnection(Id);
+                Close();
             }
         }
         // закрытие подключения
@@ -67,48 +74,36 @@ namespace TcpServer.ViewModels
         }
 
 
-        private void Loginning()
-        {
-            // получаем имя пользователя  
-            var line = Reader.ReadLine();
-            var cmd = chatJsonConverter.ReadFromJson(line);
 
-            var comandType = commandsHandler.RecognizeCommand(cmd.Command);
-            if (TcpCommands.Login == comandType)
+        private void Loginning(CommandMessage cmd)
+        {
+            UserName = cmd.Argument;
+            if (!string.IsNullOrWhiteSpace(UserName))
             {
-                HandleLogin(cmd.Argument);
+
+                var message = $"{UserName} вошел в чат";
+                // посылаем сообщение о входе в чат всем подключенным пользователям
+                _logger.ShowMessage(message);
+                var cmdMessage = chatJsonConverter.WriteToJson(new()
+                {
+                    Command = "Message",
+                    Argument = message,
+                });
+                _server.BroadcastMessage(cmdMessage, Id);
             }
             else
             {
-                throw new Exception("Not Loginning");
+                var message = $"Пустое имя пользователя";
+                _logger.ShowError(message);
+                throw new Exception(message);
             }
         }
 
-        private void ClientHandler()
-        {
-            // в бесконечном цикле получаем сообщения от клиента           
-            try
-            {
-                while (_client.Connected)
-                {
-                    var message = HandlerBigBuffer();
 
-                    var connected = isClosed(message);
-                    if (!connected) break;
-
-                    _logger.ShowMessage($"{message}");
-                    _server.BroadcastMessage(message, Id);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.ShowError(ex.Message);
-                Close();
-            }
-        }
 
         /// <summary>
         /// Server Buff handler
+        /// Прием данных от клиента
         /// </summary>
         /// <param name="connectedClient"></param>
         /// <returns></returns>
@@ -143,52 +138,71 @@ namespace TcpServer.ViewModels
 
             return Encoding.Default.GetString(data);
         }
-        private bool isClosed(string line)
+        /// <summary>
+        /// Прием данных от клиента
+        /// </summary>
+        /// <returns></returns>
+        private string ReceivingBigBufferTCP()
         {
-            //if (line.Contains(searchString))
-            //{
-            //    var message = $"{UserName} вышел из чата!";
+            // получаем объект NetworkStream для взаимодействия с клиентом
+            var stream = _client.GetStream();
+            // буфер для считывания размера данных
+            byte[] sizeBuffer = new byte[4];
+            // сначала считываем размер данных
+            var i = stream.Read(sizeBuffer, 0, sizeBuffer.Length);
+            // узнаем размер и создаем соответствующий буфер
+            int size = BitConverter.ToInt32(sizeBuffer, 0);
+            // создаем соответствующий буфер
+            byte[] data = new byte[size];
+            // считываем собственно данные
+            int bytes = stream.Read(data, 0, size);
 
-            //    _logger.ShowMessage(message);
-            //    // посылаем сообщение в чат всем подключенным пользователям
-            //    await _server.BroadcastMessageAsync(message, Id);
-            //    Close();
-            //    return false;
-            //}
-            return true;
+            var message = Encoding.UTF8.GetString(data, 0, bytes);
+            return message;
         }
 
-        //private async Task<bool> Handle(CommandMessage cmd)
-        //{
-        //    //var comandType = commandsHandler.RecognizeCommand(cmd.Command);
-        //    //switch (comandType)
-        //    //{
-        //    //    case TcpCommands.Login:
 
-        //    //        break;
-        //    //    case TcpCommands.CloseConnection:
-        //    //       break;
-        //    //};
-
-
-        //}
-
-        private void HandleLogin(string UserName)
+        /// <summary>
+        /// Отправка данных клиенту
+        /// </summary>
+        /// <param name="message">сообщение для отправки</param>
+        public void SendBigSizeTCP(string message)
         {
-            if (!string.IsNullOrWhiteSpace(UserName))
-            {
+            // получаем NetworkStream для взаимодействия с сервером
+            var stream = _client.GetStream();
+            // считыванием строку в массив байт
+            byte[] data = Encoding.UTF8.GetBytes(message);
+            // определяем размер данных
+            byte[] size = BitConverter.GetBytes(data.Length);
+            // отправляем размер данных
+            stream.Write(size, 0, 4);
+            // отправляем данные
+            stream.Write(data, 0, data.Length);
+            // Console.WriteLine("Сообщение отправлено");
+        }
 
-                var message = $"{UserName} вошел в чат";
-                // посылаем сообщение о входе в чат всем подключенным пользователям
-                _logger.ShowMessage(message);
-                _server.BroadcastMessage(message, Id);
-            }
-            else
+
+        private bool HandleMessage(string line)
+        {
+            var cmd = chatJsonConverter.ReadFromJson(line);
+            var cm = commandsHandler.RecognizeCommand(cmd.Command);
+            _logger.ShowMessage($"HandleMessage: {cmd.Command}-{cmd.Argument}");
+            switch (cm)
             {
-                var message = $"Пустое имя пользователя";
-                _logger.ShowError(message);
-                throw new Exception(message);
+                case TcpCommands.CloseConnection:
+                    return false;                    
+                case TcpCommands.Login:
+                    Loginning(cmd);
+                    break;
+                case TcpCommands.GetUsers:
+                    break;
+                case TcpCommands.Message:
+                    _server.BroadcastMessage(line, Id);
+                    break;
+                default:
+                    break;
             }
+            return true;
         }
 
         private void HandleUserList()
