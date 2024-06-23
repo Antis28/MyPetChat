@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace TcpServer.ViewModels
 {
@@ -12,11 +13,11 @@ namespace TcpServer.ViewModels
     {
         TcpListener _tcpListener = new TcpListener(System.Net.IPAddress.Any, 5050); // сервер для прослушивания
         List<ClientObject> _clients = new List<ClientObject>(); // все подключения
-        ILogger _loger;
+        ILogger _logger;
 
         public ServerObject(ILogger logger)
         {
-            _loger = logger;
+            _logger = logger;
         }
         protected internal void RemoveConnection(string id)
         {
@@ -27,21 +28,22 @@ namespace TcpServer.ViewModels
             client?.Close();
         }
         // прослушивание входящих подключений
-        protected internal async Task ListenAsync()
+        protected internal void ListenAsync()
         {
             try
             {
                 _tcpListener.Start();
-                _loger.ShowMessage("Сервер запущен. Ожидание подключений...");
+                _logger.ShowMessage("Сервер запущен. Ожидание подключений...");
 
                 while (true)
                 {
-                    TcpClient tcpClient = await _tcpListener.AcceptTcpClientAsync();
+                    TcpClient tcpClient = _tcpListener.AcceptTcpClient();
 
-                    ClientObject clientObject = new ClientObject(tcpClient, this, _loger);
+                    ClientObject clientObject = new ClientObject(tcpClient, this, _logger);
                     _clients.Add(clientObject);
 
-                    await Task.Factory.StartNew(clientObject.ProcessAsync, TaskCreationOptions.LongRunning);
+                    _logger.ShowMessage($"ListenAsync Thread: {Thread.CurrentThread.ManagedThreadId}");
+                    Task.Run(clientObject.Process);                   
                 }
             }
             catch (Exception ex)
@@ -55,14 +57,14 @@ namespace TcpServer.ViewModels
         }
 
         // трансляция сообщения подключенным клиентам
-        protected internal async Task BroadcastMessageAsync(string message, string id)
+        protected internal void BroadcastMessage(string message, string id)
         {
             foreach (var client in _clients)
             {
                 if (client.Id != id) // если id клиента не равно id отправителя
                 {
-                    await client.Writer.WriteLineAsync(message); //передача данных
-                    await client.Writer.FlushAsync();
+                    client.Writer.WriteLine(message); //передача данных
+                    client.Writer.Flush();
                 }
             }
         }

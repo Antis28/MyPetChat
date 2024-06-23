@@ -20,9 +20,9 @@ namespace ChatHost
     {     
         static void Main(string[] args)
         {
-            Task.Factory.StartNew(async () =>
+            Task.Factory.StartNew(() =>
             {
-                await CoreServer.StartServer(new Logger());
+                CoreServer.StartServer(new Logger());
             });
             Console.ReadLine();
 

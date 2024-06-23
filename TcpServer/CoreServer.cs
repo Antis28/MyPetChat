@@ -20,11 +20,11 @@ namespace TcpServer
         static ChatJsonConverter chatJsonConverter = new ChatJsonConverter();
 
 
-        public static async Task StartServer(ILogger loger)
+        public static void StartServer(ILogger loger)
         {
             _loger = loger;
             ServerObject server = new ServerObject(loger);// создаем сервер
-            await server.ListenAsync(); // запускаем сервер
+            server.ListenAsync(); // запускаем сервер            
         }
 
         private static ConnectedClient Loginning(TcpClient client, StreamReader streamReader)

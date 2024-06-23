@@ -10,5 +10,7 @@ namespace TcpServer.Models
     {
         CloseConnection,
         Login,
+        GetUsers,
+        Message,
     }
 }

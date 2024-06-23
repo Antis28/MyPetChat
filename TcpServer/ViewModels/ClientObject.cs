@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TcpServer.Handlers;
 using TcpServer.Models;
@@ -35,20 +36,21 @@ namespace TcpServer.ViewModels
             Reader = new StreamReader(stream);
             // создаем StreamWriter для отправки данных
             Writer = new StreamWriter(stream);
-        }
+        }        
 
-        public async Task ProcessAsync()
+        public void Process()
         {
+            _logger.ShowMessage($"Process Thread: {Thread.CurrentThread.ManagedThreadId}");
             try
             {
-                await Loginning();
+                Loginning();
                 ClientHandler();
             }
             catch (Exception e)
             {
                 var message = $"{UserName} покинул чат!\n{e.Message}";
                 _logger.ShowError(message);
-                await _server.BroadcastMessageAsync(message, Id);
+                _server.BroadcastMessage(message, Id);
             }
             finally
             {
@@ -65,16 +67,16 @@ namespace TcpServer.ViewModels
         }
 
 
-        private async Task Loginning()
+        private void Loginning()
         {
             // получаем имя пользователя  
-            var line = await Reader.ReadLineAsync();
+            var line = Reader.ReadLine();
             var cmd = chatJsonConverter.ReadFromJson(line);
-            
+
             var comandType = commandsHandler.RecognizeCommand(cmd.Command);
             if (TcpCommands.Login == comandType)
             {
-                await HandleLogin(cmd.Argument);
+                HandleLogin(cmd.Argument);
             }
             else
             {
@@ -82,7 +84,7 @@ namespace TcpServer.ViewModels
             }
         }
 
-        private async void ClientHandler()
+        private void ClientHandler()
         {
             // в бесконечном цикле получаем сообщения от клиента           
             try
@@ -91,11 +93,11 @@ namespace TcpServer.ViewModels
                 {
                     var message = HandlerBigBuffer();
 
-                    var connected = await isClosed(message);
+                    var connected = isClosed(message);
                     if (!connected) break;
 
                     _logger.ShowMessage($"{message}");
-                    await _server.BroadcastMessageAsync(message, Id);
+                    _server.BroadcastMessage(message, Id);
                 }
             }
             catch (Exception ex)
@@ -141,7 +143,7 @@ namespace TcpServer.ViewModels
 
             return Encoding.Default.GetString(data);
         }
-        private async Task<bool> isClosed(string line)
+        private bool isClosed(string line)
         {
             //if (line.Contains(searchString))
             //{
@@ -167,19 +169,37 @@ namespace TcpServer.ViewModels
         //    //    case TcpCommands.CloseConnection:
         //    //       break;
         //    //};
-            
+
 
         //}
 
-        private async Task HandleLogin(string UserName)
+        private void HandleLogin(string UserName)
         {
             if (!string.IsNullOrWhiteSpace(UserName))
             {
-                
+
                 var message = $"{UserName} вошел в чат";
                 // посылаем сообщение о входе в чат всем подключенным пользователям
                 _logger.ShowMessage(message);
-                await _server.BroadcastMessageAsync(message, Id);
+                _server.BroadcastMessage(message, Id);
+            }
+            else
+            {
+                var message = $"Пустое имя пользователя";
+                _logger.ShowError(message);
+                throw new Exception(message);
+            }
+        }
+
+        private void HandleUserList()
+        {
+            if (!string.IsNullOrWhiteSpace(UserName))
+            {
+
+                var message = $"{UserName} вошел в чат";
+                // посылаем сообщение о входе в чат всем подключенным пользователям
+                _logger.ShowMessage(message);
+                _server.BroadcastMessage(message, Id);
             }
             else
             {

@@ -9,7 +9,10 @@ namespace TcpServer.Handlers
 {
     internal class CommandsHandler
     {
-        private string _closecmd = "Close connection";
+        private const string closeCommand = "Close connection";
+        private const string loginCommand = "Login";
+        private const string getUsersCommand = "Get users";
+        private const string messageCommand = "Message";
 
         /// <summary>
         /// Распознать команду
@@ -21,15 +24,19 @@ namespace TcpServer.Handlers
         {
             switch (searchCommand)
             {
-                case "Close connection":
+                case closeCommand:
                     return TcpCommands.CloseConnection;
-                case "Login":
+                case loginCommand:
                     return TcpCommands.Login;
+                case getUsersCommand:
+                    return TcpCommands.GetUsers;
+                case messageCommand:
+                    return TcpCommands.Message;
                 default:
                     break;
             }
             throw new Exception("Команда не распознана");
         }
-       
+
     }
 }
