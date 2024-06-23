@@ -52,8 +52,8 @@ namespace ChatClientWPF.Handlers
 
         public static void msg()
         {
-            string messageBoxText = "Хотите сохранить файл?";
-            string caption = "Моя прога 1";
+            string messageBoxText = "Хотите передать файл?";//"Хотите сохранить файл?";
+            string caption = "Чат";
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage icon = MessageBoxImage.Warning;
             MessageBoxResult result;
@@ -66,6 +66,7 @@ namespace ChatClientWPF.Handlers
                     // User pressed Cancel
                     break;
                 case MessageBoxResult.Yes:
+                    open();
                     // User pressed Yes
                     break;
                 case MessageBoxResult.No:

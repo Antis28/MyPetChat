@@ -3,19 +3,14 @@ using ChatClientWPF.Models;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Native;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Net.Http;
 using System.Net.Sockets;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Interop;
-using System.Windows.Markup;
-using System.Windows.Shapes;
 using TcpServer.Handlers;
 using TcpServer.Models;
 
@@ -132,9 +127,9 @@ namespace ChatClientWPF.ViewModels
                 {
                     return Task.Factory.StartNew(() =>
                     {
-                        //OpenFile.open();
+                        
                         //FileDialogs.Save();
-                        FileDialogs.msg();
+                        //FileDialogs.msg();
                         SendFileAsync(FileDialogs.open());
                     });
                 });
@@ -212,13 +207,17 @@ namespace ChatClientWPF.ViewModels
                 try
                 {
 
-                    var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
+                    var cmdJs = _chatJsonConverter.WriteToJson(new CommandMessage()
                     {
-                        Command = "FileTransfer",
-                        Argument = fileName
+                        Command = _commandsHandler.CommandToString(TcpCommands.FileTransfer),
+                        Argument = System.IO.Path.GetFileName( fileName)
                     });
-                    SendBigSize(cmd);
-                    SendFileInByte(fileName);
+                    
+                    SendBigSizeTCP(cmdJs);
+                    SendFile(fileName);
+                    
+                    //SendBigSize(cmd);
+                    //SendFileInByte(fileName);
 
                     PrintInUI(fileName);
                     Message = string.Empty;
@@ -229,6 +228,23 @@ namespace ChatClientWPF.ViewModels
                     PrintInUI($"Ошибка: {ex.Message}");
                 }
             });
+        }
+
+        private void SendFile(string fileName)
+        {
+            using (FileStream fileStream = File.OpenRead(fileName))
+            {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                NetworkStream stream = _client.GetStream();
+                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+                {                   
+                    stream.Write(buffer, 0, bytesRead);
+                }
+                stream.Flush();
+                fileStream.Close();
+                //stream.Close();
+            }
         }
 
         private void StartClient()
@@ -355,11 +371,11 @@ namespace ChatClientWPF.ViewModels
         /// <summary>
         /// Отправка данных серверу
         /// </summary>
-        /// <param name="text"></param>
-        private void SendBigSizeTCP(string text)
+        /// <param name="cmdJs"></param>
+        private void SendBigSizeTCP(string cmdJs)
         {
             // сообщение для отправки
-            var message = text; // "Hello METANIT.COM";
+            var message = cmdJs; // "Hello METANIT.COM";
             // получаем NetworkStream для взаимодействия с сервером
             var stream = _client.GetStream();
             // считыванием строку в массив байт
@@ -372,6 +388,28 @@ namespace ChatClientWPF.ViewModels
             stream.Write(data, 0, data.Length);
             // Console.WriteLine("Сообщение отправлено");
         }
+
+        /// <summary>
+        /// Отправка данных
+        /// </summary>
+        /// <param name="message">сообщение для отправки</param>
+        private void SendBigSizeTCP(byte[] data, int size1)
+        {
+            // получаем NetworkStream для взаимодействия с сервером
+            var stream = _client.GetStream();
+            // считыванием строку в массив байт
+            //byte[] data = Encoding.UTF8.GetBytes(message);
+            //// определяем размер данных
+            var f1 = size1;
+            var f2 = data.Length;
+            byte[] size = BitConverter.GetBytes(data.Length);
+            // отправляем размер данных
+            stream.Write(size, 0, 4);
+            // отправляем данные
+            stream.Write(data, 0, data.Length);
+        }
+
+
         /// <summary>
         /// Прием данных от сервера
         /// </summary>

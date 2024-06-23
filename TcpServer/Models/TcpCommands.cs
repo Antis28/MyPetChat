@@ -12,5 +12,6 @@ namespace TcpServer.Models
         Login,
         GetUsers,
         Message,
+        FileTransfer,
     }
 }

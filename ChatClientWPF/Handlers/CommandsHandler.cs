@@ -14,6 +14,7 @@ namespace TcpServer.Handlers
         private const string loginCommand = "Login";
         private const string getUsersCommand = "Get users";
         private const string messageCommand = "Message";
+        private const string fileTransferCommand = "File Transfer";
 
 
         /// <summary>
@@ -34,6 +35,8 @@ namespace TcpServer.Handlers
                     return TcpCommands.GetUsers;
                 case messageCommand:
                     return TcpCommands.Message;
+                case fileTransferCommand:
+                    return TcpCommands.FileTransfer;
                 default:
                     break;
             }
@@ -51,6 +54,8 @@ namespace TcpServer.Handlers
                     return getUsersCommand;
                 case TcpCommands.Message:
                     return messageCommand;
+                case TcpCommands.FileTransfer:
+                    return fileTransferCommand;
                 default:
                     break;
             }

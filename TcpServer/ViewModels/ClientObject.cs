@@ -142,10 +142,21 @@ namespace TcpServer.ViewModels
             return Encoding.Default.GetString(data);
         }
         /// <summary>
-        /// Прием данных от клиента
+        /// Прием строковых данных от клиента
         /// </summary>
         /// <returns></returns>
         private string ReceivingBigBufferTCP()
+        {
+            var (data, byteLength) = ReceivingBigBufferRawDataTCP();
+
+            var message = Encoding.UTF8.GetString(data, 0, byteLength);
+            return message;
+        }
+        /// <summary>
+        /// Прием сырых данных от клиента
+        /// </summary>
+        /// <returns></returns>
+        private Tuple<byte[], int> ReceivingBigBufferRawDataTCP()
         {
             // получаем объект NetworkStream для взаимодействия с клиентом
             var stream = _client.GetStream();
@@ -158,10 +169,9 @@ namespace TcpServer.ViewModels
             // создаем соответствующий буфер
             byte[] data = new byte[size];
             // считываем собственно данные
-            int bytes = stream.Read(data, 0, size);
+            int byteLength = stream.Read(data, 0, size);
 
-            var message = Encoding.UTF8.GetString(data, 0, bytes);
-            return message;
+            return new Tuple<byte[], int>(data, byteLength);
         }
 
 
@@ -181,7 +191,43 @@ namespace TcpServer.ViewModels
             stream.Write(size, 0, 4);
             // отправляем данные
             stream.Write(data, 0, data.Length);
-            // Console.WriteLine("Сообщение отправлено");
+        }
+        /// <summary>
+        /// Отправка данных клиенту
+        /// </summary>
+        /// <param name="message">сообщение для отправки</param>
+        public void SendBigSizeTCP(byte[] data, int size1)
+        {
+            // получаем NetworkStream для взаимодействия с сервером
+            var stream = _client.GetStream();
+            // считыванием строку в массив байт
+            //byte[] data = Encoding.UTF8.GetBytes(message);
+            //// определяем размер данных
+            var f1 = size1;
+            var f2 = data.Length;
+            byte[] size = BitConverter.GetBytes(data.Length);
+            // отправляем размер данных
+            stream.Write(size, 0, 4);
+            // отправляем данные
+            stream.Write(data, 0, data.Length);
+        }
+
+        /// <summary>
+        /// Принять файл
+        /// </summary>
+        /// <param name="savePath"></param>
+        public void ReceiveFile(string savePath)
+        {
+            NetworkStream stream = _client.GetStream();
+            FileStream fileStream = File.Create(savePath);
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                fileStream.Write(buffer, 0, bytesRead);
+            }
+            _logger.ShowMessage(savePath);
+            fileStream.Close();
         }
 
 
@@ -198,10 +244,13 @@ namespace TcpServer.ViewModels
                     Loginning(cmd);
                     break;
                 case TcpCommands.GetUsers:
-                    SenUserList();
+                    SendUserList();
                     break;
                 case TcpCommands.Message:
                     _server.BroadcastMessage(line, Id);
+                    break;
+                case TcpCommands.FileTransfer:
+                    SendFile(cmd);
                     break;
                 default:
                     break;
@@ -209,7 +258,7 @@ namespace TcpServer.ViewModels
             return true;
         }
 
-        private void SenUserList()
+        private void SendUserList()
         {
             var rtrtr = JsonConvert.SerializeObject(_server.Clients, Formatting.None);
             var getUsersCommand = new CommandMessage()
@@ -221,23 +270,12 @@ namespace TcpServer.ViewModels
 
             SendBigSizeTCP(message);
         }
-
-        private void HandleUserList()
+        private void SendFile(CommandMessage cmd)
         {
-            if (!string.IsNullOrWhiteSpace(UserName))
-            {
-
-                var message = $"{UserName} вошел в чат";
-                // посылаем сообщение о входе в чат всем подключенным пользователям
-                _logger.ShowMessage(message);
-                _server.BroadcastMessage(message, Id);
-            }
-            else
-            {
-                var message = $"Пустое имя пользователя";
-                _logger.ShowError(message);
-                throw new Exception(message);
-            }
+            var message = _chatJsonConverter.WriteToJson(cmd);
+            var (bytes, size) = ReceivingBigBufferRawDataTCP();
+            ReceiveFile(cmd.Argument);
         }
+
     }
 }
