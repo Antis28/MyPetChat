@@ -82,17 +82,20 @@ namespace TcpServer.ViewModels
 
         private void Loginning(CommandMessage cmd)
         {
-            UserName = cmd.Argument;
+            UserName = cmd.UserName;
             if (!string.IsNullOrWhiteSpace(UserName))
             {
 
-                var message = $"{UserName} вошел в чат";
+                var message = $"вошел в чат!";
                 // посылаем сообщение о входе в чат всем подключенным пользователям
-                _logger.ShowMessage(message);
+                _logger.ShowMessage($"{UserName}: {message}");
                 var cmdMessage = _chatJsonConverter.WriteToJson(new()
                 {
                     Command = _commandsHandler.CommandToString(TcpCommands.Login),
                     Argument = message,
+                    UserName = UserName,
+                    UserID = Id,
+                    IPAddress = "192.168.1.1",
                 });
                 _server.BroadcastMessage(cmdMessage, Id);
             }

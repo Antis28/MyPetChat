@@ -8,7 +8,10 @@ namespace TcpServer.Interfaces
 {
     public interface ICommandMessage
     {
-        string Command { get; set; }
-        string Argument { get; set; }
+        public string Command { get; set; }
+        public string UserName { get; set; }
+        public string UserID { get; set; }
+        public string IPAddress { get; set; }
+        public string Argument { get; set; }
     }
 }

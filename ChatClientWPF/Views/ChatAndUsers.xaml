@@ -20,7 +20,17 @@
         </Grid.ColumnDefinitions>
         <TextBlock Text="Chat" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16"/>
         <TextBlock Text="Users" Grid.Row="0" Grid.Column="3" FontSize="16"/>
-        <ListBox x:Name="lbChat" ItemsSource="{Binding Chat}" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.ColumnSpan="2" FontSize="14" />
+        <ListBox x:Name="lbChat" ItemsSource="{Binding Chat}" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}"  Grid.ColumnSpan="2" FontSize="14">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding Path=UserName}" />
+                        <TextBlock Text=" : " />
+                        <TextBlock Text="{Binding Path=Argument}"/>
+                    </StackPanel>                    
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <ListBox x:Name="lbUsers" ItemsSource="{Binding UserNames}" SelectedIndex="{Binding ItemIndex}" Grid.Row="1" MinWidth="200" Grid.Column="3" TargetUpdated="lbUsers_TargetUpdated" DataContextChanged="lbUsers_DataContextChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>                     

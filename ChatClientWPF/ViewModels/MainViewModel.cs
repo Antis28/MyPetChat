@@ -31,7 +31,7 @@ namespace ChatClientWPF.ViewModels
         string status;
 
         [GenerateProperty]
-        ObservableCollection<string> chat = new();
+        ObservableCollection<CommandMessage> chat = new();
 
         [GenerateProperty]
         ObservableCollection<ClientObject> userNames = new();
@@ -39,8 +39,10 @@ namespace ChatClientWPF.ViewModels
         [GenerateProperty]
         string message;
 
-        public string _IsSelected = "1";
 
+
+
+        public string _IsSelected = "1";
         public string IsSelected
         {
             get { return _IsSelected; }
@@ -57,6 +59,7 @@ namespace ChatClientWPF.ViewModels
 
             }
         }
+        
         public int _ItemIndex;
         public int ItemIndex
         {
@@ -175,7 +178,7 @@ namespace ChatClientWPF.ViewModels
             {
                 return new AsyncCommand(() =>
                 {
-                    return SendMsgAsync($"{UserName}: {Message}");
+                    return SendMsgAsync(Message);
 
                     //});
                 }, () => _client?.Connected == true, !string.IsNullOrWhiteSpace(Message));
@@ -213,18 +216,18 @@ namespace ChatClientWPF.ViewModels
             {
                 try
                 {
-
-                    var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
+                    var cmdObj = new CommandMessage()
                     {
-                        Command = "Message",
-                        Argument = msg
-                    });
-
-                    SendBigSizeTCP(cmd);
-
-                    PrintInUI(msg);
+                        Command = _commandsHandler.CommandToString(TcpCommands.Message),
+                        Argument = message,
+                        UserName = UserName,
+                        IPAddress = "192.168.1.1",
+                    };
+                    PrintInUI(cmdObj);
                     Message = string.Empty;
 
+                    var cmd = _chatJsonConverter.WriteToJson(cmdObj);
+                    SendBigSizeTCP(cmd);
                 }
                 catch (Exception ex)
                 {
@@ -245,7 +248,7 @@ namespace ChatClientWPF.ViewModels
                         Command = _commandsHandler.CommandToString(TcpCommands.FileTransfer),
                         Argument = System.IO.Path.GetFileName(fileName)
                     });
-                    PrintInUI($"Отправка файkа: {fileName}");
+                    PrintInUI($"Отправка файла: {fileName}");
                     SendBigSizeTCP(cmdJs);
                     SendBigSizeFileTCP(fileName);
 
@@ -300,7 +303,9 @@ namespace ChatClientWPF.ViewModels
             var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
             {
                 Command = "Login",
-                Argument = userName
+                Argument = string.Empty,
+                IPAddress = "0",
+                UserName = userName,
             });
             SendBigSizeTCP(cmd);
 
@@ -325,11 +330,11 @@ namespace ChatClientWPF.ViewModels
                     VisualiseUserList(cmd);
                     break;
                 case TcpCommands.Message:
-                    PrintInUI(cmd.Argument);
+                    PrintInUI(cmd);
                     break;
                 case
                     TcpCommands.Login:
-                    PrintInUI(cmd.Argument);
+                    PrintInUI(cmd);
                     GetUsers();
                     break;
                 default:
@@ -492,9 +497,13 @@ namespace ChatClientWPF.ViewModels
             });
         }
 
-        private void PrintInUI(string message)
+        private void PrintInUI(CommandMessage message)// string message)
         {
             RunInUi(() => Chat.Add(message));
+        }
+        private void PrintInUI(string message)
+        {
+            RunInUi(() => Chat.Add(new CommandMessage() { UserName = "System", Argument = message }));
         }
 
         private void RunInUi(Action action)
