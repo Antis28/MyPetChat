@@ -214,15 +214,11 @@ namespace ChatClientWPF.ViewModels
                         Command = _commandsHandler.CommandToString(TcpCommands.FileTransfer),
                         Argument = System.IO.Path.GetFileName(fileName)
                     });
-
+                    PrintInUI($"Отправка файkа: {fileName}");
                     SendBigSizeTCP(cmdJs);
                     SendBigSizeFileTCP(fileName);
-                    //SendFile(fileName);
 
-                    //SendBigSize(cmd);
-                    //SendFileInByte(fileName);
-
-                    PrintInUI(fileName);
+                    PrintInUI($"Файл отправлен: {fileName}");
                     Message = string.Empty;
 
                 }
