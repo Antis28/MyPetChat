@@ -31,13 +31,44 @@ namespace ChatClientWPF.ViewModels
         string status;
 
         [GenerateProperty]
-        ObservableCollection<string> chat = new ObservableCollection<string>();
+        ObservableCollection<string> chat = new();
 
         [GenerateProperty]
-        ObservableCollection<string> userNames = new ObservableCollection<string>();
+        ObservableCollection<ClientObject> userNames = new();
 
         [GenerateProperty]
         string message;
+
+        public string _IsSelected = "1";
+
+        public string IsSelected
+        {
+            get { return _IsSelected; }
+            set
+            {
+                if (value == "Все")
+                {
+
+                }
+                else
+                {
+
+                }
+
+            }
+        }
+        public int _ItemIndex;
+        public int ItemIndex
+        {
+            get
+            {
+                return _ItemIndex;
+            }
+            set
+            {
+                _ItemIndex = value;
+            }
+        }
 
 
 
@@ -381,11 +412,11 @@ namespace ChatClientWPF.ViewModels
             var stream = _client.GetStream();
             using (FileStream fileStream = File.OpenRead(fileName))
             {
-               // byte[] buffer = new byte[4096];
+                // byte[] buffer = new byte[4096];
                 //int bytesRead;
                 var length = fileStream.Length;
                 byte[] size = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(length));
-                stream.Write(size,0, size.Length);
+                stream.Write(size, 0, size.Length);
                 // отправляем данные
                 fileStream.CopyTo(stream);
                 //stream.Write(data, 0, data.Length);
@@ -399,7 +430,7 @@ namespace ChatClientWPF.ViewModels
             // отправляем размер данных
             //stream.Write(size, 0, 4);
             // отправляем данные
-           // stream.Write(data, 0, data.Length);
+            // stream.Write(data, 0, data.Length);
         }
 
         private void SendFile(string fileName)
@@ -451,18 +482,13 @@ namespace ChatClientWPF.ViewModels
             RunInUi(() =>
             {
                 userNames.Clear();
-                //foreach (var item in messeges)
-                //{
-                //    lbChat.Items.Add(item);
-                //}
-                //if (lbChat.Items.Count > 0)
-                //{
-                //    lbChat.ScrollIntoView(lbChat.Items[lbChat.Items.Count - 1]);
-                //}
+
+                userNames.Add(new ClientObject("Все"));
                 foreach (var item in co)
                 {
-                    userNames.Add(item.UserName);
+                    userNames.Add(item);
                 }
+
             });
         }
 

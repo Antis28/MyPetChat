@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace ChatClientWPF.Models
 {
-    internal class ClientObject
+    public class ClientObject
     {
+
+        public ClientObject(string name)
+        {
+            UserName = name;
+            Id = "-1";
+        }
+
         public string Id { get; set; }
         public string UserName { get; set; }
     }

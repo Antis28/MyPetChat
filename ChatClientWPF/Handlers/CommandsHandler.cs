@@ -42,6 +42,12 @@ namespace TcpServer.Handlers
             }
             throw new Exception("Команда не распознана");
         }
+        /// <summary>
+        /// Команду в текст 
+        /// </summary>
+        /// <param name="searchCommand"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public string CommandToString(TcpCommands searchCommand)
         {
             switch (searchCommand)
