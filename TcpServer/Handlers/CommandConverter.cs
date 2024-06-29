@@ -7,7 +7,7 @@ using TcpServer.Models;
 
 namespace TcpServer.Handlers
 {
-    internal class CommandsHandler
+    internal class CommandConverter
     {
         private const string closeCommand = "Close connection";
         private const string loginCommand = "Login";

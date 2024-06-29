@@ -15,7 +15,6 @@ namespace TcpServer.ViewModels
         TcpListener _tcpListener = new TcpListener(System.Net.IPAddress.Any, 5050); // сервер для прослушивания
         List<ClientObject> _clients = new(); // все подключения
         ILogger _logger;
-        static ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
 
         internal List<ClientObject> Clients { get => _clients;}
 
@@ -23,14 +22,7 @@ namespace TcpServer.ViewModels
         {
             _logger = logger;
         }
-        protected internal void RemoveConnection(string id)
-        {
-            // получаем по id закрытое подключение
-            var client = _clients.FirstOrDefault(c => c.Id == id);
-            // и удаляем его из списка подключений
-            if (client != null) _clients.Remove(client);
-            client?.Close();
-        }
+       
         // прослушивание входящих подключений
         protected internal void ListenAsync()
         {
@@ -59,7 +51,6 @@ namespace TcpServer.ViewModels
                 Disconnect();
             }
         }
-
         // трансляция сообщения подключенным клиентам
         protected internal void BroadcastMessage(string message, string id)
         {
@@ -67,14 +58,21 @@ namespace TcpServer.ViewModels
             {
                 if (client.Id != id) // если id клиента не равно id отправителя
                 {
-                    client.SendBigSizeTCP(message);
+                    client.Send(message);
                 }
             }
         }
-        
 
-
-        // отключение всех клиентов
+        // отключение соеденения клиента
+        protected internal void RemoveConnectionFromList(string id)
+        {
+            // получаем по id закрытого подключение
+            var client = _clients.FirstOrDefault(c => c.Id == id);
+            // и удаляем его из списка подключений
+            if (client != null) _clients.Remove(client);
+            client?.Close();
+        }
+        // отключение всех клиентов, остановка сервера
         protected internal void Disconnect()
         {
             foreach (var client in _clients)

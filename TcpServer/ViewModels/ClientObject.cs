@@ -12,34 +12,32 @@ using System.Threading;
 using System.Threading.Tasks;
 using TcpServer.Handlers;
 using TcpServer.Models;
+using TcpServer.ViewModels.ClientHandlers;
 
 namespace TcpServer.ViewModels
 {
     internal class ClientObject
     {
         public string Id { get; } = Guid.NewGuid().ToString();
-        public string UserName { get; set; }
-        protected internal StreamWriter Writer { get; }
-        protected internal StreamReader Reader { get; }
+        public string UserName { get; set; }        
 
         ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
-        CommandsHandler _commandsHandler = new CommandsHandler();
+        CommandConverter _commandsHandler = new CommandConverter();
         ILogger _logger;
 
         TcpClient _client;
         ServerObject _server; // объект сервера
+
+        FileHandler _fileHandler;
+        DataTransfeHandler _dataTransferHandler;
 
         public ClientObject(TcpClient tcpClient, ServerObject serverObject, ILogger logger)
         {
             _client = tcpClient;
             _server = serverObject;
             _logger = logger;
-            // получаем NetworkStream для взаимодействия с сервером
-            var stream = _client.GetStream();
-            // создаем StreamReader для чтения данных
-            Reader = new StreamReader(stream);
-            // создаем StreamWriter для отправки данных
-            Writer = new StreamWriter(stream);
+            _fileHandler = new(_client, _logger);
+            _dataTransferHandler = new(_client, _logger);        
         }
 
         public void Process()
@@ -50,8 +48,7 @@ namespace TcpServer.ViewModels
                 var connected = _client.Connected;
                 while (_client.Connected && connected)
                 {
-                    var message = ReceivingBigBufferTCP();
-
+                    var message = _dataTransferHandler.ReceivingBigBufferTCP();
                     connected = HandleMessage(message);
                 }
             }
@@ -64,28 +61,18 @@ namespace TcpServer.ViewModels
             finally
             {
                 // в случае выхода из цикла закрываем ресурсы
-                _server.RemoveConnection(Id);
+                _server.RemoveConnectionFromList(Id);
                 var message = $"{UserName} покинул чат!";
                 _logger.ShowMessage(message);
                 Close();
             }
-        }
-        // закрытие подключения
-        protected internal void Close()
-        {
-            Writer.Close();
-            Reader.Close();
-            _client.Close();
-        }
-
-
+        }       
 
         private void Loginning(CommandMessage cmd)
         {
             UserName = cmd.UserName;
             if (!string.IsNullOrWhiteSpace(UserName))
             {
-
                 var message = $"вошел в чат!";
                 // посылаем сообщение о входе в чат всем подключенным пользователям
                 _logger.ShowMessage($"{UserName}: {message}");
@@ -106,117 +93,6 @@ namespace TcpServer.ViewModels
                 throw new Exception(message);
             }
         }
-
-
-
-        /// <summary>
-        /// Server Buff handler
-        /// Прием данных от клиента
-        /// </summary>
-        /// <param name="connectedClient"></param>
-        /// <returns></returns>
-        private string HandlerBigBuffer()
-        {
-            var cl = _client.Client;
-            byte[] sizeBuf = new byte[4];
-
-            // Получаем размер первой порции
-            cl.Receive(sizeBuf, 0, sizeBuf.Length, 0);
-            // Преобразуем в целое число
-            int size = BitConverter.ToInt32(sizeBuf, 0);
-            MemoryStream memoryStream = new MemoryStream();
-
-            while (size > 0)
-            {
-                byte[] buffer;
-                // Проверяем чтобы буфер был не меньше необходимого для принятия
-                if (size < cl.ReceiveBufferSize) buffer = new byte[size];
-                else buffer = new byte[cl.ReceiveBufferSize];
-
-                // Получим данные в буфер
-                int rec = cl.Receive(buffer, 0, buffer.Length, 0);
-                // Вычитаем размер принятых данных из общего размера
-                size -= rec;
-                // записываем в поток памяти
-                memoryStream.Write(buffer, 0, buffer.Length);
-            }
-            memoryStream.Close();
-            byte[] data = memoryStream.ToArray();
-            memoryStream.Dispose();
-
-            return Encoding.Default.GetString(data);
-        }
-        /// <summary>
-        /// Прием строковых данных от клиента
-        /// </summary>
-        /// <returns></returns>
-        private string ReceivingBigBufferTCP()
-        {
-            var (data, byteLength) = ReceivingBigBufferRawDataTCP();
-
-            var message = Encoding.UTF8.GetString(data, 0, byteLength);
-            return message;
-        }
-        /// <summary>
-        /// Прием сырых данных от клиента
-        /// </summary>
-        /// <returns></returns>
-        private Tuple<byte[], int> ReceivingBigBufferRawDataTCP()
-        {
-            // получаем объект NetworkStream для взаимодействия с клиентом
-            var stream = _client.GetStream();
-            // буфер для считывания размера данных
-            byte[] sizeBuffer = new byte[4];
-            // сначала считываем размер данных
-            var i = stream.Read(sizeBuffer, 0, sizeBuffer.Length);
-            // узнаем размер и создаем соответствующий буфер
-            int size = BitConverter.ToInt32(sizeBuffer, 0);
-            // создаем соответствующий буфер
-            byte[] data = new byte[size];
-            // считываем собственно данные
-            int byteLength = stream.Read(data, 0, size);
-
-            return new Tuple<byte[], int>(data, byteLength);
-        }
-
-
-        /// <summary>
-        /// Отправка данных клиенту
-        /// </summary>
-        /// <param name="message">сообщение для отправки</param>
-        public void SendBigSizeTCP(string message)
-        {
-            // получаем NetworkStream для взаимодействия с сервером
-            var stream = _client.GetStream();
-            // считыванием строку в массив байт
-            byte[] data = Encoding.UTF8.GetBytes(message);
-            // определяем размер данных
-            byte[] size = BitConverter.GetBytes(data.Length);
-            // отправляем размер данных
-            stream.Write(size, 0, 4);
-            // отправляем данные
-            stream.Write(data, 0, data.Length);
-        }
-        /// <summary>
-        /// Отправка данных клиенту
-        /// </summary>
-        /// <param name="message">сообщение для отправки</param>
-        public void SendBigSizeTCP(byte[] data, int size1)
-        {
-            // получаем NetworkStream для взаимодействия с сервером
-            var stream = _client.GetStream();
-            // считыванием строку в массив байт
-            //byte[] data = Encoding.UTF8.GetBytes(message);
-            //// определяем размер данных
-            var f1 = size1;
-            var f2 = data.Length;
-            byte[] size = BitConverter.GetBytes(data.Length);
-            // отправляем размер данных
-            stream.Write(size, 0, 4);
-            // отправляем данные
-            stream.Write(data, 0, data.Length);
-        }
-
         private bool HandleMessage(string line)
         {
             var cmd = _chatJsonConverter.ReadFromJson(line);
@@ -236,7 +112,8 @@ namespace TcpServer.ViewModels
                     _server.BroadcastMessage(line, Id);
                     break;
                 case TcpCommands.FileTransfer:
-                    SendFile(cmd);
+                    // Принять файл от клиента
+                    _fileHandler.ReceiveFile1(cmd);
                     break;
                 default:
                     break;
@@ -244,9 +121,11 @@ namespace TcpServer.ViewModels
             return true;
         }
 
+        /// <summary>
+        /// Отправить список пользователей
+        /// </summary>
         private void SendUserList()
         {
-            var rtrtr = JsonConvert.SerializeObject(_server.Clients, Formatting.None);
             var getUsersCommand = new CommandMessage()
             {
                 Command = _commandsHandler.CommandToString(TcpCommands.GetUsers),
@@ -254,66 +133,22 @@ namespace TcpServer.ViewModels
             };
             var message = _chatJsonConverter.WriteToJson(getUsersCommand);
 
-            SendBigSizeTCP(message);
-        }
-        private void SendFile(CommandMessage cmd)
-        {
-            var message = _chatJsonConverter.WriteToJson(cmd);
-            //var (bytes, size) = ReceivingBigBufferRawDataTCP();
-            ReceiveFile1(cmd.Argument);
+            Send(message);
         }
 
         /// <summary>
-        /// Принять файл
+        /// Отпавить сообщение
         /// </summary>
-        /// <param name="savePath"></param>
-        public void ReceiveFile(string savePath)
+        /// <param name="message"></param>
+        internal void Send(string message)
         {
-            NetworkStream stream = _client.GetStream();
-            FileStream fileStream = File.Create(savePath);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                fileStream.Write(buffer, 0, bytesRead);
-            }
-            _logger.ShowMessage(savePath);
-            fileStream.Close();
+            _dataTransferHandler.SendBigSizeTCP(message);
         }
 
-        /// <summary>
-        /// Принять файл
-        /// </summary>
-        /// <param name="savePath"></param>
-        public void ReceiveFile1(string savePath)
+        // закрытие подключения
+        protected internal void Close()
         {
-            var stream = _client.GetStream();
-
-            byte[] buf = new byte[65536];
-            ReadBytes(sizeof(long), buf);
-            long remainingLength = IPAddress.NetworkToHostOrder(BitConverter.ToInt64(buf, 0));
-
-            using var file = File.Create(savePath);
-            while (remainingLength > 0)
-            {
-                int lengthToRead = (int)Math.Min(remainingLength, buf.Length);
-                ReadBytes(lengthToRead, buf);
-                file.Write(buf, 0, lengthToRead);
-                remainingLength -= lengthToRead;
-            }
+            _client.Close();
         }
-        void ReadBytes(int howmuch, byte[] buf)
-        {
-            var stream = _client.GetStream();
-            int readPos = 0;
-            while (readPos < howmuch)
-            {
-                var actuallyRead = stream.Read(buf, readPos, howmuch - readPos);
-                if (actuallyRead == 0)
-                    throw new EndOfStreamException();
-                readPos += actuallyRead;
-            }
-        }
-
     }
 }

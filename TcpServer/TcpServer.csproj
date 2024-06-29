@@ -45,8 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\CommandsHandler.cs" />
+    <Compile Include="Handlers\CommandConverter.cs" />
     <Compile Include="Models\TcpCommands.cs" />
+    <Compile Include="ViewModels\ClientHandlers\DataTransfeHandler.cs" />
+    <Compile Include="ViewModels\ClientHandlers\FileHandler.cs" />
     <Compile Include="ViewModels\ConnectedClient.cs" />
     <Compile Include="CoreServer.cs" />
     <Compile Include="Handlers\ChatJsonConverter.cs" />
