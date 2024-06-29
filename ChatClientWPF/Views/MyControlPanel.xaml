@@ -13,7 +13,7 @@
             <TextBlock  Text="Port"  TextWrapping="Wrap" Height="30" FontSize="16"/>
         </UniformGrid>
         <UniformGrid Columns="5">
-            <TextBox x:Name="tbUserName" Text="{Binding UserName}"   TextWrapping="Wrap"    Height="30" FontSize="16"/>
+            <TextBox x:Name="tbUserName" Text="{Binding UserName}"  TextWrapping="Wrap"    Height="30" FontSize="16"/>
             <TextBox x:Name="tbAdress" Text="{Binding Ip}"  TextWrapping="Wrap" Height="30" FontSize="16"/>
             <TextBox x:Name="tbPort" Text="{Binding Port}"  TextWrapping="Wrap" Height="30" FontSize="16" PreviewTextInput="NumericTextBox_PreviewTextInput" DataObject.Pasting="NumericTextBox_Pasting" />
             <Button x:Name="btnConDiscon" Command="{Binding ConnectCommand}" Content="Подключить" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="100"  FontSize="16"/>

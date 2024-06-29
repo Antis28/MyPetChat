@@ -21,8 +21,7 @@ namespace ChatClientWPF.ViewModels
     [GenerateViewModel]
     public partial class MainViewModel : ViewModelBase
     {
-        [GenerateProperty]
-        string userName;
+
         [GenerateProperty]
         public string ip;
         [GenerateProperty]
@@ -38,6 +37,19 @@ namespace ChatClientWPF.ViewModels
 
         [GenerateProperty]
         string message;
+
+        string userName;
+        public string UserName
+        {
+            get => userName;
+            set
+            {
+                if (EqualityComparer<string>.Default.Equals(userName, value)) return;
+                userName = value;
+                GetUsersAsync();
+                RaisePropertyChanged(nameof(UserName));
+            }
+        }
 
 
 
@@ -59,7 +71,7 @@ namespace ChatClientWPF.ViewModels
 
             }
         }
-        
+
         public int _ItemIndex;
         public int ItemIndex
         {
@@ -72,8 +84,6 @@ namespace ChatClientWPF.ViewModels
                 _ItemIndex = value;
             }
         }
-
-
 
         TcpClient _client;
         StreamReader _reader;
@@ -295,6 +305,14 @@ namespace ChatClientWPF.ViewModels
                     }
                 }
 
+            });
+        }
+
+        public Task GetUsersAsync()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetUsers();
             });
         }
 
