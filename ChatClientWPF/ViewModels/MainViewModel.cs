@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using TcpServer.Handlers;
@@ -16,8 +17,13 @@ namespace ChatClientWPF.ViewModels
     [GenerateViewModel]
     public partial class MainViewModel : ViewModelBase
     {
+
         [GenerateProperty]
         public string ip;
+
+        [GenerateProperty]
+        public string userID;
+
         [GenerateProperty]
         public int port;
         [GenerateProperty]
@@ -25,9 +31,23 @@ namespace ChatClientWPF.ViewModels
 
         [GenerateProperty]
         ObservableCollection<CommandMessage> chat = new();
-
         [GenerateProperty]
         ObservableCollection<ClientObject> userNames = new();
+
+        //ObservableCollection<ClientObject> _userNames;
+
+        //public ObservableCollection<ClientObject> UserNames        
+        //{
+        //    get { return _userNames; }
+        //    set
+        //    {
+        //        if (_userNames != value)
+        //        {
+        //            _userNames = value;
+        //            //RaisePropertyChanged(nameof(UserNames));
+        //        }
+        //    }
+        //}
 
         [GenerateProperty]
         string message;
@@ -40,7 +60,9 @@ namespace ChatClientWPF.ViewModels
             {
                 if (EqualityComparer<string>.Default.Equals(userName, value)) return;
                 userName = value;
-                GetUsersAsync();
+
+                if (_client != null) SendNewUserName();
+
                 RaisePropertyChanged(nameof(UserName));
             }
         }
@@ -81,7 +103,7 @@ namespace ChatClientWPF.ViewModels
         StreamWriter _writer;
         ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
         CommandConverter _commandsHandler = new CommandConverter();
-        DataTransfeHandler _dataTransfeHandler ;
+        DataTransfeHandler _dataTransfeHandler;
 
         [GenerateCommand]
         void Login() => Status = "User: " + userName;
@@ -91,7 +113,7 @@ namespace ChatClientWPF.ViewModels
         {
             ip = "192.168.1.105";
             port = 5050;
-            userName = RandomeUserName();           
+            userName = RandomeUserName();
             StartClient();
         }
 
@@ -114,8 +136,6 @@ namespace ChatClientWPF.ViewModels
                             _writer.AutoFlush = true;
 
                             Logining();
-
-                            PrintInUI($"Подключение успешно!");
                         }
                         catch (Exception ex)
                         {
@@ -336,11 +356,14 @@ namespace ChatClientWPF.ViewModels
                     PrintInUI(cmd);
                     GetUsers();
                     break;
+                case TcpCommands.LoginSuccess:
+                    UserID = cmd.UserID;
+                    PrintInUI(cmd);
+                    break;
                 default:
                     break;
             }
         }
-
         private string RandomeUserName()
         {
             var names = new string[] { "Biser", "Tiser", "Ruser", "Niser", "Miser", "Cuser", "User", "Diser" };
@@ -359,15 +382,29 @@ namespace ChatClientWPF.ViewModels
         /// </summary>
         private void GetUsers()
         {
-            var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
-            {
-                Command = _commandsHandler.CommandToString(TcpCommands.GetUsers),
-                Argument = null
-            });
+            string cmd = NewCommand(TcpCommands.GetUsers);
+            _dataTransfeHandler.SendBigSizeTCP(cmd);
+        }
+
+        private void SendNewUserName()
+        {
+            string cmd = NewCommand(TcpCommands.UpdateUserName);
+
+            UserNames.FirstOrDefault(x => x.Id == UserID).UserName = UserName;
+
 
             _dataTransfeHandler.SendBigSizeTCP(cmd);
+        }
 
-            Message = string.Empty;
+
+        private string NewCommand(TcpCommands commandName)
+        {
+            return _chatJsonConverter.WriteToJson(new CommandMessage()
+            {
+                Command = _commandsHandler.CommandToString(commandName),
+                UserName = UserName,
+                Argument = null,
+            });
         }
 
         #region Visualise

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using ChatClientWPF.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,11 +13,20 @@ namespace TcpServer.Handlers
 {
     internal class CommandConverter
     {
+        #region commands        
         private const string closeCommand = "Close connection";
         private const string loginCommand = "Login";
         private const string getUsersCommand = "Get users";
         private const string messageCommand = "Message";
         private const string fileTransferCommand = "File Transfer";
+        private const string updateUserName = "Update user name";
+        #endregion
+
+        private ChatCommands _chatCommands;
+        public CommandConverter()
+        {
+            FromJsonFile();
+        }
 
 
         /// <summary>
@@ -25,47 +37,53 @@ namespace TcpServer.Handlers
         /// <exception cref="Exception"></exception>
         public TcpCommands RecognizeCommand(string searchCommand)
         {
-            switch (searchCommand)
-            {
-                case closeCommand:
-                    return TcpCommands.CloseConnection;
-                case loginCommand:
-                    return TcpCommands.Login;
-                case getUsersCommand:
-                    return TcpCommands.GetUsers;
-                case messageCommand:
-                    return TcpCommands.Message;
-                case fileTransferCommand:
-                    return TcpCommands.FileTransfer;
-                default:
-                    break;
-            }
+            if (searchCommand == _chatCommands.CloseConection)
+                return TcpCommands.CloseConnection;
+            if (searchCommand == _chatCommands.Login)
+                return TcpCommands.Login;
+            if (searchCommand == _chatCommands.GetUsers)
+                return TcpCommands.GetUsers;
+            if (searchCommand == _chatCommands.Message)
+                return TcpCommands.Message;
+            if (searchCommand == _chatCommands.FileTransfer)
+                return TcpCommands.FileTransfer;
+            if (searchCommand == _chatCommands.UpdateUserName)
+                return TcpCommands.UpdateUserName;
+            if (searchCommand == _chatCommands.LoginSuccess)
+                return TcpCommands.LoginSuccess;
+
             throw new Exception("Команда не распознана");
         }
-        /// <summary>
-        /// Команду в текст 
-        /// </summary>
-        /// <param name="searchCommand"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
         public string CommandToString(TcpCommands searchCommand)
         {
             switch (searchCommand)
             {
                 case TcpCommands.CloseConnection:
-                    return closeCommand;
+                    return _chatCommands.CloseConection;
                 case TcpCommands.Login:
-                    return loginCommand;
+                    return _chatCommands.Login;
                 case TcpCommands.GetUsers:
-                    return getUsersCommand;
+                    return _chatCommands.GetUsers;
                 case TcpCommands.Message:
-                    return messageCommand;
+                    return _chatCommands.Message;
                 case TcpCommands.FileTransfer:
-                    return fileTransferCommand;
+                    return _chatCommands.FileTransfer;
+                case TcpCommands.UpdateUserName:
+                    return _chatCommands.UpdateUserName;
                 default:
                     break;
             }
             throw new Exception("Команда не распознана");
-        } 
+        }
+
+
+        public void FromJsonFile()
+        {
+            using (var file = new StreamReader("Commands.json", Encoding.UTF8))
+            {
+                var t = file.ReadToEnd();
+                _chatCommands = JsonConvert.DeserializeObject<ChatCommands>(t);
+            }
+        }
     }
 }

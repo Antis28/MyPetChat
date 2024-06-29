@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -76,15 +77,11 @@ namespace TcpServer.ViewModels
                 var message = $"вошел в чат!";
                 // посылаем сообщение о входе в чат всем подключенным пользователям
                 _logger.ShowMessage($"{UserName}: {message}");
-                var cmdMessage = _chatJsonConverter.WriteToJson(new()
-                {
-                    Command = _commandsHandler.CommandToString(TcpCommands.Login),
-                    Argument = message,
-                    UserName = UserName,
-                    UserID = Id,
-                    IPAddress = "192.168.1.1",
-                });
+               
+                var cmdMessage = NewCommand(TcpCommands.Login, message);                
                 _server.BroadcastMessage(cmdMessage, Id);
+                cmdMessage = NewCommand(TcpCommands.LoginSuccess, "Подключение успешно!");
+                Send(cmdMessage);
             }
             else
             {
@@ -115,6 +112,12 @@ namespace TcpServer.ViewModels
                     // Принять файл от клиента
                     _fileHandler.ReceiveFile1(cmd);
                     break;
+                case TcpCommands.UpdateUserName:
+                    if (UserName == cmd.UserName) break;
+
+                    UserName = cmd.UserName;
+                    BroadcastUserList();
+                    break;
                 default:
                     break;
             }
@@ -125,15 +128,16 @@ namespace TcpServer.ViewModels
         /// Отправить список пользователей
         /// </summary>
         private void SendUserList()
-        {
-            var getUsersCommand = new CommandMessage()
-            {
-                Command = _commandsHandler.CommandToString(TcpCommands.GetUsers),
-                Argument = JsonConvert.SerializeObject(_server.Clients, Formatting.None)
-            };
-            var message = _chatJsonConverter.WriteToJson(getUsersCommand);
-
+        {           
+            var argument = JsonConvert.SerializeObject(_server.Clients, Formatting.None);
+            var message = NewCommand(TcpCommands.GetUsers, argument);
             Send(message);
+        }
+        private void BroadcastUserList()
+        {
+            var argument = JsonConvert.SerializeObject(_server.Clients, Formatting.None);
+            var message = NewCommand(TcpCommands.GetUsers, argument);
+            _server.BroadcastMessage(message, Id);
         }
 
         /// <summary>
@@ -149,6 +153,17 @@ namespace TcpServer.ViewModels
         protected internal void Close()
         {
             _client.Close();
+        }
+
+        private string NewCommand(TcpCommands commandName, string argument = null)
+        {
+            return _chatJsonConverter.WriteToJson(new CommandMessage()
+            {
+                Command = _commandsHandler.CommandToString(commandName),
+                UserName = UserName,
+                Argument = argument,
+                UserID = Id,
+            });
         }
     }
 }

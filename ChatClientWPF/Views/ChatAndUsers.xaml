@@ -31,7 +31,10 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox x:Name="lbUsers" ItemsSource="{Binding UserNames}" SelectedIndex="{Binding ItemIndex}" Grid.Row="1" MinWidth="200" Grid.Column="3" TargetUpdated="lbUsers_TargetUpdated" DataContextChanged="lbUsers_DataContextChanged">
+        <ListBox x:Name="lbUsers" ItemsSource="{Binding UserNames}" 
+                 SelectedIndex="{Binding ItemIndex}" 
+                 Grid.Row="1" MinWidth="200" Grid.Column="3" 
+                 TargetUpdated="lbUsers_TargetUpdated" DataContextChanged="lbUsers_DataContextChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>                     
                         <TextBlock Text="{Binding Path=UserName}"/>

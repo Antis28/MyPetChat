@@ -10,8 +10,10 @@ namespace TcpServer.Models
     {
         CloseConnection,
         Login,
+        LoginSuccess,
         GetUsers,
         Message,
         FileTransfer,
+        UpdateUserName,
     }
 }
