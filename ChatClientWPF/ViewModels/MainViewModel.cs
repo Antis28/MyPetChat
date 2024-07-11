@@ -51,6 +51,9 @@ namespace ChatClientWPF.ViewModels
         //}
 
         [GenerateProperty]
+        public int prgressCopyFile;
+
+        [GenerateProperty]
         string message;
 
         string userName;
@@ -123,7 +126,7 @@ namespace ChatClientWPF.ViewModels
             if (JSaver.SettingExists())
             {
                 settings = JSaver.LoadSetting<ServerSettings>();
-                
+
             }
             else
             {
@@ -152,7 +155,19 @@ namespace ChatClientWPF.ViewModels
                         try
                         {
                             _client = new TcpClient();
+
+
+
                             _dataTransfeHandler = new DataTransfeHandler(_client);
+                            _dataTransfeHandler.OnProgress += (x, y) => 
+                            {
+                                RunInUi(() =>
+                                {
+                                    chat.Add(new() { UserName = "System", Argument = x });
+                                    prgressCopyFile = y;
+                                });
+
+                            };
                             _client.Connect(Ip, Port);
                             PrintInUI($"Подключение к ip:{ip}:{port}");
                             _reader = new StreamReader(_client.GetStream());
@@ -224,7 +239,7 @@ namespace ChatClientWPF.ViewModels
             {
                 return new AsyncCommand(() =>
                 {
-                    
+
                     //JSaver.Save();
                     return SendMsgAsync(Message);
 
@@ -317,6 +332,7 @@ namespace ChatClientWPF.ViewModels
                         Command = _commandsHandler.CommandToString(TcpCommands.Message),
                         Argument = message,
                         UserName = UserName,
+                        // заглушка для сообщения от клиента
                         IPAddress = "192.168.1.1",
                     };
                     PrintInUI(cmdObj);
@@ -345,7 +361,7 @@ namespace ChatClientWPF.ViewModels
                     });
                     PrintInUI($"Отправка файла: {fileName}");
                     _dataTransfeHandler.SendBigSizeTCP(cmdJs);
-                    _dataTransfeHandler.SendBigSizeFileTCP(fileName);
+                    _dataTransfeHandler.SendBigSizeFileTCP2(fileName);
 
                     PrintInUI($"Файл отправлен: {fileName}");
                     Message = string.Empty;

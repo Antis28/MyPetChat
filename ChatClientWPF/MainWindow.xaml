@@ -49,6 +49,7 @@
                 </TextBox.InputBindings>
             </TextBox>
         </UniformGrid>
+        
 
     </Grid>
 </Window>
