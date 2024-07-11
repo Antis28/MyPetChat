@@ -13,6 +13,8 @@ namespace ChatClientWPF.Handlers
         public delegate void Complet(bool ifComplete);
         public delegate void Progress(string message, int procent);
 
+        private int procent;
+
         /// <summary>
         /// Событие на завершение копирования файла
         /// </summary>
@@ -28,6 +30,10 @@ namespace ChatClientWPF.Handlers
         // Значение этой переменной можно изменить во время работы программы.
         public int BufferLenght { get; set; }
 
+        public FileCopy()
+        {
+            BufferLenght = 8192;
+        }
 
         /// <summary>
         /// Копирование файла
@@ -46,6 +52,7 @@ namespace ChatClientWPF.Handlers
                 //Отправляем сообщение что процесс копирования закончен неудачно
                 if (OnComplete != null) OnComplete(false);
             }
+            procent = 0;
         }
         public void CopyFile(FileStream sourceFile, NetworkStream destinationFile)
         {
@@ -167,8 +174,6 @@ namespace ChatClientWPF.Handlers
 
         private bool ReadFromBufferNetwork(ref long totalBytesRead, ref int numReads, FileStream sourceStream, NetworkStream destinationStream)
         {
-
-            BufferLenght = (int)sourceStream.Length / 100;
             //Создаем буфер по размеру исходного файла
             //В буфер будем записывать информацию из файла
             Byte[] streamBuffer = new Byte[BufferLenght];
@@ -226,13 +231,28 @@ namespace ChatClientWPF.Handlers
             string message = string.Empty;
             double pctDone = (double)((double)totalBytesRead / (double)sLenght);
             var c = (int)(pctDone * 100);
-            //message = string.Format("Считано: {0} из {1}. Всего {2}%",
-            //    totalBytesRead,
-            //    sLenght,
-            //    (int)(pctDone * 100));
-            message = $"Считано: {totalBytesRead} из {sLenght}. Всего {(int)(pctDone * 100)}%";
+            // Выводить только кратно 10 процентам
+            if (procent < c && c % 10 == 0)
+            {
+                procent = c;
+            }
+            else
+            {
+                return;
+            }
+
+            if (sLenght / 1024 < 1000)
+            {
+                //Выводить в килобайтах
+                message = $"Считано: {totalBytesRead / 1000}KB из {sLenght / 1000}KB. Всего {(int)(pctDone * 100)}%";
+            }
+            else
+                //Выводить в мегабайтах
+                message = $"Считано: {totalBytesRead / 1000 / 1000}MB из {sLenght / 1000 / 1000}MB. Всего {(int)(pctDone * 100)}%";
+
+
             //Отправляем сообщение подписавшимя на него
-            if (OnProgress != null && c > 0) OnProgress(message, (int)(pctDone * 100));
+            if (OnProgress != null && c > 0) OnProgress(message, c);
         }
     }
 }
