@@ -19,7 +19,8 @@
             <Button x:Name="btnConDiscon" Command="{Binding ConnectCommand}" Content="Подключить" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="100"  FontSize="16"/>
             <Button  Command="{Binding GetUsersCommand}" Content="Users" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
             <Button x:Name="btnOpenFile" Command="{Binding OpenFileCommand}" Content="open file" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
-            <ProgressBar HorizontalAlignment="Left" Height="15"  Width="150" Value="{Binding prgressCopyFile}" />
+            <ProgressBar HorizontalAlignment="Left" Height="15"  Width="150" Maximum="100" Value="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Text="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}"/>
         </UniformGrid>
     </StackPanel>
 </UserControl>

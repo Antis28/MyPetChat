@@ -51,7 +51,7 @@ namespace ChatClientWPF.ViewModels
         //}
 
         [GenerateProperty]
-        public int prgressCopyFile;
+        public int progressCopyFile;
 
         [GenerateProperty]
         string message;
@@ -164,7 +164,7 @@ namespace ChatClientWPF.ViewModels
                                 RunInUi(() =>
                                 {
                                     chat.Add(new() { UserName = "System", Argument = x });
-                                    prgressCopyFile = y;
+                                    ProgressCopyFile = y;
                                 });
 
                             };
