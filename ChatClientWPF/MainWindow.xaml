@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
         Closing="Window_Closing"
-        Title="MainWindow" MinHeight="400" MinWidth="600" MaxWidth="800"  Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" MinHeight="400" MaxHeight="700" MinWidth="600" MaxWidth="800"  Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     
     <Window.DataContext>
         <viewmodels:MainViewModel/>
