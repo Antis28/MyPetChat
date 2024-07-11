@@ -73,10 +73,12 @@
     <Compile Include="Handlers\CommandConverter.cs" />
     <Compile Include="Handlers\DataTransfeHandler.cs" />
     <Compile Include="Handlers\FileDialogs.cs" />
+    <Compile Include="Handlers\JSaver.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Models\ChatCommands.cs" />
     <Compile Include="Models\ClientObject.cs" />
     <Compile Include="Models\CommandMessage.cs" />
+    <Compile Include="Models\ServerSettings.cs" />
     <Compile Include="Models\TcpCommands.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\ChatAndUsers.xaml.cs">

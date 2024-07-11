@@ -1,4 +1,5 @@
-﻿using ChatClientWPF.Models;
+﻿using ChatClientWPF.Handlers;
+using ChatClientWPF.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -82,7 +83,7 @@ namespace TcpServer.Handlers
             using (var file = new StreamReader("Commands.json", Encoding.UTF8))
             {
                 var t = file.ReadToEnd();
-                _chatCommands = JsonConvert.DeserializeObject<ChatCommands>(t);
+                _chatCommands = JSaver.Load<ChatCommands>(t);
             }
         }
     }

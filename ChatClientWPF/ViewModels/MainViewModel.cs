@@ -1,5 +1,6 @@
 ﻿using ChatClientWPF.Handlers;
 using ChatClientWPF.Models;
+using ChatClientWPF.Properties;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using System;
@@ -105,16 +106,39 @@ namespace ChatClientWPF.ViewModels
         CommandConverter _commandsHandler = new CommandConverter();
         DataTransfeHandler _dataTransfeHandler;
 
+        ServerSettings settings;
+
         [GenerateCommand]
         void Login() => Status = "User: " + userName;
         bool CanLogin() => !string.IsNullOrEmpty(userName);
 
         public MainViewModel()
         {
-            ip = "192.168.1.105";
-            port = 5050;
-            userName = RandomeUserName();
+            InitSettings();
             StartClient();
+        }
+
+        private void InitSettings()
+        {
+            if (JSaver.SettingExists())
+            {
+                settings = JSaver.LoadSetting<ServerSettings>();
+                
+            }
+            else
+            {
+                settings = new ServerSettings()
+                {
+                    Ip = "192.168.1.105",
+                    Port = 5050,
+                    UserName = RandomeUserName(),
+                };
+                JSaver.Save(settings);
+            }
+
+            ip = settings.Ip;
+            port = settings.Port;
+            userName = settings.UserName;
         }
 
         public AsyncCommand ConnectCommand
@@ -200,6 +224,8 @@ namespace ChatClientWPF.ViewModels
             {
                 return new AsyncCommand(() =>
                 {
+                    
+                    //JSaver.Save();
                     return SendMsgAsync(Message);
 
                     //});
