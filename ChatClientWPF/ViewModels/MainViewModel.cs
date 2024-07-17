@@ -8,8 +8,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Windows;
 using TcpServer.Handlers;
 using TcpServer.Models;
 
@@ -126,15 +128,17 @@ namespace ChatClientWPF.ViewModels
             if (JSaver.SettingExists())
             {
                 settings = JSaver.LoadSetting<ServerSettings>();
-
             }
             else
-            {
+            {  
                 settings = new ServerSettings()
                 {
                     Ip = "192.168.1.105",
                     Port = 5050,
                     UserName = RandomeUserName(),
+                    ClientIpStart = "192",
+                    ClientIpEnd = "1",
+                    AddressFamily = AddressFamily.InterNetwork,
                 };
                 JSaver.Save(settings);
             }
@@ -310,17 +314,43 @@ namespace ChatClientWPF.ViewModels
 
         private void Logining()
         {
+            string hostIp = GetClientIp();
+
             var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
             {
                 Command = "Login",
                 Argument = string.Empty,
-                IPAddress = "0",
+                IPAddress = hostIp,
                 UserName = userName,
             });
             _dataTransfeHandler.SendBigSizeTCP(cmd);
 
             GetUsers();
         }
+
+        private string GetClientIp()
+        {
+            var hostIp = "127.0.0.1";
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+
+
+            foreach (var ip in host.AddressList)
+            {
+                var isInterNet = ip.AddressFamily == settings.AddressFamily;
+                var IsStartWith192 = ip.ToString().StartsWith(settings.ClientIpStart);
+                var IsEndNotWithOne = !ip.ToString().EndsWith(settings.ClientIpEnd);
+
+
+                if (isInterNet && IsStartWith192 & IsEndNotWithOne)
+                {
+                    hostIp = ip.ToString();
+                    break;
+                }
+            }
+
+            return hostIp;
+        }
+
         private Task SendMsgAsync(string msg)
         {
             return Task.Factory.StartNew(() =>
