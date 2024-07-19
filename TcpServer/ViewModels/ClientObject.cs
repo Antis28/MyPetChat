@@ -20,7 +20,9 @@ namespace TcpServer.ViewModels
     internal class ClientObject
     {
         public string Id { get; } = Guid.NewGuid().ToString();
-        public string UserName { get; set; }        
+        public string UserName { get; set; }
+
+        public string IPAddress { get; set; }
 
         ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
         CommandConverter _commandsHandler = new CommandConverter();
@@ -38,7 +40,7 @@ namespace TcpServer.ViewModels
             _server = serverObject;
             _logger = logger;
             _fileHandler = new(_client, _logger);
-            _dataTransferHandler = new(_client, _logger);        
+            _dataTransferHandler = new(_client, _logger);
         }
 
         public void Process()
@@ -67,20 +69,21 @@ namespace TcpServer.ViewModels
                 _logger.ShowMessage(message);
                 Close();
             }
-        }       
+        }
 
         private void Loginning(CommandMessage cmd)
         {
             UserName = cmd.UserName;
             if (!string.IsNullOrWhiteSpace(UserName))
             {
+                IPAddress = cmd.IPAddress;
                 var message = $"вошел в чат!";
                 // посылаем сообщение о входе в чат всем подключенным пользователям
                 _logger.ShowMessage($"{UserName}: {message}");
-               
-                var cmdMessage = NewCommand(TcpCommands.Login, message);                
+
+               var cmdMessage = NewCommand(TcpCommands.Login, message, cmd.IPAddress);
                 _server.BroadcastMessage(cmdMessage, Id);
-                cmdMessage = NewCommand(TcpCommands.LoginSuccess, "Подключение успешно!");
+                cmdMessage = NewCommand(TcpCommands.LoginSuccess, "Подключение успешно!", cmd.IPAddress);
                 Send(cmdMessage);
             }
             else
@@ -128,7 +131,7 @@ namespace TcpServer.ViewModels
         /// Отправить список пользователей
         /// </summary>
         private void SendUserList()
-        {           
+        {
             var argument = JsonConvert.SerializeObject(_server.Clients, Formatting.None);
             var message = NewCommand(TcpCommands.GetUsers, argument);
             Send(message);
@@ -155,7 +158,7 @@ namespace TcpServer.ViewModels
             _client.Close();
         }
 
-        private string NewCommand(TcpCommands commandName, string argument = null)
+        private string NewCommand(TcpCommands commandName, string argument = null, string ipAddress = null)
         {
             return _chatJsonConverter.WriteToJson(new CommandMessage()
             {
@@ -163,6 +166,7 @@ namespace TcpServer.ViewModels
                 UserName = UserName,
                 Argument = argument,
                 UserID = Id,
+                IPAddress = ipAddress,
             });
         }
     }

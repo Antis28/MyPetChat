@@ -15,6 +15,7 @@ namespace ChatClientWPF.Models
         {
             UserName = name;
             Id = "-1";
+            IPAddress = "127.0.0.1";
         }
 
         public string Id { get; set; }
@@ -31,6 +32,8 @@ namespace ChatClientWPF.Models
                 }
             }
         }
+
+        public string IPAddress { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
