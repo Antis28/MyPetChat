@@ -45,6 +45,8 @@ namespace CommonLibrary
                 return TcpCommands.FileTransfer;
             if (searchCommand == _chatCommands.UpdateUserName)
                 return TcpCommands.UpdateUserName;
+            if (searchCommand == _chatCommands.LoginSuccess)
+                return TcpCommands.LoginSuccess;
 
             throw new Exception("Команда не распознана");
         }
