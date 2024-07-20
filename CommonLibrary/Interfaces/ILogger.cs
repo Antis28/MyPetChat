@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClientWPF.Interfaces
+namespace CommonLibrary.Interfaces
 {
     public interface ILogger
     {

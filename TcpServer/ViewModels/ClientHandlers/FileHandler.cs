@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CommonLibrary;
+using CommonLibrary.Interfaces;
+using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using TcpServer.Models;
 
 namespace TcpServer.ViewModels.ClientHandlers
 {

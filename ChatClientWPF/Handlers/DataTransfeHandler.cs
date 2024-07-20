@@ -1,4 +1,4 @@
-﻿using ChatClientWPF.Interfaces;
+﻿using CommonLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

@@ -76,11 +76,8 @@
     <Compile Include="Handlers\FileDialogs.cs" />
     <Compile Include="Handlers\JSaver.cs" />
     <Compile Include="Handlers\WpfLogger.cs" />
-    <Compile Include="Interfaces\ICommand.cs" />
-    <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Models\ChatCommands.cs" />
     <Compile Include="Models\ClientObject.cs" />
-    <Compile Include="Models\CommandMessage.cs" />
     <Compile Include="Models\ServerSettings.cs" />
     <Compile Include="Models\TcpCommands.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -182,6 +179,12 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\DevExpress.Mvvm.CodeGenerators.22.1.1\analyzers\dotnet\cs\DevExpress.Mvvm.CodeGenerators.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj">
+      <Project>{f900818a-d4d0-4908-8406-9c2a609e7bcc}</Project>
+      <Name>CommonLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

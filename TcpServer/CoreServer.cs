@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TcpServer.Handlers;
 using TcpServer.ViewModels;
+using CommonLibrary;
+using CommonLibrary.Interfaces;
 
 
 namespace TcpServer

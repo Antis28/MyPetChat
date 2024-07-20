@@ -1,6 +1,7 @@
 ﻿using ChatClientWPF.Handlers;
 using ChatClientWPF.Models;
 using ChatClientWPF.Properties;
+using CommonLibrary;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using System;
@@ -37,20 +38,6 @@ namespace ChatClientWPF.ViewModels
         [GenerateProperty]
         ObservableCollection<ClientObject> userNames = new();
 
-        //ObservableCollection<ClientObject> _userNames;
-
-        //public ObservableCollection<ClientObject> UserNames        
-        //{
-        //    get { return _userNames; }
-        //    set
-        //    {
-        //        if (_userNames != value)
-        //        {
-        //            _userNames = value;
-        //            //RaisePropertyChanged(nameof(UserNames));
-        //        }
-        //    }
-        //}
 
         [GenerateProperty]
         public int progressCopyFile;
@@ -104,6 +91,15 @@ namespace ChatClientWPF.ViewModels
             }
         }
 
+        public ClientObject _ItemItem;
+        public ClientObject ItemItem
+        {            
+            set
+            {
+                _ItemItem = value;
+            }
+        }
+
         TcpClient _client;
         StreamReader _reader;
         StreamWriter _writer;
@@ -130,7 +126,7 @@ namespace ChatClientWPF.ViewModels
                 settings = JSaver.LoadSetting<ServerSettings>();
             }
             else
-            {  
+            {
                 settings = new ServerSettings()
                 {
                     Ip = "192.168.1.105",
@@ -163,7 +159,7 @@ namespace ChatClientWPF.ViewModels
 
 
                             _dataTransfeHandler = new DataTransfeHandler(_client);
-                            _dataTransfeHandler.OnProgress += (x, y) => 
+                            _dataTransfeHandler.OnProgress += (x, y) =>
                             {
                                 RunInUi(() =>
                                 {
