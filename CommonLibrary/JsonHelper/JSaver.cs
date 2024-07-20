@@ -5,7 +5,7 @@ using System.IO;
 
 namespace ChatClientWPF.Handlers
 {
-    internal class JSaver
+    public class JSaver
     {
         static string path = "Settings.json";
 
@@ -31,11 +31,8 @@ namespace ChatClientWPF.Handlers
 
             if (!SettingExists())
             {
-                // TODO: Переделать в логгер ECS(DI)
-                var message = "Файл настроек команд не существует - settings.json";
-                //Main.Logger.ShowMessage(message);
+                var message = "Файл настроек команд не существует - settings.json";               
                 throw new Exception(message);
-               // return commandSettings;
             }
 
             // deserialize JSON directly from a file

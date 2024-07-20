@@ -72,7 +72,6 @@
     <Compile Include="Handlers\DataTransfeHandler.cs" />
     <Compile Include="Handlers\FileCopy.cs" />
     <Compile Include="Handlers\FileDialogs.cs" />
-    <Compile Include="Handlers\JSaver.cs" />
     <Compile Include="Handlers\WpfLogger.cs" />
     <Compile Include="Models\ClientObject.cs" />
     <Compile Include="Models\ServerSettings.cs" />
