@@ -1,16 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using TcpServer.Models;
-using System.IO;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace TcpServer.Handlers
-{
-    internal class CommandConverter
+
+namespace CommonLibrary
+{  
+    public class CommandConverter
     {
         #region commands        
         private const string closeCommand = "Close connection";

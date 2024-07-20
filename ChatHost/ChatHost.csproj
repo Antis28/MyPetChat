@@ -58,6 +58,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj">
+      <Project>{f900818a-d4d0-4908-8406-9c2a609e7bcc}</Project>
+      <Name>CommonLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TcpServer\TcpServer.csproj">
       <Project>{62f47857-983b-4a36-9828-2107639e8561}</Project>
       <Name>TcpServer</Name>

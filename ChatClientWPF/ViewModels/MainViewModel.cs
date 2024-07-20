@@ -1,6 +1,5 @@
 ﻿using ChatClientWPF.Handlers;
 using ChatClientWPF.Models;
-using ChatClientWPF.Properties;
 using CommonLibrary;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
@@ -12,9 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using System.Windows;
 using TcpServer.Handlers;
-using TcpServer.Models;
 
 namespace ChatClientWPF.ViewModels
 {

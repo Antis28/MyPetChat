@@ -45,9 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\CommandConverter.cs" />
     <Compile Include="Models\ChatCommands.cs" />
-    <Compile Include="Models\TcpCommands.cs" />
     <Compile Include="ViewModels\ClientHandlers\DataTransfeHandler.cs" />
     <Compile Include="ViewModels\ClientHandlers\FileHandler.cs" />
     <Compile Include="ViewModels\ConnectedClient.cs" />

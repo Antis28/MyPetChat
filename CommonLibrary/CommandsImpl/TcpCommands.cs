@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TcpServer.Models
+namespace CommonLibrary
 {
-    internal enum TcpCommands
+    public enum TcpCommands
     {
         CloseConnection,
         Login,

@@ -1,5 +1,5 @@
-﻿using System;
-using TcpServer;
+﻿using CommonLibrary.Interfaces;
+using System;
 
 namespace ChatHost
 {

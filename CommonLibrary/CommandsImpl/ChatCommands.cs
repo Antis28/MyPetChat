@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClientWPF.Models
+namespace CommonLibrary
 {
-    internal class ChatCommands
+    public class ChatCommands
     {
         [JsonProperty("Login")]
         public string Login { get; set; }
