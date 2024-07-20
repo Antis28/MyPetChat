@@ -1,15 +1,9 @@
 ﻿using CommonLibrary.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.ServiceModel.Channels;
 using System.Text;
-using System.Threading.Tasks;
-using TcpServer;
 using static ChatClientWPF.Handlers.FileCopy;
 
 namespace ChatClientWPF.Handlers

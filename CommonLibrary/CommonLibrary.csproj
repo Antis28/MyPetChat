@@ -51,6 +51,7 @@
     <Compile Include="CommandsImpl\TcpCommands.cs" />
     <Compile Include="Interfaces\ICommandMessage.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
+    <Compile Include="JsonHelper\ChatJsonConverter.cs" />
     <Compile Include="JsonHelper\JSaver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

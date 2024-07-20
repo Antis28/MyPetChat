@@ -4,8 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Net.Sockets;
 using System.Threading;
-using TcpServer.Handlers;
-using TcpServer.Models;
 using TcpServer.ViewModels.ClientHandlers;
 
 namespace TcpServer.ViewModels

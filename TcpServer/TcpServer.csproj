@@ -50,7 +50,6 @@
     <Compile Include="ViewModels\ClientHandlers\FileHandler.cs" />
     <Compile Include="ViewModels\ConnectedClient.cs" />
     <Compile Include="CoreServer.cs" />
-    <Compile Include="Handlers\ChatJsonConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ClientObject.cs" />
     <Compile Include="ViewModels\ServerObject.cs" />
@@ -65,7 +64,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <Folder Include="Handlers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
