@@ -30,6 +30,10 @@ namespace CommonLibrary
 
 
         #region Отправка данных
+        /// <summary>
+        /// Отправка файла
+        /// </summary>
+        /// <param name="fileName"></param>
         public void SendBigSizeFileTCP2(string fileName)
         {
             var fileCopyInstance = new FileCopy();
@@ -82,6 +86,7 @@ namespace CommonLibrary
 
         /// <summary>
         /// Отправка данных серверу
+        /// Отправляем комманду в формате JSON
         /// </summary>
         /// <param name="cmdJs"></param>
         public void SendBigSizeTCP(string cmdJs)

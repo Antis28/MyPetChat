@@ -382,7 +382,9 @@ namespace ChatClientWPF.ViewModels
                         Argument = System.IO.Path.GetFileName(fileName)
                     });
                     PrintInUI($"Отправка файла: {fileName}");
+                    // Отправлям команду, что мы будем передавать файл
                     _dataTransfeHandler.SendBigSizeTCP(cmdJs);
+                    // Оправляем сам файл
                     _dataTransfeHandler.SendBigSizeFileTCP2(fileName);
 
                     PrintInUI($"Файл отправлен: {fileName}");

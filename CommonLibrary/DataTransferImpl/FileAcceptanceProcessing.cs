@@ -7,21 +7,26 @@ using System.Net.Sockets;
 
 namespace TcpServer.ViewModels.ClientHandlers
 {
-    public class FileHandler
+    /// <summary>
+    /// Обработка приема файла
+    /// </summary>
+    public class FileAcceptanceProcessing
     {
         TcpClient _client;
         ILogger _logger;
 
-        public FileHandler(TcpClient tcpClient, ILogger logger)
+        public FileAcceptanceProcessing(TcpClient tcpClient, ILogger logger)
         {
             _client = tcpClient;
             _logger = logger;
         }
-        
+
+
         /// <summary>
         /// Принять файл
+        /// Где-то мы распознаем комманду на прием файла и переходим сюда
         /// </summary>
-        /// <param name="savePath"></param>
+        /// <param name="cmd"></param>
         public void ReceiveFile(CommandMessage cmd)
         {
             string savePath = cmd.Argument;

@@ -22,7 +22,7 @@ namespace TcpServer.ViewModels
         TcpClient _client;
         ServerObject _server; // объект сервера
 
-        FileHandler _fileHandler;
+        FileAcceptanceProcessing _fileHandler;
         DataTransfeHandler _dataTransferHandler;
 
         public ClientObject(TcpClient tcpClient, ServerObject serverObject, ILogger logger)

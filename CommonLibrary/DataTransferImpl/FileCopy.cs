@@ -9,8 +9,11 @@ using System.Threading.Tasks;
 namespace CommonLibrary
 {
     public delegate void Complete(bool ifComplete);
-    public delegate void Progress(string message, int procent);
+    public delegate void Progress(string message, int percent);
 
+    /// <summary>
+    /// Реализация копирование файла с индикатором прогреса и завершения
+    /// </summary>
     public class FileCopy
     {
         private int procent;
@@ -34,26 +37,7 @@ namespace CommonLibrary
         {
             BufferLenght = 8192;
         }
-
-        /// <summary>
-        /// Копирование файла
-        /// </summary>
-        /// <param name="sourceFile">Путь к исходному файлу</param>
-        /// <param name="destinationFile">Путь к целевому файлу</param>
-        public void CopyFile(string sourceFile, string destinationFile)
-        {
-            try
-            {
-                CopyFromTo(sourceFile, destinationFile);
-            }
-            catch (Exception e)
-            {
-                //System.Windows.Forms.MessageBox.Show("Возникла следующая ошибка при копировании:\n" + e.Message);
-                //Отправляем сообщение что процесс копирования закончен неудачно
-                if (OnComplete != null) OnComplete(false);
-            }
-            procent = 0;
-        }
+                
         public void CopyFile(FileStream sourceFile, NetworkStream destinationFile)
         {
             try
@@ -68,49 +52,14 @@ namespace CommonLibrary
             }
         }
 
-        private void CopyFromTo(string sourceFile, string destinationFile)
-        {
-            //Создаем буфер по размеру исходного файла
-            //В буфер будем записывать информацию из файла
-            Byte[] streamBuffer = new Byte[BufferLenght];
-
-            //Общее количество считанных байт
-            long totalBytesRead = 0;
-
-            //Количество считываний
-            //Используется для задания периода отправки сообщений
-            int numReads = 0;
-
-            //Готовим поток для исходного файла
-            using (FileStream sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read))
-            {
-                //Получаем длину исходного файла
-                long sLenght = sourceStream.Length;
-                //Готовим поток для целевого файла
-                using (FileStream destinationStream = new FileStream(destinationFile, FileMode.Create, FileAccess.Write))
-                {
-                    var isReadable = true;
-                    //Читаем из буфера и записываем в целевой файл
-                    while (isReadable) //Из цикла выйдем по окончанию копирования файла
-                    {
-                        isReadable = ReadFromBuffer(ref totalBytesRead, ref numReads, sourceStream, destinationStream);
-                    }
-                }
-            }
-            //Отправляем сообщение что процесс копирования закончен удачно
-            if (OnComplete != null) OnComplete(true);
-        }
-
         private void CopyFromToNetwork(FileStream sourceStream, NetworkStream destinationStream)
         {
-
             //Общее количество считанных байт
             long totalBytesRead = 0;
 
             //Количество считываний
             //Используется для задания периода отправки сообщений
             int numReads = 0;
-
 
             //Готовим поток для целевого файла
             var isReadable = true;
@@ -122,54 +71,6 @@ namespace CommonLibrary
 
             //Отправляем сообщение что процесс копирования закончен удачно
             if (OnComplete != null) OnComplete(true);
-        }
-
-        private bool ReadFromBuffer(ref long totalBytesRead, ref int numReads, FileStream sourceStream, FileStream destinationStream)
-        {
-            //Получаем длину исходного файла
-            long sLenght = sourceStream.Length;
-
-            //Создаем буфер по размеру исходного файла
-            //В буфер будем записывать информацию из файла
-            Byte[] streamBuffer = new Byte[BufferLenght];
-
-            //Увеличиваем на единицу количество считываний
-            numReads++;
-            //Записываем в буфер streamBuffer BufferLenght байт
-            //bytesRead содержит количество записанных байт
-            //это количество не может быть больше заданного BufferLenght
-            int bytesRead = sourceStream.Read(streamBuffer, 0, BufferLenght);
-
-            //Если ничего не было считано
-            if (bytesRead == 0)
-            {
-                //Записываем информацию о процессе
-                getInfo(sLenght, sLenght);
-                //и выходим из цикла
-                return false;
-            }
-
-            //Записываем данные буфера streamBuffer в целевой файл
-            destinationStream.Write(streamBuffer, 0, bytesRead);
-            //Для статистики запоминаем сколько уже байт записали
-            totalBytesRead += bytesRead;
-
-            // Если количество считываний кратно 10
-            if (numReads % 10 == 0)
-            {
-                //Записываем информацию о процессе
-                getInfo(totalBytesRead, sLenght);
-            }
-
-            //Если количество считанных байт меньше буфера
-            //Значит это конец
-            if (bytesRead < BufferLenght)
-            {
-                //Записываем информацию о процессе
-                getInfo(totalBytesRead, sLenght);
-                return false;
-            }
-            return true;
         }
 
         private bool ReadFromBufferNetwork(ref long totalBytesRead, ref int numReads, FileStream sourceStream, NetworkStream destinationStream)
@@ -193,11 +94,11 @@ namespace CommonLibrary
             {
                 //Записываем информацию о процессе
                 getInfo(sLenght, sLenght);
-                //и выходим из цикла
+                //и выходим из цикла чтения
                 return false;
             }
 
-            //Записываем данные буфера streamBuffer в целевой файл
+            //Записываем данные буфера streamBuffer в целевой поток
             destinationStream.Write(streamBuffer, 0, bytesRead);
             //Для статистики запоминаем сколько уже байт записали
             totalBytesRead += bytesRead;
@@ -254,5 +155,112 @@ namespace CommonLibrary
             //Отправляем сообщение подписавшимя на него
             if (OnProgress != null && c > 0) OnProgress(message, c);
         }
+
+
+
+
+
+
+
+        #region Другие способы копирования файлов (в файловом потоке)
+        /// <summary>
+        /// Копирование файла
+        /// </summary>
+        /// <param name="sourceFile">Путь к исходному файлу</param>
+        /// <param name="destinationFile">Путь к целевому файлу</param>
+        public void CopyFile(string sourceFile, string destinationFile)
+        {
+            try
+            {
+                CopyFromTo(sourceFile, destinationFile);
+            }
+            catch (Exception e)
+            {
+                //System.Windows.Forms.MessageBox.Show("Возникла следующая ошибка при копировании:\n" + e.Message);
+                //Отправляем сообщение что процесс копирования закончен неудачно
+                if (OnComplete != null) OnComplete(false);
+            }
+            procent = 0;
+        }
+        private void CopyFromTo(string sourceFile, string destinationFile)
+        {
+            //Создаем буфер по размеру исходного файла
+            //В буфер будем записывать информацию из файла
+            Byte[] streamBuffer = new Byte[BufferLenght];
+
+            //Общее количество считанных байт
+            long totalBytesRead = 0;
+
+            //Количество считываний
+            //Используется для задания периода отправки сообщений
+            int numReads = 0;
+
+            //Готовим поток для исходного файла
+            using (FileStream sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read))
+            {
+                //Получаем длину исходного файла
+                long sLenght = sourceStream.Length;
+                //Готовим поток для целевого файла
+                using (FileStream destinationStream = new FileStream(destinationFile, FileMode.Create, FileAccess.Write))
+                {
+                    var isReadable = true;
+                    //Читаем из буфера и записываем в целевой файл
+                    while (isReadable) //Из цикла выйдем по окончанию копирования файла
+                    {
+                        isReadable = ReadFromBuffer(ref totalBytesRead, ref numReads, sourceStream, destinationStream);
+                    }
+                }
+            }
+            //Отправляем сообщение что процесс копирования закончен удачно
+            if (OnComplete != null) OnComplete(true);
+        }
+        private bool ReadFromBuffer(ref long totalBytesRead, ref int numReads, FileStream sourceStream, FileStream destinationStream)
+        {
+            //Получаем длину исходного файла
+            long sLenght = sourceStream.Length;
+
+            //Создаем буфер по размеру исходного файла
+            //В буфер будем записывать информацию из файла
+            Byte[] streamBuffer = new Byte[BufferLenght];
+
+            //Увеличиваем на единицу количество считываний
+            numReads++;
+            //Записываем в буфер streamBuffer BufferLenght байт
+            //bytesRead содержит количество записанных байт
+            //это количество не может быть больше заданного BufferLenght
+            int bytesRead = sourceStream.Read(streamBuffer, 0, BufferLenght);
+
+            //Если ничего не было считано
+            if (bytesRead == 0)
+            {
+                //Записываем информацию о процессе
+                getInfo(sLenght, sLenght);
+                //и выходим из цикла
+                return false;
+            }
+
+            //Записываем данные буфера streamBuffer в целевой файл
+            destinationStream.Write(streamBuffer, 0, bytesRead);
+            //Для статистики запоминаем сколько уже байт записали
+            totalBytesRead += bytesRead;
+
+            // Если количество считываний кратно 10
+            if (numReads % 10 == 0)
+            {
+                //Записываем информацию о процессе
+                getInfo(totalBytesRead, sLenght);
+            }
+
+            //Если количество считанных байт меньше буфера
+            //Значит это конец
+            if (bytesRead < BufferLenght)
+            {
+                //Записываем информацию о процессе
+                getInfo(totalBytesRead, sLenght);
+                return false;
+            }
+            return true;
+        }
+        #endregion
     }
 }
