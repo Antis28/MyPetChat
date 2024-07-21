@@ -1,6 +1,7 @@
 ﻿using CommonLibrary;
 using CommonLibrary.Interfaces;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -15,6 +16,18 @@ namespace TcpServer.ViewModels.ClientHandlers
         TcpClient _client;
         ILogger _logger;
 
+        int percent;
+        /// <summary>
+        /// Событие на завершение копирования файла
+        /// </summary>
+        public event Complete OnComplete;
+
+        /// <summary>
+        /// Событие во время копирования
+        /// </summary>
+        public event Progress OnProgress;
+
+
         public FileAcceptanceProcessing(TcpClient tcpClient, ILogger logger)
         {
             _client = tcpClient;
@@ -27,22 +40,37 @@ namespace TcpServer.ViewModels.ClientHandlers
         /// Где-то мы распознаем комманду на прием файла и переходим сюда
         /// </summary>
         /// <param name="cmd"></param>
-        public void ReceiveFile(CommandMessage cmd)
+        public void ReceiveFile(string savePath)
         {
-            string savePath = cmd.Argument;
             var stream = _client.GetStream();
 
+            // формируем размер буфера для приема
             byte[] buf = new byte[65536];
+
+            //Читаем из буфера
             ReadBytes(sizeof(long), buf);
-            long remainingLength = IPAddress.NetworkToHostOrder(BitConverter.ToInt64(buf, 0));
+            //Получаем размер всего файла
+            long totalBytesRead = IPAddress.NetworkToHostOrder(BitConverter.ToInt64(buf, 0));
+            //Получаем размер, котрый осталось для копирования
+            long remainingLength = totalBytesRead;
 
             using var file = File.Create(savePath);
+            percent = 0;
             while (remainingLength > 0)
             {
+                // Длинна данных для чтения(что больше оставшиеся данные или буфер) 
                 int lengthToRead = (int)Math.Min(remainingLength, buf.Length);
+
                 ReadBytes(lengthToRead, buf);
+
+                // Пишем байты из буфера в файл
                 file.Write(buf, 0, lengthToRead);
                 remainingLength -= lengthToRead;
+
+
+                var curLen = totalBytesRead - remainingLength;
+                //Записываем информацию о процессе
+                getInfo(curLen, totalBytesRead);
             }
         }
 
@@ -53,7 +81,7 @@ namespace TcpServer.ViewModels.ClientHandlers
             while (readPos < howmuch)
             {
                 var actuallyRead = stream.Read(buf, readPos, howmuch - readPos);
-                if (actuallyRead == 0)
+                if (actuallyRead == 0)// Мы не смоги что-либо прочитать, выдаем исключение
                     throw new EndOfStreamException();
                 readPos += actuallyRead;
             }
@@ -76,6 +104,33 @@ namespace TcpServer.ViewModels.ClientHandlers
             }
             _logger.ShowMessage(savePath);
             fileStream.Close();
+        }
+
+
+        private void getInfo(long bytesRead, long totalLength)
+        {
+            //Формируем сообщение
+            string message = string.Empty;
+            double pctDone = (double)((double)bytesRead / (double)totalLength);
+            percent = (int)(pctDone * 100);
+            // Выводить только кратно 10 процентам
+            if (percent % 10 != 0)
+            {
+                return;
+            }
+
+            if (totalLength / 1024 < 1000)
+            {
+                //Выводить в килобайтах
+                message = $"Считано: {bytesRead / 1000}KB из {totalLength / 1000}KB. Всего {(int)(pctDone * 100)}%";
+            }
+            else
+                //Выводить в мегабайтах
+                message = $"Считано: {bytesRead / 1000 / 1000}MB из {totalLength / 1000 / 1000}MB. Всего {(int)(pctDone * 100)}%";
+
+
+            //Отправляем сообщение подписавшимся на него
+            if (OnProgress != null && percent > 0) OnProgress(message, percent);
         }
     }
 }

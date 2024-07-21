@@ -12,11 +12,11 @@ namespace CommonLibrary
     public delegate void Progress(string message, int percent);
 
     /// <summary>
-    /// Реализация копирование файла с индикатором прогреса и завершения
+    /// Реализация отправки файла с индикатором прогреса и завершения
     /// </summary>
-    public class FileCopy
+    public class FileSendingProcessing
     {
-        private int procent;
+        private int percent;
 
         /// <summary>
         /// Событие на завершение копирования файла
@@ -33,7 +33,7 @@ namespace CommonLibrary
         // Значение этой переменной можно изменить во время работы программы.
         public int BufferLenght { get; set; }
 
-        public FileCopy()
+        public FileSendingProcessing()
         {
             BufferLenght = 8192;
         }
@@ -133,9 +133,9 @@ namespace CommonLibrary
             double pctDone = (double)((double)totalBytesRead / (double)sLenght);
             var c = (int)(pctDone * 100);
             // Выводить только кратно 10 процентам
-            if (procent < c && c % 10 == 0)
+            if (percent < c && c % 10 == 0)
             {
-                procent = c;
+                percent = c;
             }
             else
             {
@@ -152,7 +152,7 @@ namespace CommonLibrary
                 message = $"Считано: {totalBytesRead / 1000 / 1000}MB из {sLenght / 1000 / 1000}MB. Всего {(int)(pctDone * 100)}%";
 
 
-            //Отправляем сообщение подписавшимя на него
+            //Отправляем сообщение подписавшимся на него
             if (OnProgress != null && c > 0) OnProgress(message, c);
         }
 
@@ -180,7 +180,7 @@ namespace CommonLibrary
                 //Отправляем сообщение что процесс копирования закончен неудачно
                 if (OnComplete != null) OnComplete(false);
             }
-            procent = 0;
+            percent = 0;
         }
         private void CopyFromTo(string sourceFile, string destinationFile)
         {

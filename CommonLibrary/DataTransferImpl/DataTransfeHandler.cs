@@ -36,7 +36,7 @@ namespace CommonLibrary
         /// <param name="fileName"></param>
         public void SendBigSizeFileTCP2(string fileName)
         {
-            var fileCopyInstance = new FileCopy();
+            var fileCopyInstance = new FileSendingProcessing();
 
             // получаем NetworkStream для взаимодействия с принимающей стороной
             var netDestinationStream = _client.GetStream();
