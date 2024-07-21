@@ -31,10 +31,10 @@ namespace CommonLibrary
 
         #region Отправка данных
         /// <summary>
-        /// Отправка файла
+        /// Отправка файла в сеть
         /// </summary>
         /// <param name="fileName"></param>
-        public void SendBigSizeFileTCP2(string fileName)
+        public void SendFromFileToNet(string fileName)
         {
             var fileCopyInstance = new FileSendingProcessing();
 
@@ -52,31 +52,7 @@ namespace CommonLibrary
                 fileCopyInstance.OnProgress += FileCopyInstance_OnProgress;
                 fileCopyInstance.BufferLenght = 4096;
                 fileCopyInstance.CopyFile(fileSourceStream, netDestinationStream);
-                
-                
             }
-            
-            //using (FileStream fileStream = File.OpenRead(fileName))
-            //{
-            //    // byte[] buffer = new byte[4096];
-            //    //int bytesRead;
-            //    var length = fileStream.Length;
-            //    byte[] size = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(length));
-            //    stream.Write(size, 0, size.Length);
-            //    // отправляем данные
-            //    fileStream.CopyTo(stream);
-            //    //stream.Write(data, 0, data.Length);
-            //}
-
-
-            //var f1 = size1;
-            //var f2 = data.Length;
-            //// определяем размер данных
-            //byte[] size = BitConverter.GetBytes(data.Length);
-            // отправляем размер данных
-            //stream.Write(size, 0, 4);
-            // отправляем данные
-            // stream.Write(data, 0, data.Length);
         }
 
         private void FileCopyInstance_OnProgress(string message, int procent)
@@ -105,11 +81,20 @@ namespace CommonLibrary
             stream.Write(data, 0, data.Length);
             // Console.WriteLine("Сообщение отправлено");
         }
-
         #endregion
-       
+
 
         #region Прием данных
+        /// <summary>
+        /// Прием строковых данных от клиента
+        /// </summary>
+        /// <returns></returns>
+        public string ReceivingBigBufferTCP()
+        {
+            var (data, byteLength) = ReceivingBigBufferRawDataTCP();
+            var message = Encoding.UTF8.GetString(data, 0, byteLength);
+            return message;
+        }
         /// <summary>
         /// Прием сырых данных от клиента
         /// </summary>
@@ -130,17 +115,6 @@ namespace CommonLibrary
             int byteLength = stream.Read(data, 0, size);
 
             return new Tuple<byte[], int>(data, byteLength);
-        }
-
-        /// <summary>
-        /// Прием строковых данных от клиента
-        /// </summary>
-        /// <returns></returns>
-        public string ReceivingBigBufferTCP()
-        {
-            var (data, byteLength) = ReceivingBigBufferRawDataTCP();
-            var message = Encoding.UTF8.GetString(data, 0, byteLength);
-            return message;
         }
         #endregion
 

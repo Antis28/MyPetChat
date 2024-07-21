@@ -385,7 +385,7 @@ namespace ChatClientWPF.ViewModels
                     // Отправлям команду, что мы будем передавать файл
                     _dataTransfeHandler.SendBigSizeTCP(cmdJs);
                     // Оправляем сам файл
-                    _dataTransfeHandler.SendBigSizeFileTCP2(fileName);
+                    _dataTransfeHandler.SendFromFileToNet(fileName);
 
                     PrintInUI($"Файл отправлен: {fileName}");
                     Message = string.Empty;
