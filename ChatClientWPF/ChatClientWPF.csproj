@@ -69,8 +69,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Handlers\DataTransfeHandler.cs" />
-    <Compile Include="Handlers\FileCopy.cs" />
     <Compile Include="Handlers\FileDialogs.cs" />
     <Compile Include="Handlers\WpfLogger.cs" />
     <Compile Include="Models\ClientObject.cs" />

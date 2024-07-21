@@ -468,6 +468,9 @@ namespace ChatClientWPF.ViewModels
                 Command = _commandsHandler.CommandToString(commandName),
                 UserName = UserName,
                 Argument = null,
+                IPAddress = null,
+                Recipient = null,
+                UserID = null,
             });
         }
 

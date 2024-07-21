@@ -6,19 +6,19 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClientWPF.Handlers
+namespace CommonLibrary
 {
-    internal class FileCopy
-    {
-        public delegate void Complet(bool ifComplete);
-        public delegate void Progress(string message, int procent);
+    public delegate void Complete(bool ifComplete);
+    public delegate void Progress(string message, int procent);
 
+    public class FileCopy
+    {
         private int procent;
 
         /// <summary>
         /// Событие на завершение копирования файла
         /// </summary>
-        public event Complet OnComplete;
+        public event Complete OnComplete;
 
         /// <summary>
         /// Событие во время копирования

@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ChatCommands.cs" />
-    <Compile Include="ViewModels\ClientHandlers\DataTransfeHandler.cs" />
     <Compile Include="ViewModels\ClientHandlers\FileHandler.cs" />
     <Compile Include="ViewModels\ConnectedClient.cs" />
     <Compile Include="CoreServer.cs" />
