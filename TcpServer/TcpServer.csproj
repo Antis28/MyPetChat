@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ChatCommands.cs" />
-    <Compile Include="ViewModels\ClientHandlers\FileHandler.cs" />
     <Compile Include="ViewModels\ConnectedClient.cs" />
     <Compile Include="CoreServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +61,8 @@
       <Name>CommonLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModels\ClientHandlers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

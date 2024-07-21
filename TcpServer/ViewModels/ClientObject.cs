@@ -104,7 +104,7 @@ namespace TcpServer.ViewModels
                     break;
                 case TcpCommands.FileTransfer:
                     // Принять файл от клиента
-                    _fileHandler.ReceiveFile1(cmd);
+                    _fileHandler.ReceiveFile(cmd);
                     break;
                 case TcpCommands.UpdateUserName:
                     if (UserName == cmd.UserName) break;

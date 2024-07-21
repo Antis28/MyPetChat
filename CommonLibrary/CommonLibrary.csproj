@@ -51,6 +51,7 @@
     <Compile Include="CommandsImpl\TcpCommands.cs" />
     <Compile Include="DataTransferImpl\DataTransfeHandler.cs" />
     <Compile Include="DataTransferImpl\FileCopy.cs" />
+    <Compile Include="DataTransferImpl\FileHandler.cs" />
     <Compile Include="Interfaces\ICommandMessage.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="JsonHelper\ChatJsonConverter.cs" />

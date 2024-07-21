@@ -7,7 +7,7 @@ using System.Net.Sockets;
 
 namespace TcpServer.ViewModels.ClientHandlers
 {
-    internal class FileHandler
+    public class FileHandler
     {
         TcpClient _client;
         ILogger _logger;
@@ -17,28 +17,12 @@ namespace TcpServer.ViewModels.ClientHandlers
             _client = tcpClient;
             _logger = logger;
         }
+        
         /// <summary>
         /// Принять файл
         /// </summary>
         /// <param name="savePath"></param>
-        public void ReceiveFile(string savePath)
-        {
-            NetworkStream stream = _client.GetStream();
-            FileStream fileStream = File.Create(savePath);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                fileStream.Write(buffer, 0, bytesRead);
-            }
-            _logger.ShowMessage(savePath);
-            fileStream.Close();
-        }
-        /// <summary>
-        /// Принять файл
-        /// </summary>
-        /// <param name="savePath"></param>
-        public void ReceiveFile1(CommandMessage cmd)
+        public void ReceiveFile(CommandMessage cmd)
         {
             string savePath = cmd.Argument;
             var stream = _client.GetStream();
@@ -68,6 +52,25 @@ namespace TcpServer.ViewModels.ClientHandlers
                     throw new EndOfStreamException();
                 readPos += actuallyRead;
             }
+        }
+
+
+        /// <summary>
+        /// Принять файл
+        /// </summary>
+        /// <param name="savePath"></param>
+        public void ReceiveFile0(string savePath)
+        {
+            NetworkStream stream = _client.GetStream();
+            FileStream fileStream = File.Create(savePath);
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                fileStream.Write(buffer, 0, bytesRead);
+            }
+            _logger.ShowMessage(savePath);
+            fileStream.Close();
         }
     }
 }

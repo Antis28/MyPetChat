@@ -28,62 +28,8 @@ namespace CommonLibrary
             _logger = logger;
         }
 
-        /// <summary>
-        /// Прием данных от сервера
-        /// </summary>
-        /// <returns></returns>
-        public string ReceivingBigBufferTCP2()
-        {
-            // получаем объект NetworkStream для взаимодействия с клиентом
-            var stream = _client.GetStream();
-            // буфер для считывания размера данных
-            byte[] sizeBuffer = new byte[4];
-            // сначала считываем размер данных
-            var i = stream.Read(sizeBuffer, 0, sizeBuffer.Length);
-            // узнаем размер и создаем соответствующий буфер
-            int size = BitConverter.ToInt32(sizeBuffer, 0);
-            // создаем соответствующий буфер
-            byte[] data = new byte[size];
-            // считываем собственно данные
-            int bytes = stream.Read(data, 0, size);
 
-            var message = Encoding.UTF8.GetString(data, 0, bytes);
-            return message;
-        }
-
-
-        #region Отправка даных
-        /// <summary>
-        /// Отправка данных
-        /// </summary>
-        /// <param name="message">сообщение для отправки</param>
-        public void SendBigSizeFileTCP(string fileName)
-        {
-            // получаем NetworkStream для взаимодействия с принимающей стороной
-            var stream = _client.GetStream();
-            using (FileStream fileStream = File.OpenRead(fileName))
-            {
-                // byte[] buffer = new byte[4096];
-                //int bytesRead;
-                var length = fileStream.Length;
-                byte[] size = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(length));
-                stream.Write(size, 0, size.Length);
-                // отправляем данные
-                fileStream.CopyTo(stream);
-                //stream.Write(data, 0, data.Length);
-            }
-
-
-            //var f1 = size1;
-            //var f2 = data.Length;
-            //// определяем размер данных
-            //byte[] size = BitConverter.GetBytes(data.Length);
-            // отправляем размер данных
-            //stream.Write(size, 0, 4);
-            // отправляем данные
-            // stream.Write(data, 0, data.Length);
-        }
-
+        #region Отправка данных
         public void SendBigSizeFileTCP2(string fileName)
         {
             var fileCopyInstance = new FileCopy();
@@ -155,6 +101,79 @@ namespace CommonLibrary
             // Console.WriteLine("Сообщение отправлено");
         }
 
+        #endregion
+       
+
+        #region Прием данных
+        /// <summary>
+        /// Прием сырых данных от клиента
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<byte[], int> ReceivingBigBufferRawDataTCP()
+        {
+            // получаем объект NetworkStream для взаимодействия с клиентом
+            var stream = _client.GetStream();
+            // буфер для считывания размера данных
+            byte[] sizeBuffer = new byte[4];
+            // сначала считываем размер данных
+            var i = stream.Read(sizeBuffer, 0, sizeBuffer.Length);
+            // узнаем размер и создаем соответствующий буфер
+            int size = BitConverter.ToInt32(sizeBuffer, 0);
+            // создаем соответствующий буфер
+            byte[] data = new byte[size];
+            // считываем собственно данные
+            int byteLength = stream.Read(data, 0, size);
+
+            return new Tuple<byte[], int>(data, byteLength);
+        }
+
+        /// <summary>
+        /// Прием строковых данных от клиента
+        /// </summary>
+        /// <returns></returns>
+        public string ReceivingBigBufferTCP()
+        {
+            var (data, byteLength) = ReceivingBigBufferRawDataTCP();
+            var message = Encoding.UTF8.GetString(data, 0, byteLength);
+            return message;
+        }
+        #endregion
+
+
+
+
+        #region Отправка данных 2
+
+        /// <summary>
+        /// Отправка данных
+        /// </summary>
+        /// <param name="message">сообщение для отправки</param>
+        public void SendBigSizeFileTCP(string fileName)
+        {
+            // получаем NetworkStream для взаимодействия с принимающей стороной
+            var stream = _client.GetStream();
+            using (FileStream fileStream = File.OpenRead(fileName))
+            {
+                // byte[] buffer = new byte[4096];
+                //int bytesRead;
+                var length = fileStream.Length;
+                byte[] size = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(length));
+                stream.Write(size, 0, size.Length);
+                // отправляем данные
+                fileStream.CopyTo(stream);
+                //stream.Write(data, 0, data.Length);
+            }
+
+
+            //var f1 = size1;
+            //var f2 = data.Length;
+            //// определяем размер данных
+            //byte[] size = BitConverter.GetBytes(data.Length);
+            // отправляем размер данных
+            //stream.Write(size, 0, 4);
+            // отправляем данные
+            // stream.Write(data, 0, data.Length);
+        }
         public void SendBigSize(string text)
         {
             var socket = _client.Client;
@@ -178,11 +197,6 @@ namespace CommonLibrary
                 //stream.Close();
             }
         }
-        #endregion
-
-
-
-        #region Отправка данных 2
         /// <summary>
         /// Отправка данных клиенту
         /// </summary>
@@ -202,7 +216,6 @@ namespace CommonLibrary
             // отправляем данные
             stream.Write(data, 0, data.Length);
         }
-
         /// <summary>
         /// Server Buff handler
         /// Прием данных от клиента
@@ -240,42 +253,7 @@ namespace CommonLibrary
 
             return Encoding.Default.GetString(data);
         }
+
         #endregion
-
-        #region Прием данных 2
-        /// <summary>
-        /// Прием сырых данных от клиента
-        /// </summary>
-        /// <returns></returns>
-        public Tuple<byte[], int> ReceivingBigBufferRawDataTCP()
-        {
-            // получаем объект NetworkStream для взаимодействия с клиентом
-            var stream = _client.GetStream();
-            // буфер для считывания размера данных
-            byte[] sizeBuffer = new byte[4];
-            // сначала считываем размер данных
-            var i = stream.Read(sizeBuffer, 0, sizeBuffer.Length);
-            // узнаем размер и создаем соответствующий буфер
-            int size = BitConverter.ToInt32(sizeBuffer, 0);
-            // создаем соответствующий буфер
-            byte[] data = new byte[size];
-            // считываем собственно данные
-            int byteLength = stream.Read(data, 0, size);
-
-            return new Tuple<byte[], int>(data, byteLength);
-        }
-
-        /// <summary>
-        /// Прием строковых данных от клиента
-        /// </summary>
-        /// <returns></returns>
-        public string ReceivingBigBufferTCP()
-        {
-            var (data, byteLength) = ReceivingBigBufferRawDataTCP();
-            var message = Encoding.UTF8.GetString(data, 0, byteLength);
-            return message;
-        }
-        #endregion
-
     }
 }
