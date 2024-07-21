@@ -30,8 +30,12 @@ namespace TcpServer.ViewModels
             _client = tcpClient;
             _server = serverObject;
             _logger = logger;
+            
             _fileHandler = new(_client, _logger);
-            _dataTransferHandler = new(_client, _logger);
+            _fileHandler.OnProgress += (message, percent) => _logger.ShowMessage(message);
+            _fileHandler.OnComplete += (m, path) => _logger.ShowMessage($"Копирование завершено.\n{path}");
+            
+            _dataTransferHandler = new(_client);
         }
 
         public void Process()
@@ -105,8 +109,7 @@ namespace TcpServer.ViewModels
                 case TcpCommands.FileTransfer:
                     // Принять файл от клиента
                     string savePath = cmd.Argument;
-                    _fileHandler.OnProgress += (message, percent) => _logger.ShowMessage(message);
-                    _fileHandler.OnComplete += (m) => _logger.ShowMessage("Копирование завершено");
+                   
                     _fileHandler.ReceiveFile(savePath);
                     break;
                 case TcpCommands.UpdateUserName:

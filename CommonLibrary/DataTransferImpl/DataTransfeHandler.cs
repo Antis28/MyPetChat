@@ -1,5 +1,6 @@
 ﻿using CommonLibrary.Interfaces;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -10,22 +11,17 @@ namespace CommonLibrary
 {
     public class DataTransfeHandler
     {
-        ILogger _logger;
+
         int copyProgress;
         TcpClient _client;
 
-        public event Progress OnProgress;
+        public event Action<string, int> OnProgress;
+        public event Action<bool, string> OnComplete;
 
         public DataTransfeHandler(TcpClient client)
         {
-          //  _logger = logger;
-            _client = client;            
-        }
-
-        public DataTransfeHandler(TcpClient client, ILogger logger)
-        {
+            //  _logger = logger;
             _client = client;
-            _logger = logger;
         }
 
 
@@ -45,19 +41,15 @@ namespace CommonLibrary
             {
                 //Получаем длину исходного файла
                 long sLenght = fileSourceStream.Length;
-                
+
                 byte[] size = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(sLenght));
                 netDestinationStream.Write(size, 0, size.Length);
 
-                fileCopyInstance.OnProgress += FileCopyInstance_OnProgress;
+                fileCopyInstance.OnProgress += (message, procent) => { if (OnProgress != null) OnProgress(message, procent); };
+                fileCopyInstance.OnComplete += (isSuccess, path) => { if (OnComplete != null) OnComplete(isSuccess, fileName); };
                 fileCopyInstance.BufferLenght = 4096;
                 fileCopyInstance.CopyFile(fileSourceStream, netDestinationStream);
             }
-        }
-
-        private void FileCopyInstance_OnProgress(string message, int procent)
-        {
-            if (OnProgress != null) OnProgress(message, procent);
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CommonLibrary
 {
-    public delegate void Complete(bool ifComplete);
+    public delegate void Complete(bool isSuccess);
     public delegate void Progress(string message, int percent);
 
     /// <summary>
@@ -21,12 +21,12 @@ namespace CommonLibrary
         /// <summary>
         /// Событие на завершение копирования файла
         /// </summary>
-        public event Complete OnComplete;
+        public event Action<bool, string> OnComplete;
 
         /// <summary>
         /// Событие во время копирования
         /// </summary>
-        public event Progress OnProgress;
+        public event Action<string, int> OnProgress;
 
         // устанавливает размер порции или сколько за раз будет считано и записано информации.
         // Размер в байтах.
@@ -48,7 +48,7 @@ namespace CommonLibrary
             {
                 //System.Windows.Forms.MessageBox.Show("Возникла следующая ошибка при копировании:\n" + e.Message);
                 //Отправляем сообщение что процесс копирования закончен неудачно
-                if (OnComplete != null) OnComplete(false);
+                if (OnComplete != null) OnComplete(false, sourceFile.Name);
             }
         }
 
@@ -70,7 +70,7 @@ namespace CommonLibrary
             }
 
             //Отправляем сообщение что процесс копирования закончен удачно
-            if (OnComplete != null) OnComplete(true);
+            if (OnComplete != null) OnComplete(true, sourceStream.Name);
         }
 
         private bool ReadFromBufferNetwork(ref long totalBytesRead, ref int numReads, FileStream sourceStream, NetworkStream destinationStream)
@@ -131,17 +131,14 @@ namespace CommonLibrary
             //Формируем сообщение
             string message = string.Empty;
             double pctDone = (double)((double)totalBytesRead / (double)sLenght);
-            var c = (int)(pctDone * 100);
-            // Выводить только кратно 10 процентам
-            if (percent < c && c % 10 == 0)
-            {
-                percent = c;
-            }
-            else
+            var percentNow = (int)(pctDone * 100);
+            
+            // Выводить только кратно 10 процентам            
+            if (percentNow == 0 || percent == percentNow || (percentNow % 10 != 0))
             {
                 return;
             }
-
+            percent = percentNow;
             if (sLenght / 1024 < 1000)
             {
                 //Выводить в килобайтах
@@ -153,7 +150,7 @@ namespace CommonLibrary
 
 
             //Отправляем сообщение подписавшимся на него
-            if (OnProgress != null && c > 0) OnProgress(message, c);
+            if (OnProgress != null) OnProgress(message, percent);
         }
 
 
@@ -178,7 +175,7 @@ namespace CommonLibrary
             {
                 //System.Windows.Forms.MessageBox.Show("Возникла следующая ошибка при копировании:\n" + e.Message);
                 //Отправляем сообщение что процесс копирования закончен неудачно
-                if (OnComplete != null) OnComplete(false);
+                if (OnComplete != null) OnComplete(false, sourceFile);
             }
             percent = 0;
         }
@@ -212,7 +209,7 @@ namespace CommonLibrary
                 }
             }
             //Отправляем сообщение что процесс копирования закончен удачно
-            if (OnComplete != null) OnComplete(true);
+            if (OnComplete != null) OnComplete(true, sourceFile);
         }
         private bool ReadFromBuffer(ref long totalBytesRead, ref int numReads, FileStream sourceStream, FileStream destinationStream)
         {

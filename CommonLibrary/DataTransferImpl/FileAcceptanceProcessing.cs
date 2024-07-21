@@ -20,12 +20,12 @@ namespace TcpServer.ViewModels.ClientHandlers
         /// <summary>
         /// Событие на завершение копирования файла
         /// </summary>
-        public event Complete OnComplete;
+        public event Action<bool, string> OnComplete;
 
         /// <summary>
         /// Событие во время копирования
         /// </summary>
-        public event Progress OnProgress;
+        public event Action<string, int> OnProgress;
 
 
         public FileAcceptanceProcessing(TcpClient tcpClient, ILogger logger)
@@ -72,6 +72,8 @@ namespace TcpServer.ViewModels.ClientHandlers
                 //Записываем информацию о процессе
                 getInfo(curLen, totalBytesRead);
             }
+            
+            OnComplete?.Invoke(true, savePath);
         }
 
         void ReadBytes(int howmuch, byte[] buf)

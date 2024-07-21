@@ -89,7 +89,7 @@ namespace ChatClientWPF.ViewModels
 
         public ClientObject _ItemItem;
         public ClientObject ItemItem
-        {            
+        {
             set
             {
                 _ItemItem = value;
@@ -164,6 +164,18 @@ namespace ChatClientWPF.ViewModels
                                 });
 
                             };
+                            _dataTransfeHandler.OnComplete += (isSuccess, fileName) =>
+                            {
+                                if (isSuccess)
+                                {
+                                    PrintInUI($"Файл принят: {fileName} успешно.");
+                                }
+                                else
+                                {
+                                    PrintInUI($"Не удалось принять файл: {fileName}");
+                                }
+                            };
+
                             _client.Connect(Ip, Port);
                             PrintInUI($"Подключение к ip:{ip}:{port}");
                             _reader = new StreamReader(_client.GetStream());
@@ -386,8 +398,6 @@ namespace ChatClientWPF.ViewModels
                     _dataTransfeHandler.SendBigSizeTCP(cmdJs);
                     // Оправляем сам файл
                     _dataTransfeHandler.SendFromFileToNet(fileName);
-
-                    PrintInUI($"Файл отправлен: {fileName}");
                     Message = string.Empty;
 
                 }
