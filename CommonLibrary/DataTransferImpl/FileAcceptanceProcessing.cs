@@ -112,13 +112,14 @@ namespace TcpServer.ViewModels.ClientHandlers
             //Формируем сообщение
             string message = string.Empty;
             double pctDone = (double)((double)bytesRead / (double)totalLength);
-            percent = (int)(pctDone * 100);
+            var percentNow = (int)(pctDone * 100);
             // Выводить только кратно 10 процентам
-            if (percent % 10 != 0)
+            var per = percentNow % 10;
+            if (percentNow == 0 || percent == percentNow || (percentNow % 10 != 0))
             {
                 return;
             }
-
+            percent = percentNow;
             if (totalLength / 1024 < 1000)
             {
                 //Выводить в килобайтах

@@ -72,7 +72,7 @@ namespace TcpServer.ViewModels
                 // посылаем сообщение о входе в чат всем подключенным пользователям
                 _logger.ShowMessage($"{UserName}: {message}");
 
-               var cmdMessage = NewCommand(TcpCommands.Login, message, cmd.IPAddress);
+                var cmdMessage = NewCommand(TcpCommands.Login, message, cmd.IPAddress);
                 _server.BroadcastMessage(cmdMessage, Id);
                 cmdMessage = NewCommand(TcpCommands.LoginSuccess, "Подключение успешно!", cmd.IPAddress);
                 Send(cmdMessage);
@@ -105,6 +105,8 @@ namespace TcpServer.ViewModels
                 case TcpCommands.FileTransfer:
                     // Принять файл от клиента
                     string savePath = cmd.Argument;
+                    _fileHandler.OnProgress += (message, percent) => _logger.ShowMessage(message);
+                    _fileHandler.OnComplete += (m) => _logger.ShowMessage("Копирование завершено");
                     _fileHandler.ReceiveFile(savePath);
                     break;
                 case TcpCommands.UpdateUserName:
@@ -118,6 +120,7 @@ namespace TcpServer.ViewModels
             }
             return true;
         }
+
 
         /// <summary>
         /// Отправить список пользователей
