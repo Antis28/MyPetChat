@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatMaui", "ChatMaui\ChatMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrary", "CommonLibrary\CommonLibrary.csproj", "{F900818A-D4D0-4908-8406-9C2A609E7BCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibraryStandart", "CommonLibraryStandart\CommonLibraryStandart.csproj", "{AAC80CE4-D759-4AE4-ACF1-276BD23CC330}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLibraryStandart", "CommonLibraryStandart\CommonLibraryStandart.csproj", "{AAC80CE4-D759-4AE4-ACF1-276BD23CC330}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

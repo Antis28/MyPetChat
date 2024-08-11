@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net7.0-android;net7.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
-		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
+		<TargetFrameworks>net7.0-android</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>		
 		<OutputType>Exe</OutputType>
 		<RootNamespace>ChatMaui</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -15,20 +13,26 @@
 		<ApplicationTitle>ChatMaui</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.chatmaui</ApplicationId>
-		<ApplicationIdGuid>a2670d93-26cb-458b-b7b5-18b0c931fe50</ApplicationIdGuid>
+		
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
-		
-		
+	
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		
 	</PropertyGroup>
+
+<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == Release">
+    <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>..\key.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>14920750</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MauiAntis</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>14920750</AndroidSigningKeyPass>
+  </PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
@@ -49,13 +53,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
-		<PackageReference Include="DevExpressMvvm" Version="23.2.3" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
+    <!--<PackageReference Include="Microsoft.Maui.Cotrols" Version="8.0.0-rc.1.9171" />-->
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Views\" />
-	</ItemGroup>
+
 
 </Project>
