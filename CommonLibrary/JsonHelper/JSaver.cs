@@ -1,11 +1,12 @@
-﻿
+﻿using CommonLibrary.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Net.Sockets;
 
-namespace ChatClientWPF.Handlers
+namespace CommonLibrary
 {
-    public class JSaver
+    public class JSaver<T> : IDataSettingsService<T> where T : class, IDataItem, new()
     {
         static string path = "Settings.json";
 
@@ -14,8 +15,7 @@ namespace ChatClientWPF.Handlers
             return File.Exists(path);
         }
 
-
-        public static void Save(object? clientObject)
+        public void Save(object clientObject)
         {
             var jsString = JsonConvert.SerializeObject(clientObject, new JsonSerializerSettings
             {
@@ -25,7 +25,7 @@ namespace ChatClientWPF.Handlers
             using (var sw = new StreamWriter(path)) { sw.Write(jsString); }
         }
 
-        public static T LoadSetting<T>() where T : new()
+        public T LoadSetting()
         {
             T commandSettings = new T();
 
@@ -37,11 +37,11 @@ namespace ChatClientWPF.Handlers
 
             // deserialize JSON directly from a file
             var text = System.IO.File.ReadAllText(path);
-            commandSettings = Load<T>(text);
+            commandSettings = Load(text);
 
             return commandSettings;
         }
-        public static T Load<T>(string jsonString) where T : new()
+        public T Load(string jsonString)
         {
             var commandSettings = JsonConvert.DeserializeObject<T>(jsonString, new JsonSerializerSettings
             {
@@ -50,5 +50,23 @@ namespace ChatClientWPF.Handlers
 
             return commandSettings;
         }
+
+        public T LoadOrCreateSetting(T defaultSettings) 
+        {
+            T settings;
+
+            if (SettingExists())
+            {
+                settings = LoadSetting();
+            }
+            else
+            {
+                settings = defaultSettings;                   
+                Save(settings);
+            }
+            return settings;
+        }
+
+       
     }
 }

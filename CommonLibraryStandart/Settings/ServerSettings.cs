@@ -7,11 +7,13 @@ using Newtonsoft.Json;
 using Newtonsoft;
 using System.Net.Sockets;
 
-namespace ChatClientWPF.Models
+namespace CommonLibrary
 {
     
-    internal class ServerSettings
+    public class ServerSettings
     {
+        public int ID { get; set; }
+
         public string UserName { get; set; }
         public string Ip { get; set; }
         public int Port { get; set; }

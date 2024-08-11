@@ -1,6 +1,7 @@
 ﻿using ChatClientWPF.Handlers;
 using ChatClientWPF.Models;
 using CommonLibrary;
+using CommonLibrary.Interfaces;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using System;
@@ -117,23 +118,18 @@ namespace ChatClientWPF.ViewModels
 
         private void InitSettings()
         {
-            if (JSaver.SettingExists())
+            IDataSettingsService<ServerSettings> settingsService = new JSaver<ServerSettings>();
+            var defaultSettings = new ServerSettings()
             {
-                settings = JSaver.LoadSetting<ServerSettings>();
-            }
-            else
-            {
-                settings = new ServerSettings()
-                {
-                    Ip = "192.168.1.105",
-                    Port = 5050,
-                    UserName = RandomeUserName(),
-                    ClientIpStart = "192",
-                    ClientIpEnd = "1",
-                    AddressFamily = AddressFamily.InterNetwork,
-                };
-                JSaver.Save(settings);
-            }
+                Ip = "192.168.1.105",
+                Port = 5050,
+                UserName = RandomeUserName(),
+                ClientIpStart = "192",
+                ClientIpEnd = "1",
+                AddressFamily = AddressFamily.InterNetwork,
+            };
+
+            settings = settingsService.LoadOrCreateSetting(defaultSettings);
 
             ip = settings.Ip;
             port = settings.Port;

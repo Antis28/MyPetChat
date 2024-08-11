@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 
 namespace CommonLibrary
@@ -97,11 +98,14 @@ namespace CommonLibrary
         }
         public void FromJsonFile()
         {
-            using (var file = new StreamReader("Commands.json", Encoding.UTF8))
-            {
-                var t = file.ReadToEnd();
-                _chatCommands = JsonConvert.DeserializeObject<ChatCommands>(t);
-            }
+            string mainDir = FileSystem.AppDataDirectory;
+
+
+            //using (var file = new StreamReader("Commands.json", Encoding.UTF8))
+            //{
+            //    var t = file.ReadToEnd();
+            //    _chatCommands = JsonConvert.DeserializeObject<ChatCommands>(t);
+            //}
         }
     }
 }

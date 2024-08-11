@@ -56,7 +56,14 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.9" />
+		<PackageReference Include="SQLitePCLRawEx.bundle_green" Version="2.1.0" />
     <!--<PackageReference Include="Microsoft.Maui.Cotrols" Version="8.0.0-rc.1.9171" />-->
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\CommonLibraryStandart\CommonLibraryStandart.csproj" />
 	</ItemGroup>
 
 
