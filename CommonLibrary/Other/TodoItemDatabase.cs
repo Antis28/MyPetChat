@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using static SQLite.SQLite3;
 
 namespace CommonLibraryStandart.Other
 {
@@ -64,10 +65,12 @@ namespace CommonLibraryStandart.Other
 
         public T LoadSetting()
         {
-            var t = GetItemAsync(0);
             T result = null;
-            Task continuation = t.ContinueWith(x => result = x.Result);
-            continuation.Wait();
+            Task.Run(async () => {
+               result =  await GetItemAsync(0);
+
+            });
+            Task.Delay(1000);
             return result;
         }
 
@@ -78,12 +81,21 @@ namespace CommonLibraryStandart.Other
 
         public T LoadOrCreateSetting(T defaultSettings)
         {
-            throw new NotImplementedException();
+            T result = defaultSettings;
+            var t = Task.Run(() => {
+                var t =  LoadSetting();
+                if (t == null)
+                {
+                    Save(defaultSettings);                    
+                }
+            });
+            t.Wait();
+            return result;
         }
 
         public void Save(object clientObject)
         {
-            _ = SaveItemAsync(clientObject as T);
+            var a = SaveItemAsync(clientObject as T);
         }
     }
 }
