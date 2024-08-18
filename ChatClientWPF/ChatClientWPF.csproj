@@ -101,6 +101,7 @@
     <Compile Include="SampleSQL\TestSQLLite.cs" />
     <Compile Include="SampleSQL\Valuation.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\WpfLogger.cs" />
     <Compile Include="Views\ChatAndUsers.xaml.cs">
       <DependentUpon>ChatAndUsers.xaml</DependentUpon>
     </Compile>

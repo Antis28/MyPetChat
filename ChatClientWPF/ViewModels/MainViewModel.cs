@@ -3,6 +3,7 @@ using ChatClientWPF.Models;
 using ChatClientWPF.SampleSQL;
 using CommonLibrary;
 using CommonLibrary.Interfaces;
+using CommonLibrary.NetWork;
 using CommonLibraryStandart.Other;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
@@ -20,7 +21,6 @@ namespace ChatClientWPF.ViewModels
     [GenerateViewModel]
     public partial class MainViewModel : ViewModelBase
     {
-
         [GenerateProperty]
         public string ip;
 
@@ -36,7 +36,6 @@ namespace ChatClientWPF.ViewModels
         ObservableCollection<CommandMessage> chat = new();
         [GenerateProperty]
         ObservableCollection<ClientObject> userNames = new();
-
 
         [GenerateProperty]
         public int progressCopyFile;
@@ -107,6 +106,7 @@ namespace ChatClientWPF.ViewModels
         DataTransfeHandler _dataTransfeHandler;
         
         ServerSettings settings;
+        ILogger _logger;
 
         [GenerateCommand]
         void Login() => Status = "User: " + userName;
@@ -136,7 +136,9 @@ namespace ChatClientWPF.ViewModels
 
             ip = settings.Ip;
             port = settings.Port;
-            userName = settings.UserName;           
+            userName = settings.UserName;
+            _logger = new WpfLogger((message) => { PrintInUI(message); }) ;
+            Task.Factory.StartNew(async () => { await IpVision.BroadClient("192.168.1.105", _logger); });
         }
 
         public AsyncCommand ConnectCommand

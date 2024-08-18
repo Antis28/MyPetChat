@@ -36,6 +36,10 @@ namespace TcpServer.ViewModels
                 }
                 _logger.ShowMessage("Сервер запущен. Ожидание подключений...");
 
+                Task.Run(async () => { await IpVision.BroadSender(""); });
+               
+
+
                 while (true)
                 {
                     TcpClient tcpClient = _tcpListener.AcceptTcpClient();
