@@ -1,7 +1,9 @@
 ﻿using ChatClientWPF.Handlers;
 using ChatClientWPF.Models;
+using ChatClientWPF.SampleSQL;
 using CommonLibrary;
 using CommonLibrary.Interfaces;
+using CommonLibraryStandart.Other;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using System;
@@ -103,7 +105,7 @@ namespace ChatClientWPF.ViewModels
         ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
         CommandConverter _commandsHandler = new CommandConverter();
         DataTransfeHandler _dataTransfeHandler;
-
+        
         ServerSettings settings;
 
         [GenerateCommand]
@@ -119,6 +121,7 @@ namespace ChatClientWPF.ViewModels
         private void InitSettings()
         {
             IDataSettingsService<ServerSettings> settingsService = new JSaver<ServerSettings>();
+            //IDataSettingsService<ServerSettings> settingsService = new TodoItemDatabase<ServerSettings>();
             var defaultSettings = new ServerSettings()
             {
                 Ip = "192.168.1.105",
@@ -133,7 +136,7 @@ namespace ChatClientWPF.ViewModels
 
             ip = settings.Ip;
             port = settings.Port;
-            userName = settings.UserName;
+            userName = settings.UserName;           
         }
 
         public AsyncCommand ConnectCommand
