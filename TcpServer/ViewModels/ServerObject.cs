@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Threading;
 using CommonLibrary.Interfaces;
+using CommonLibrary.NetWork;
 
 namespace TcpServer.ViewModels
 {
@@ -27,6 +28,12 @@ namespace TcpServer.ViewModels
             try
             {
                 _tcpListener.Start();
+                _logger.ShowMessage("Адреса для подключения:");
+                var ips = IpVision.GetIp();
+                foreach (var item in ips)
+                {
+                    _logger.ShowMessage(item);
+                }
                 _logger.ShowMessage("Сервер запущен. Ожидание подключений...");
 
                 while (true)

@@ -84,6 +84,7 @@
     <Compile Include="JsonHelper\ChatJsonConverter.cs" />
     <Compile Include="JsonHelper\JSaver.cs" />
     <Compile Include="Models\ServerSettings.cs" />
+    <Compile Include="NetWork\IpVision.cs" />
     <Compile Include="Other\Constants.cs" />
     <Compile Include="Other\TodoItem.cs" />
     <Compile Include="Other\TodoItemDatabase.cs" />
