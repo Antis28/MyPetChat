@@ -88,8 +88,17 @@
             <!-- TextBox -->
             <TextBox 
             x:Name="email"
-            Style="{StaticResource credentialTxTStyle}"
-            />
+            Style="{StaticResource credentialTxTStyle}"/>
+            <!-- If pasword box-->
+            <PasswordBox
+                x:Name="passbox"/>
+            <!-- Button to togle show/hide password-->
+            <Button 
+                x:Name="showPass"
+                Background="Transparent"
+                BorderThickness="0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"/>
         </Grid>
     </Border>
 </UserControl>
