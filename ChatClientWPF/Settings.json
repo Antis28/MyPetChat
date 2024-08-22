@@ -1,0 +1,8 @@
+{
+  "UserName": "Antis",
+  "Ip": "192.168.1.105",
+  "Port": 5050,
+  "ClientIpStart": "192",
+  "ClientIpEnd": "1",
+  "AddressFamily": 2
+}
