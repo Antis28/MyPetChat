@@ -1,5 +1,5 @@
 ﻿using CommonLibraryStandart.Other;
-using SQLite;
+//using SQLite;
 using System;
 using System.IO;
 
@@ -7,7 +7,7 @@ namespace ChatClientWPF.SampleSQL
 {
     internal class TestSQLLite
     {
-        private SQLiteConnection db;
+      //  private SQLiteConnection db;
 
         public void TestCreateTable()
         {
@@ -15,10 +15,10 @@ namespace ChatClientWPF.SampleSQL
             var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db");
 
 
-            var db = new SQLiteConnection(databasePath);
-            db = new SQLiteConnection(Constants.DatabasePath, Constants.Flags);
-            db.CreateTable<Stock>();
-            db.CreateTable<Valuation>();
+            //var db = new SQLiteConnection(databasePath);
+            //db = new SQLiteConnection(Constants.DatabasePath, Constants.Flags);
+            //db.CreateTable<Stock>();
+            //db.CreateTable<Valuation>();
         }
 
         public void AddStock(string symbol)
@@ -27,17 +27,17 @@ namespace ChatClientWPF.SampleSQL
             {
                 Symbol = symbol
             };
-           var keyNum =  db.Insert(stock);
+           //var keyNum =  db.Insert(stock);
             //Console.WriteLine("{0} == {1}", stock.Symbol, stock.Id);
             var t = $"{stock.Symbol} == {stock.Id}";
         }
 
         public void TestQuery()
         {
-            var query = db.Table<Stock>().Where(v => v.Symbol.StartsWith("A"));
+           // var query = db.Table<Stock>().Where(v => v.Symbol.StartsWith("A"));
 
-            foreach (var stock in query)
-                Console.WriteLine("Stock: " + stock.Symbol);
+            //foreach (var stock in query)
+            //    Console.WriteLine("Stock: " + stock.Symbol);
         }
     }
 }

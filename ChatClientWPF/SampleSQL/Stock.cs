@@ -1,4 +1,4 @@
-﻿using SQLite;
+﻿//using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace ChatClientWPF.SampleSQL
 {
     internal class Stock
     {
-        [PrimaryKey, AutoIncrement]
+        //[PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         public string Symbol { get; set; }
     }
