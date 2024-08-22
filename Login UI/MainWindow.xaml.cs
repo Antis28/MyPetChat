@@ -23,6 +23,7 @@ namespace Login_UI
         public MainWindow()
         {
             InitializeComponent();
+            mainFrame.Navigate(new Uri("/pages/loginpage.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }
