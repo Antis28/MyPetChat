@@ -131,7 +131,7 @@
                                 Width="20"
                                 Stretch="Uniform"
                                 Fill="{TemplateBinding Foreground}"
-                                Data=""/>
+                                Data="{StaticResource showPass}"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
