@@ -56,7 +56,14 @@
 
             </TextBlock>
             <!-- Custom Email TextBlock-->
-            <CustomControls:TextBoxWithPlaceHolder  Grid.Row="1"/>
+            <CustomControls:TextBoxWithPlaceHolder  
+                Grid.Row="1" 
+                PlaceHolder="Email"/>
+            
+            <!-- Passwor textbox-->
+            <CustomControls:TextBoxWithPlaceHolder 
+                Grid.Row="2"
+                PlaceHolder="Password"/>
         </Grid>
     </Grid>
 </Page>

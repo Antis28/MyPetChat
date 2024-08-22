@@ -13,8 +13,9 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#a3a3a4"/>
             <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Text" Value="Email"/>
+            <Setter Property="Text" Value="{Binding PlaceHolder, ElementName=_this}"/>
             <Setter Property="Padding" Value="2,0"/>
+            
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Text, ElementName=email}" Value="">
                     <!-- Default position and font size title-->
@@ -40,6 +41,7 @@
             </Style.Triggers>
         </Style>
         <Style x:Key="credentialTxTStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Text" Value="{Binding Text, Mode=TwoWay, ElementName=_this}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
