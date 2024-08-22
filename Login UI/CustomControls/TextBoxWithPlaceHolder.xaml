@@ -16,7 +16,7 @@
             <Setter Property="Text" Value="Email"/>
             <Setter Property="Padding" Value="2,0"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Text, ElementName=email}" Value="_this">
+                <DataTrigger Binding="{Binding Text, ElementName=email}" Value="">
                     <!-- Default position and font size title-->
                     <DataTrigger.EnterActions>
                         <BeginStoryboard>
