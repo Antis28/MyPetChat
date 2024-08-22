@@ -59,5 +59,10 @@ namespace Login_UI.CustomControls
         // Using a DependencyProperty as the backing store for IsPassword.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsPasswordProperty =
             DependencyProperty.Register("IsPassword", typeof(bool), typeof(TextBoxWithPlaceHolder));
+
+        private void passbox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            email.Text = passbox.Password;
+        }
     }
 }

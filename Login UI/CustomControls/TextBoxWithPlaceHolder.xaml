@@ -69,6 +69,52 @@
                         </BeginStoryboard>
                     </DataTrigger.ExitActions>
                 </DataTrigger>
+                <!-- Get Password inside the textbox if texbox empty -->
+                <DataTrigger Binding="{Binding Text, Mode=TwoWay, ElementName=_this}" Value="">
+                    <Setter Property="Text" Value="{Binding Password, ElementName=passbox}"/>
+                </DataTrigger>
+                <!-- also Show only when the Show passButton is pressed -->
+                <DataTrigger Binding="{Binding IsPressed, ElementName=showPass}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style  TargetType="{x:Type PasswordBox}">
+            <Setter Property="Padding" Value="2,0,30,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding FontSize, ElementName=title}" Value="15">
+                    <!-- Default position and font size title-->
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard SpeedRatio="10">
+                                <DoubleAnimation Storyboard.TargetProperty="FontSize" To="20"/>
+                                <ThicknessAnimation Storyboard.TargetProperty="Margin" To="0 20 0 0"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                    <!-- Positon and FontSize has value-->
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard SpeedRatio="10">
+                                <DoubleAnimation Storyboard.TargetProperty="FontSize" To="15"/>
+                                <ThicknessAnimation Storyboard.TargetProperty="Margin" To="0"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+                <!-- Hide password if IsPassword == false -->
+                <DataTrigger Binding="{Binding IsPassword, ElementName=_this}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <!-- also Hide password when passButton is pressed -->
+                <DataTrigger Binding="{Binding IsPressed, ElementName=showPass}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
@@ -90,6 +136,7 @@
             x:Name="email"
             Style="{StaticResource credentialTxTStyle}"/>
             <!-- If pasword box-->
+            <!-- To update textbox  on password change-->
             <PasswordBox
                 x:Name="passbox"/>
             <!-- Button to togle show/hide password-->
