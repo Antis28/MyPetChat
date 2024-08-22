@@ -138,7 +138,7 @@ namespace ChatClientWPF.ViewModels
             port = settings.Port;
             userName = settings.UserName;
             _logger = new WpfLogger((message) => { PrintInUI(message); }) ;
-            Task.Factory.StartNew(async () => { await IpVision.BroadClient("192.168.1.105", _logger); });
+            
         }
 
         public AsyncCommand ConnectCommand
@@ -153,29 +153,7 @@ namespace ChatClientWPF.ViewModels
                         {
                             _client = new TcpClient();
 
-
-
-                            _dataTransfeHandler = new DataTransfeHandler(_client);
-                            _dataTransfeHandler.OnProgress += (x, y) =>
-                            {
-                                RunInUi(() =>
-                                {
-                                    chat.Add(new() { UserName = "System", Argument = x });
-                                    ProgressCopyFile = y;
-                                });
-
-                            };
-                            _dataTransfeHandler.OnComplete += (isSuccess, fileName) =>
-                            {
-                                if (isSuccess)
-                                {
-                                    PrintInUI($"Файл принят: {fileName} успешно.");
-                                }
-                                else
-                                {
-                                    PrintInUI($"Не удалось принять файл: {fileName}");
-                                }
-                            };
+                            DataTransferInit();
 
                             _client.Connect(Ip, Port);
                             PrintInUI($"Подключение к ip:{ip}:{port}");
@@ -193,7 +171,7 @@ namespace ChatClientWPF.ViewModels
                     // Если не подключен к серверу
                 }, () => _client == null || _client?.Connected == false);
             }
-        }
+        }       
 
         public AsyncCommand GetUsersCommand
         {
@@ -487,6 +465,31 @@ namespace ChatClientWPF.ViewModels
             });
         }
 
+        private void DataTransferInit()
+        {
+            _dataTransfeHandler = new DataTransfeHandler(_client);
+            _dataTransfeHandler.OnProgress += (x, y) =>
+            {
+                RunInUi(() =>
+                {
+                    chat.Add(new() { UserName = "System", Argument = x });
+                    ProgressCopyFile = y;
+                });
+
+            };
+            _dataTransfeHandler.OnComplete += (isSuccess, fileName) =>
+            {
+                if (isSuccess)
+                {
+                    PrintInUI($"Файл принят: {fileName} успешно.");
+                }
+                else
+                {
+                    PrintInUI($"Не удалось принять файл: {fileName}");
+                }
+            };
+        }
+
         #region Visualise
         private void VisualiseUserList(CommandMessage cmd)
         {
@@ -522,5 +525,6 @@ namespace ChatClientWPF.ViewModels
 
         }
         #endregion
+
     }
 }
