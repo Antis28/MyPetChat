@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:WpfChatUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Loading our resources -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/assets/icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

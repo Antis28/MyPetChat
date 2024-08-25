@@ -16,6 +16,7 @@
         MouseDown="Border_MouseDown"
         VerticalAlignment="Top">
         <Grid>
+            <!-- Title window -->
             <TextBlock 
                 Text="{Binding TitleWindow,
                 ElementName=_this}"
@@ -25,6 +26,15 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Foreground="{Binding TitleColor, ElementName=_this}"/>
+            <!-- Window buttons-->
+            <StackPanel 
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+                Margin="10,0">
+                <Button/>
+                <Button/>
+                <Button/>
+            </StackPanel>
         </Grid>
     </Border>    
 </UserControl>
