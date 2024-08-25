@@ -104,7 +104,8 @@
                 FontSize="30">
                 <Run FontWeight="SemiBold"
                         Text="Hello, "/>
-                <Run Text="Terry"                        
+                <Run Text="Terry"
+                        
                         Foreground="#FF01A3ff"
                         FontWeight="Bold"
                         x:Name="userName"/>

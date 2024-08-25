@@ -20,6 +20,21 @@
                 </EventTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="ShowingTextInRun"  TargetType="{x:Type Run}">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard>
+                        <!-- Slow Show -->
+                        <Storyboard SpeedRatio="0.1">
+                            <DoubleAnimation 
+                        Storyboard.TargetProperty="Opacity"
+                        From="0"
+                        To="1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
 
         <!-- Animation on page display -->
         <Style TargetType="{x:Type Page}">
