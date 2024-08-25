@@ -68,15 +68,32 @@
         </Grid.RowDefinitions>
         <!-- Title-->
         <TextBlock            
-    Margin="35,0"            
-    FontSize="30"
-    HorizontalAlignment="Left"
-    VerticalAlignment="Top">            
-    <Run 
-        Text="Smart"/>
-    <Run 
-        Text="Login"
-        FontWeight="Bold"/>
+            Margin="35,0"            
+            FontSize="30"
+            HorizontalAlignment="Left"
+            VerticalAlignment="center"
+            Opacity="0">
+            <TextBlock.Style>
+                <Style>
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard>
+                                <!-- Slow Show -->
+                                <Storyboard SpeedRatio="0.5">
+                                    <DoubleAnimation 
+                                        Storyboard.TargetProperty="Opacity"
+                                        To="1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+            <Run 
+                Text="Smart"/>
+            <Run 
+                Text="Login"
+                FontWeight="Bold"/>
         </TextBlock>
         <!--Login UI-->
         <Grid Grid.Row="1"

@@ -9,7 +9,7 @@
             <Style.Triggers>
                 <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                     <BeginStoryboard>
-                        <Storyboard Storyboard.TargetProperty="Margin" SpeedRatio="2">
+                        <Storyboard Storyboard.TargetProperty="Margin" SpeedRatio="5">
                             <ThicknessAnimation>
                                 <ThicknessAnimation.From>
                                     <!--To slide from bottom to top-->
