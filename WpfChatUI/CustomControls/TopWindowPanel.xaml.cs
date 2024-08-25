@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using System.Windows.Media;
 
 namespace WpfChatUI.CustomControls
 {
@@ -19,7 +20,49 @@ namespace WpfChatUI.CustomControls
             if (e.ChangedButton == MouseButton.Left)
             {
                 mainWindow.DragMove();
+                
             }
         }
+
+
+
+
+        public Brush BackgroundColor
+        {
+            get { return (Brush)GetValue(BackgroundColorProperty); }
+            set { SetValue(BackgroundColorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BackgroundColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BackgroundColorProperty =
+            DependencyProperty.Register("BackgroundColor", typeof(Brush), typeof(TopWindowPanel));
+
+
+
+
+
+        public string TitleWindow
+        {
+            get { return (string)GetValue(TitleWindowProperty); }
+            set { SetValue(TitleWindowProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TitleWindow.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TitleWindowProperty =
+            DependencyProperty.Register("TitleWindow", typeof(string), typeof(TopWindowPanel));
+
+
+
+        public Brush TitleColor
+        {
+            get { return (Brush)GetValue(TitleColorProperty); }
+            set { SetValue(TitleColorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TitleColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TitleColorProperty =
+            DependencyProperty.Register("TitleColor", typeof(Brush), typeof(TopWindowPanel));
+
+
     }
 }

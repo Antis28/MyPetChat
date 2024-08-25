@@ -4,18 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfChatUI.CustomControls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             x:Name="_this"
              d:DesignHeight="450" d:DesignWidth="800">
+    <!-- Background="{Binding BackgroundColor, ElementName=_this}" -->
+    <!-- Background="Black" -->
     <Border 
-        Background="LightGray"
+        Background="{Binding BackgroundColor, ElementName=_this}"
         CornerRadius="20,20,0,0"
         Height="40"
         MouseDown="Border_MouseDown"
-        >
+        VerticalAlignment="Top">
         <Grid>
             <TextBlock 
-                Text="{Binding Title,
-                ElementName=_mainWindow}"/>
+                Text="{Binding TitleWindow,
+                ElementName=_this}"
+                Margin="15,0"
+                FontSize="22"
+                FontWeight="Bold"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Foreground="{Binding TitleColor, ElementName=_this}"/>
         </Grid>
     </Border>    
 </UserControl>
