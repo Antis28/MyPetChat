@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Login_UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="800">
+        Title="MainWindow" Height="768" Width="1024">
     <Grid>
         <Frame Name="mainFrame"/>        
     </Grid>

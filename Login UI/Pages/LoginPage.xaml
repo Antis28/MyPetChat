@@ -18,6 +18,42 @@
             <Setter Property="MaxWidth" Value="135"/>
             <Setter Property="Foreground" Value="Black"/>
         </Style>
+        
+        <Style x:Key="primarybutton" TargetType="{x:Type Button}">
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="#FF01A3FF"/>
+            <Setter Property="FontSize" Value="15"/>           
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border 
+                            x:Name="bd"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="10">
+                            <ContentPresenter
+                                HorizontalAlignment="{TemplateBinding 
+                            HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding 
+                            VerticalContentAlignment}"
+                                TextBlock.Foreground="{TemplateBinding
+                            Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background"
+                                        Value="#80D0FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -102,6 +138,13 @@
                     Text="Fogot password?">
                     <Hyperlink/>
                 </TextBlock>
+                
+                <!-- Login button -->
+                <Button 
+                    Grid.Column="2"
+                    Content="Login"
+                    Click="Button_Click"
+                    Style="{StaticResource primarybutton}"/>
             </Grid>
         </Grid>
     </Grid>
