@@ -58,13 +58,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj">
+      <Project>{f900818a-d4d0-4908-8406-9c2a609e7bcc}</Project>
+      <Name>CommonLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TcpServer\TcpServer.csproj">
       <Project>{62f47857-983b-4a36-9828-2107639e8561}</Project>
       <Name>TcpServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WcfChat\WcfChat.csproj">
-      <Project>{dabad499-0945-4275-a2c2-b7b83f53bab0}</Project>
-      <Name>WcfChat</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

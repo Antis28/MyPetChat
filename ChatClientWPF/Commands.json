@@ -1,0 +1,9 @@
+﻿{
+  "Login": "Login",
+  "CloseConection": "Close connection",
+  "GetUsers": "Get users",
+  "Message": "Message",
+  "FileTransfer": "File Transfer",
+  "UpdateUserName": "Update user name",
+  "LoginSuccess": "Login success"
+}

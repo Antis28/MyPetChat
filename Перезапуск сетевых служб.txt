@@ -1,0 +1,11 @@
+Сделана попытка доступа к сокету методом, запрещенным правами доступа
+
+net stop hns
+net start hns
+
+
+PowerShel:
+net stop hns; net start hns
+
+
+netstat -o

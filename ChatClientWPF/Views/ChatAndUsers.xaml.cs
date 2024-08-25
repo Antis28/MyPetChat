@@ -24,5 +24,20 @@ namespace ChatClientWPF.Views
         {
             InitializeComponent();
         }
+
+        private void lbUsers_TargetUpdated(object sender, DataTransferEventArgs e)
+        {
+            //lbUsers.SelectedIndex = 1;
+        }
+
+        private void lbUsers_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (lbUsers.Items.Count <= 0) return;
+
+            lbUsers.ScrollIntoView(lbUsers.Items[lbUsers.Items.Count - 1]);
+           
+        }
+
+       
     }
 }
