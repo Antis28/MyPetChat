@@ -75,7 +75,6 @@
                     <Setter Property="Text" Value="{Binding Password, ElementName=passbox}"/>
                 </DataTrigger>
                 
-                <!-- also Show only when the Show passButton is pressed -->
                 <!-- if password is visible then hide textbox-->
                 <DataTrigger Binding="{Binding Visibility, ElementName=passbox}" Value="Visible">
                     <Setter Property="Visibility" Value="Collapsed"/>

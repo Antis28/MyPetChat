@@ -5,10 +5,20 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Login_UI.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="768" d:DesignWidth="1024"
       Background="WhiteSmoke"
       Title="LoginPage">
-        
+    <Page.Resources>
+        <Style x:Key="linkText" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="MaxWidth" Value="135"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -38,33 +48,61 @@
                 <!-- Email -->
                 <RowDefinition Height="100"/>
                 <!-- Password -->
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
                 <!-- Buttons etc. -->
                 <RowDefinition Height="100"/>
                 <!-- Note -->
             </Grid.RowDefinitions>
             <!-- Welcome message -->
             <TextBlock
-        VerticalAlignment="Center"
-        FontSize="30">
-        <Run FontWeight="SemiBold"
-             Text="Hello, "/>
-        <Run Text="Terry"
-             Foreground="#FF01A3ff"
-             FontWeight="Bold"
-             x:Name="userName"/>
-
+                VerticalAlignment="Center"
+                FontSize="30">
+                <Run FontWeight="SemiBold"
+                        Text="Hello, "/>
+                <Run Text="Terry"
+                        Foreground="#FF01A3ff"
+                        FontWeight="Bold"
+                        x:Name="userName"/>
             </TextBlock>
             <!-- Custom Email TextBlock-->
             <CustomControls:TextBoxWithPlaceHolder  
                 Grid.Row="1" 
                 PlaceHolder="Email"/>
-            
-            <!-- Passwor textbox-->
+
+            <!-- Password textbox-->
             <CustomControls:TextBoxWithPlaceHolder 
                 Grid.Row="2"
                 PlaceHolder="Password"
                 IsPassword="True"/>
+            <Grid
+                Grid.Row="3"
+                Margin="10,0"
+                Height="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Last login name-->
+                <TextBlock
+                    Style="{StaticResource linkText}">                     
+                    <Run                        
+                        Text="I'm not"/>
+                    <Run
+                        FontSize="15"
+                        Text="{Binding Text, ElementName=userName}"/>
+                    <Hyperlink/>
+                </TextBlock>
+
+                <!-- Fogot password-->
+                <TextBlock
+                    Grid.Column="1"
+                    Style="{StaticResource linkText}"
+                    Text="Fogot password?">
+                    <Hyperlink/>
+                </TextBlock>
+            </Grid>
         </Grid>
     </Grid>
 </Page>
