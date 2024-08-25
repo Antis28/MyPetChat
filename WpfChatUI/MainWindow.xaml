@@ -37,7 +37,7 @@
             <CustomControls:TopWindowPanel 
                 VerticalAlignment="Top"
                 Grid.ColumnSpan="4"
-                BackgroundColor="Black"
+                BackgroundColor="Gray"
                 TitleColor="Aqua"
                 TitleWindow="Chat App"/>
                 <!--#enregion--><!--

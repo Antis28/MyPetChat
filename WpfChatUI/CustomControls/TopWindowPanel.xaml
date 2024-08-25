@@ -31,9 +31,9 @@
                 Orientation="Horizontal"
                 HorizontalAlignment="Right"
                 Margin="10,0">
-                <Button/>
-                <Button/>
-                <Button/>
+                <Button x:Name="btnMinimize"
+                        Content="{StaticResource minimize}"
+                        Style="{StaticResource IconButtonStyle}"/>
             </StackPanel>
         </Grid>
     </Border>    
