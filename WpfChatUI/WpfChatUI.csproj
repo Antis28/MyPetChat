@@ -128,6 +128,29 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="assets\one.png" />
+    <Resource Include="assets\phone.png" />
+    <Resource Include="assets\play.png" />
+    <Resource Include="assets\plus.png" />
+    <Resource Include="assets\pray.png" />
+    <Resource Include="assets\profile1.jpg" />
+    <Resource Include="assets\right %281%29.png" />
+    <Resource Include="assets\right.png" />
+    <Resource Include="assets\search.png" />
+    <Resource Include="assets\send.png" />
+    <Resource Include="assets\smile.png" />
+    <Resource Include="assets\twitter.png" />
+    <Resource Include="assets\videocall.png" />
+    <Resource Include="assets\wink.png" />
+    <Resource Include="assets\image1.jpg" />
+    <Resource Include="assets\image2.jpg" />
+    <Resource Include="assets\image3.jpg" />
+    <Resource Include="assets\insta.png" />
+    <Resource Include="assets\mic.png" />
+    <Resource Include="assets\more.png" />
+    <Resource Include="assets\muscle.png" />
+    <Resource Include="assets\noimage.png" />
+    <Resource Include="assets\happy.png" />
     <Resource Include="assets\3.jpg" />
     <Resource Include="assets\4.jpg" />
     <Resource Include="assets\5.jpg" />
@@ -135,6 +158,9 @@
     <Resource Include="assets\7.png" />
     <Resource Include="assets\8.jpg" />
     <Resource Include="assets\connectedworld.png" />
+    <Resource Include="assets\attachment.png" />
+    <Resource Include="assets\badge.png" />
+    <Resource Include="assets\close.png" />
     <Content Include="assets\Database1.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
