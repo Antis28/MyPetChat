@@ -4,6 +4,23 @@
              xmlns:local="clr-namespace:Login_UI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+
+        <Style x:Key="ShowingText"  TargetType="{x:Type TextBlock}">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard>
+                        <!-- Slow Show -->
+                        <Storyboard SpeedRatio="0.1">
+                            <DoubleAnimation 
+                                Storyboard.TargetProperty="Opacity"
+                                From="0"
+                                To="1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Animation on page display -->
         <Style TargetType="{x:Type Page}">
             <Style.Triggers>
@@ -15,16 +32,16 @@
                                     <!--To slide from bottom to top-->
                                     <!--Bottom="-525"-->
                                     <Thickness Left="0" 
-                                               Top="-525"
-                                               Bottom="0"
-                                               Right="0"/>
+                             Top="-525"
+                             Bottom="0"
+                             Right="0"/>
                                 </ThicknessAnimation.From>
                                 <ThicknessAnimation.To>
                                     <!--To slide from bottom to top-->
                                     <Thickness Left="0" 
-                                               Top="0" 
-                                               Bottom="0"
-                                               Right="0"/>      
+                             Top="0" 
+                             Bottom="0"
+                             Right="0"/>
                                 </ThicknessAnimation.To>
 
                             </ThicknessAnimation>

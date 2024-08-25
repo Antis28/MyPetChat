@@ -13,7 +13,8 @@
       MinHeight="768"
       MinWidth="1024"
       Title="LoginPage"
-      Style="{StaticResource {x:Type Page}}">
+      Style="{StaticResource {x:Type Page}}"
+      >
     <Page.Resources>
         <Style x:Key="linkText" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="15"/>
@@ -67,28 +68,12 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!-- Title-->
-        <TextBlock            
+        <TextBlock
+            Style="{StaticResource ShowingText}"
             Margin="35,0"            
             FontSize="30"
             HorizontalAlignment="Left"
-            VerticalAlignment="center"
-            Opacity="0">
-            <TextBlock.Style>
-                <Style>
-                    <Style.Triggers>
-                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                            <BeginStoryboard>
-                                <!-- Slow Show -->
-                                <Storyboard SpeedRatio="0.5">
-                                    <DoubleAnimation 
-                                        Storyboard.TargetProperty="Opacity"
-                                        To="1"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
+            VerticalAlignment="center">
             <Run 
                 Text="Smart"/>
             <Run 
@@ -114,11 +99,12 @@
             </Grid.RowDefinitions>
             <!-- Welcome message -->
             <TextBlock
+                
                 VerticalAlignment="Center"
                 FontSize="30">
                 <Run FontWeight="SemiBold"
                         Text="Hello, "/>
-                <Run Text="Terry"
+                <Run Text="Terry"                        
                         Foreground="#FF01A3ff"
                         FontWeight="Bold"
                         x:Name="userName"/>

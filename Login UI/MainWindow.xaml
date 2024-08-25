@@ -10,7 +10,9 @@
         Height="768"
         MinHeight="500"
         MinWidth="600"        
-        Background="WhiteSmoke" SizeChanged="Window_SizeChanged" WindowStartupLocation="CenterScreen"
+        Background="WhiteSmoke" 
+        SizeChanged="Window_SizeChanged" 
+        WindowStartupLocation="CenterScreen"
         >
     <Grid>
         <Frame Name="mainFrame" 
