@@ -16,20 +16,13 @@ using System.Windows.Shapes;
 namespace Login_UI.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для LoginPage.xaml
+    /// Логика взаимодействия для dashboard.xaml
     /// </summary>
-    public partial class LoginPage : Page
+    public partial class dashboard : Page
     {
-        public LoginPage()
+        public dashboard()
         {
             InitializeComponent();
-        }
-
-        //Show another page on login on button click
-        MainWindow mainWindow{ get => Application.Current.MainWindow as MainWindow; }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            mainWindow.mainFrame.Navigate(new Uri("/pages/dashboard.xaml",UriKind.RelativeOrAbsolute));
         }
     }
 }

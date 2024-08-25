@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:Login_UI"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Height="500" 
-        Width="450"
+        Width="1024"
+        Height="768"
         MinHeight="500"
-        MinWidth="450"
-        Background="Blue"
+        MinWidth="600"
+        Background="WhiteSmoke" SizeChanged="Window_SizeChanged"
         >
     <Grid>
-        <Frame Name="mainFrame"/>        
+        <Frame Name="mainFrame" 
+       NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

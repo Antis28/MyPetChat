@@ -25,5 +25,11 @@ namespace Login_UI
             InitializeComponent();
             mainFrame.Navigate(new Uri("/pages/loginpage.xaml", UriKind.RelativeOrAbsolute));
         }
+        MainWindow mainWindow { get => Application.Current.MainWindow as MainWindow; }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            mainWindow.Title = $"Размер окна: {mainWindow.Height}x{mainWindow.Width}";
+        }
     }
 }
