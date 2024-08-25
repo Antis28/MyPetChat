@@ -63,7 +63,8 @@
             <!-- Passwor textbox-->
             <CustomControls:TextBoxWithPlaceHolder 
                 Grid.Row="2"
-                PlaceHolder="Password"/>
+                PlaceHolder="Password"
+                IsPassword="True"/>
         </Grid>
     </Grid>
 </Page>

@@ -69,14 +69,18 @@
                         </BeginStoryboard>
                     </DataTrigger.ExitActions>
                 </DataTrigger>
+                
                 <!-- Get Password inside the textbox if texbox empty -->
                 <DataTrigger Binding="{Binding Text, Mode=TwoWay, ElementName=_this}" Value="">
                     <Setter Property="Text" Value="{Binding Password, ElementName=passbox}"/>
                 </DataTrigger>
+                
                 <!-- also Show only when the Show passButton is pressed -->
-                <DataTrigger Binding="{Binding IsPressed, ElementName=showPass}" Value="True">
-                    <Setter Property="Visibility" Value="Visible"/>
+                <!-- if password is visible then hide textbox-->
+                <DataTrigger Binding="{Binding Visibility, ElementName=passbox}" Value="Visible">
+                    <Setter Property="Visibility" Value="Collapsed"/>
                 </DataTrigger>
+                
             </Style.Triggers>
         </Style>
         <Style  TargetType="{x:Type PasswordBox}">
@@ -133,6 +137,13 @@
                                 Fill="{TemplateBinding Foreground}"
                                 Data="{StaticResource showPass}"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <!--Hide button if not IsPassword-->
+                            <DataTrigger Binding="{Binding IsPassword, ElementName=_this}" Value="False" >
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
