@@ -10,7 +10,10 @@
       VerticalAlignment="Stretch"
       Width="auto" 
       Height="auto"
-      Title="LoginPage">
+      MinHeight="768"
+      MinWidth="1024"
+      Title="LoginPage"
+      Style="{StaticResource {x:Type Page}}">
     <Page.Resources>
         <Style x:Key="linkText" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="15"/>
