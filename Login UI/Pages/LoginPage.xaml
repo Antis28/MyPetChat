@@ -5,8 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Login_UI.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="768" d:DesignWidth="1024"
+      d:DesignHeight="768" d:DesignWidth="1024"      
       Background="WhiteSmoke"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch"
+      Width="auto"
+      Height="auto"
       Title="LoginPage">
     <Page.Resources>
         <Style x:Key="linkText" TargetType="{x:Type TextBlock}">
@@ -18,14 +22,14 @@
             <Setter Property="MaxWidth" Value="135"/>
             <Setter Property="Foreground" Value="Black"/>
         </Style>
-        
+
         <Style x:Key="primarybutton" TargetType="{x:Type Button}">
             <Setter Property="MinWidth" Value="120"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Background" Value="#FF01A3FF"/>
-            <Setter Property="FontSize" Value="15"/>           
+            <Setter Property="FontSize" Value="15"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -53,12 +57,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!-- Title-->
         <TextBlock            
@@ -138,7 +142,7 @@
                     Text="Fogot password?">
                     <Hyperlink/>
                 </TextBlock>
-                
+
                 <!-- Login button -->
                 <Button 
                     Grid.Column="2"
@@ -146,6 +150,21 @@
                     Click="Button_Click"
                     Style="{StaticResource primarybutton}"/>
             </Grid>
+            <!-- Note -->
+            <TextBlock 
+                Grid.Row="4"
+                VerticalAlignment="Bottom"
+                TextAlignment="Center"
+                Foreground="#A3A3A4"
+                FontWeight="SemiBold"
+                TextWrapping="Wrap">
+                <Run
+                    Text="Note:"
+                    FontWeight="Bold"/>
+                <LineBreak/>
+                <Run
+                    Text="fdsgfdgdfdsffffffffffffffffffffffffffgdf"/>
+            </TextBlock>
         </Grid>
     </Grid>
 </Page>
