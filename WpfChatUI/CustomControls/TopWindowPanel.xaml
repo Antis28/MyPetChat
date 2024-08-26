@@ -34,16 +34,16 @@
                 <Button x:Name="btnMinimize"
                         Content="{StaticResource minimize}"
                         Style="{StaticResource IconButtonStyle}"
-                        MouseDown="btnMinimize_MouseDown"/>
+                        Click="btnMinimize_Click"/>
                 <Button x:Name="btnMaximize"
                         Content="{StaticResource maximize}"
                         Style="{StaticResource IconButtonStyle}"
-                        MouseDown="btnMaximize_MouseDown"/>
+                        Click="btnMaximize_Click"/>
                 <Button x:Name="btnClose"
                         Foreground="DarkRed"
                         Content="{StaticResource close}"
                         Style="{StaticResource IconButtonStyle}"
-                        MouseDown="btnClose_MouseDown"/>
+                        Click="btnClose_Click"/>
             </StackPanel>
         </Grid>
     </Border>    

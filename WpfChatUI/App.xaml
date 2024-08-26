@@ -16,6 +16,7 @@
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="Height" Value="50"/>
                 <Setter Property="Width" Value="50"/>
+                <Setter Property="Padding" Value="20"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate  TargetType="{x:Type Button}">
@@ -29,6 +30,13 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+            </Style>
+            <!--    Default style for Path's    -->
+            <Style TargetType="{x:Type Path}">
+                <Setter Property="Height" Value="20"/>
+                <Setter Property="Width" Value="20"/>
+                <Setter Property="Stretch" Value="Uniform"/>
+                <!--// TO-DO: Add animations-->
             </Style>
         </ResourceDictionary>        
     </Application.Resources>
