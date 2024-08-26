@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="WpfChatUI.CustomControls.TopWindowPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfChatUI.CustomControls"
+             mc:Ignorable="d"
+             x:Name="_this"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <!-- Background="{Binding BackgroundColor, ElementName=_this}" -->
+    <!-- Background="Black" -->
+    <Border 
+        Background="{Binding BackgroundColor, ElementName=_this}"
+        CornerRadius="20,20,0,0"
+        Height="40"
+        MouseDown="Border_MouseDown"
+        VerticalAlignment="Top">
+        <Grid>
+            <!-- Title window -->
+            <TextBlock 
+                Text="{Binding TitleWindow,
+                ElementName=_this}"
+                Margin="15,0"
+                FontSize="22"
+                FontWeight="Bold"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Foreground="{Binding TitleColor, ElementName=_this}"/>
+            <!-- Window buttons-->
+            <StackPanel 
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+                Margin="10,0">
+                <Button x:Name="btnMinimize"
+                        Content="{StaticResource minimize}"
+                        Style="{StaticResource IconButtonStyle}"
+                        Click="btnMinimize_Click"/>
+                <Button x:Name="btnMaximize"
+                        Content="{StaticResource maximize}"
+                        Style="{StaticResource IconButtonStyle}"
+                        Click="btnMaximize_Click"/>
+                <Button x:Name="btnClose"
+                        Foreground="Black"
+                        Content="{StaticResource close}"
+                        Style="{StaticResource IconButtonStyle}"
+                        Click="btnClose_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>    
+</UserControl>

@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLibraryStandart", "Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Login UI", "Login UI\Login UI.csproj", "{A3FB7E8F-1046-40DA-A7A1-EBBD0B38ACE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfChatUI", "WpfChatUI\WpfChatUI.csproj", "{3D7348B0-2CC6-4FD4-8FA3-94A6D19E0416}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{A3FB7E8F-1046-40DA-A7A1-EBBD0B38ACE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3FB7E8F-1046-40DA-A7A1-EBBD0B38ACE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3FB7E8F-1046-40DA-A7A1-EBBD0B38ACE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D7348B0-2CC6-4FD4-8FA3-94A6D19E0416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D7348B0-2CC6-4FD4-8FA3-94A6D19E0416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D7348B0-2CC6-4FD4-8FA3-94A6D19E0416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D7348B0-2CC6-4FD4-8FA3-94A6D19E0416}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
