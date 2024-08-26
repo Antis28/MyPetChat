@@ -40,7 +40,7 @@
                         Style="{StaticResource IconButtonStyle}"
                         Click="btnMaximize_Click"/>
                 <Button x:Name="btnClose"
-                        Foreground="DarkRed"
+                        Foreground="Black"
                         Content="{StaticResource close}"
                         Style="{StaticResource IconButtonStyle}"
                         Click="btnClose_Click"/>

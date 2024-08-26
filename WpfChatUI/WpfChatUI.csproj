@@ -73,6 +73,7 @@
     <Page Include="assets\icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="CustomControls\RoundProfileButton.xaml">
       <SubType>Designer</SubType>
