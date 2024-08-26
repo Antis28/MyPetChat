@@ -33,7 +33,17 @@
                 Margin="10,0">
                 <Button x:Name="btnMinimize"
                         Content="{StaticResource minimize}"
-                        Style="{StaticResource IconButtonStyle}"/>
+                        Style="{StaticResource IconButtonStyle}"
+                        MouseDown="btnMinimize_MouseDown"/>
+                <Button x:Name="btnMaximize"
+                        Content="{StaticResource maximize}"
+                        Style="{StaticResource IconButtonStyle}"
+                        MouseDown="btnMaximize_MouseDown"/>
+                <Button x:Name="btnClose"
+                        Foreground="DarkRed"
+                        Content="{StaticResource close}"
+                        Style="{StaticResource IconButtonStyle}"
+                        MouseDown="btnClose_MouseDown"/>
             </StackPanel>
         </Grid>
     </Border>    

@@ -24,7 +24,7 @@
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Data="{TemplateBinding Content}"
-                                      Fill="{TemplateBinding Foreground}"/>
+                                    Fill="{TemplateBinding Foreground}"/>
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>

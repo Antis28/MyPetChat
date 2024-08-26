@@ -20,7 +20,7 @@ namespace WpfChatUI.CustomControls
             if (e.ChangedButton == MouseButton.Left)
             {
                 mainWindow.DragMove();
-                
+
             }
         }
 
@@ -63,6 +63,22 @@ namespace WpfChatUI.CustomControls
         public static readonly DependencyProperty TitleColorProperty =
             DependencyProperty.Register("TitleColor", typeof(Brush), typeof(TopWindowPanel));
 
+        private void btnMinimize_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            mainWindow.WindowState = WindowState.Minimized;
+        }
 
+        private void btnMaximize_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (mainWindow.WindowState == WindowState.Normal)
+                mainWindow.WindowState = WindowState.Maximized;
+            else
+                mainWindow.WindowState |= WindowState.Normal;
+        }
+
+        private void btnClose_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }
