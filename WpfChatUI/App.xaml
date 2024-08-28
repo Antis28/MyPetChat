@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/assets/icons.xaml"/>
+                <!--<ResourceDictionary Source="/assets/noimage.png"/>-->
             </ResourceDictionary.MergedDictionaries>
             
             <!-- Style for buttons with icon-->

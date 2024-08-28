@@ -13,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfChatUI
+namespace WpfChatUI.CustomControls
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для MenuListControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MenuListControl : UserControl
     {
-        public MainWindow()
+        public MenuListControl()
         {
             InitializeComponent();
-            //mainFrame.Navigate(new Uri("/pages/Calculator.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }
