@@ -32,7 +32,7 @@
             <StackPanel 
                 Orientation="Horizontal"
                 HorizontalAlignment="Right"
-                Margin="10,0">
+                Margin="0,-6,0,0">
                 <Button x:Name="btnMinimize"
                         Content="{StaticResource minimize}"
                         Style="{StaticResource IconButtonStyle}"
