@@ -23,6 +23,8 @@ namespace WpfChatUI.CustomControls
         public MenuListControl()
         {
             InitializeComponent();
+            //We are going to bind our MenuItems to the CustomList
+            DataContext = new ViewModel();
         }
     }
 }
