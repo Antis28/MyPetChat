@@ -33,10 +33,10 @@
                 <ColumnDefinition Width="310"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Background="#2A2E4D">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
                 <!--#region Profile button-->
                 <RoundProfileButton:RoundProfileButton 
@@ -85,10 +85,33 @@
                                          BorderThickness="0"
                                          Background="Transparent"
                                          Margin="0,0,15,0"/>
+                                <TextBlock Text="Enter to search"
+                                           Grid.Column="1"
+                                           FontWeight="SemiBold"
+                                           FontSize="16"
+                                           HorizontalAlignment="Left"
+                                           TextAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Foreground="#b7b5b8"
+                                           IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, ElementName=searchQuery}" 
+                                                             Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </Grid>
                         </Border>
                     </Border>
                     <!--#endregion-->
+                    
+                    
                 </Grid>
             </StackPanel>
         </Grid>
