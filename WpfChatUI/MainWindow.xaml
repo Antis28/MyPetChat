@@ -15,8 +15,7 @@
         
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
-        
-        Height="768" 
+        MinHeight="768"
         Width="1024"
         Title="Chat App" 
         x:Name="_mainWindow">
@@ -26,7 +25,7 @@
             BackgroundColor="#2A2E4D" 
             TitleColor="#686383" 
             TitleWindow="Chat UI"/>
-        <Grid Background="WhiteSmoke" Width="Auto"  VerticalAlignment="Stretch">
+        <Grid Background="CornflowerBlue" Width="Auto"  VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="95"/>
                 <ColumnDefinition Width="447"/>
@@ -47,9 +46,51 @@
                 <!--#endregion-->
                 <CustomControls:MenuListControl Grid.Row="1" 
                                          Margin="0,50,0,0"/>
-
-                
             </Grid>
+            <StackPanel Grid.Column="1" 
+                Orientation="Vertical" 
+                Margin="0,30,0,0">
+                <Grid Margin="30,0,30,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+                    <!--#region SearchBar-->
+                    <Border Grid.Column="0" 
+                            Background="Transparent"
+                            Height="Auto"
+                            Visibility="{Binding Visibility}">
+                        <Border Background="#F8F6F7" 
+                                Height="48" 
+                                CornerRadius="25"
+                                HorizontalAlignment="Stretch">
+                            <Grid Height="Auto">
+                                <Grid.ColumnDefinitions>
+                                    <!-- For icon searchbar-->
+                                    <ColumnDefinition Width="60"/>
+                                    <!-- For textbox-->
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <!--placing icon-->
+                                <Image Source="/assets/search.png" 
+                                       Width="25" 
+                                       Stretch="Uniform"/>
+                                <TextBox x:Name="searchQuery" 
+                                         Grid.Column="1"
+                                         FontSize="16"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         VerticalContentAlignment="Center"
+                                         TextAlignment="Left"
+                                         BorderThickness="0"
+                                         Background="Transparent"
+                                         Margin="0,0,15,0"/>
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <!--#endregion-->
+                </Grid>
+            </StackPanel>
         </Grid>
     </StackPanel>
 
