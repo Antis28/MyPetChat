@@ -58,8 +58,28 @@
             <Setter Property="Focusable" Value="False"/>
         </Style>
 
-       
-        <!-- Region styling Listbox item-->
+        <!--#region Path Style  which will be our icon-->
+        <Style x:Key="PathStyle" TargetType="{x:Type Path}">
+            <Setter  Property="Fill" Value="#686383"/>
+            <Setter  Property="Width" Value="26"/>
+            <Setter  Property="Stretch" Value="Uniform"/>
+            <Setter  Property="HorizontalAlignment" Value="Stretch"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver, 
+                    RelativeSource={RelativeSource Mode=FindAncestor, 
+                                    AncestorType={x:Type ListBoxItem}}}" Value="True">
+                    <Setter Property="Fill" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsSelected, 
+                        RelativeSource={RelativeSource Mode=FindAncestor, 
+                                    AncestorType={x:Type ListBoxItem}}}" Value="True">
+                    <Setter Property="Fill" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--#endregion-->
+        <!--#region styling Listbox item-->
         <Style TargetType="{x:Type ListBoxItem}">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Height" Value="74"/>
@@ -70,10 +90,13 @@
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                         <Border x:Name="border" BorderThickness="0" SnapsToDevicePixels="True">
                             <Grid Margin="0">
-                                <!-- Region Left side indicator for our buttons -->
+                                <!--#region Left side indicator for our buttons -->
                                 <Border Style="{StaticResource IndicatorStyle}"/>
-                                <!-- End region -->
+                                <!--#endregion-->
+
+                                <!--#region Path - icon-->
                                 <Path Data="{Binding PathData}" Style="{StaticResource PathStyle}"/>
+                                <!--#endregion-->
                             </Grid>
                         </Border>
                     </ControlTemplate>
