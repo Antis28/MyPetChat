@@ -75,6 +75,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
+    <Page Include="CustomControls\CornerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomControls\MenuListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -95,6 +99,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CustomControls\CornerPanel.xaml.cs">
+      <DependentUpon>CornerPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\MenuListControl.xaml.cs">
       <DependentUpon>MenuListControl.xaml</DependentUpon>
     </Compile>
@@ -104,6 +111,7 @@
     <Compile Include="CustomControls\TopWindowPanel.xaml.cs">
       <DependentUpon>TopWindowPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

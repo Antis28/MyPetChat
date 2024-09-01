@@ -83,7 +83,7 @@
         <Style TargetType="{x:Type ListBoxItem}">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Height" Value="74"/>
-            <!-- to set  the selected menu item on startup-->
+            <!-- to set  the selected menu item on startup -->
             <Setter Property="IsSelected" Value="{Binding IsItemSelected}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -112,7 +112,7 @@
 
         </Style>
     </UserControl.Resources>
-    <ListBox Style="{StaticResource ChatListBox}">
+    <ListBox Style="{StaticResource ChatListBox}" ItemsSource="{Binding ItemList}">
 
     </ListBox>
 </UserControl>

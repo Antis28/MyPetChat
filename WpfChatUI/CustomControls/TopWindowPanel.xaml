@@ -13,7 +13,9 @@
         Background="{Binding BackgroundColor, ElementName=_this}"
         CornerRadius="20,20,0,0"
         Height="40"
+        HorizontalAlignment="Stretch"
         MouseDown="Border_MouseDown"
+        
         VerticalAlignment="Top">
         <Grid>
             <!-- Title window -->

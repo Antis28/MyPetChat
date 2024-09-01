@@ -19,25 +19,29 @@
         Height="768" Width="1024"
         Title="Chat App" 
         x:Name="_mainWindow">
-    <Border 
-     Background="WhiteSmoke"
-     CornerRadius="0">
-        <Grid>
+
+    <StackPanel Orientation="Vertical">
+        <CustomControls:TopWindowPanel BackgroundColor="#2A2E4D" TitleColor="#686383" TitleWindow="Chat UI"/>
+        <Grid Background="WhiteSmoke" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="95"/>
                 <ColumnDefinition Width="447"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="310"/>
-            </Grid.ColumnDefinitions>  
+            </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Background="#2A2E4D">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <!-- Prifile Button -->
-                
-                <RoundProfileButton:RoundProfileButton Width="50" />
-            </Grid>           
+
+                <!--#region Profile button-->
+                <RoundProfileButton:RoundProfileButton Grid.Row="0" Width="50" />
+                <!--#endregion-->
+
+                <CustomControls:MenuListControl Grid.Row="1"/>
+            </Grid>
         </Grid>
-    </Border>
+    </StackPanel>
+
 </Window>
