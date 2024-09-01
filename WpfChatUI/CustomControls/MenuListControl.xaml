@@ -96,9 +96,15 @@
 
                                 <!--#region Path - icon-->
                                 <Path Data="{Binding PathData}" Style="{StaticResource PathStyle}"/>
-                                <!--#endregion-->
+                                <!--#endregion--> 
                             </Grid>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding ListItemHeight}" Value="130">
+                                <Setter Property="Height" Value="130"/>
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
