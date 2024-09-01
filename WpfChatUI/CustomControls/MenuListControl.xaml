@@ -9,9 +9,14 @@
              Width="Auto"
              Height="Auto">
     <UserControl.Resources>
-        <!-- Region Indicator Style -->
+        <!-- DropShadowInd small line in left panel -->
+        <DropShadowEffect x:Key="DropShadowInd" BlurRadius="10"
+                          ShadowDepth="3"
+                          Direction="360"
+                          Color="#f54a4a"/>
+        <!--#region Indicator Style -->
         <Style x:Key="IndicatorStyle" TargetType="{x:Type Border}">
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="#f54a4a"/>
             <Setter Property="Visibility" Value="Hidden"/>
             <Setter Property="Height" Value="{Binding Height, 
                 RelativeSource={RelativeSource Mode=FindAncestor,
@@ -19,9 +24,32 @@
             <Setter Property="Width" Value="4"/>
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
+
+
             <!-- Shadow effect -->
+            <Setter Property="Effect" Value="{StaticResource DropShadowInd}"/>
+            <!-- To be visible indicator when mouse hower or item selected -->
+            <Style.Triggers>
+                <DataTrigger Binding="{
+                        Binding IsMouseOver, 
+                        RelativeSource={RelativeSource 
+                                                Mode=FindAncestor,
+                                                AncestorType=ListBoxItem}}" 
+                        Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{
+                        Binding IsSelected, 
+                        RelativeSource={RelativeSource 
+                                Mode=FindAncestor,
+                                AncestorType=ListBoxItem}}" 
+                        Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+
         </Style>
-        <!-- End region -->
+        <!--#endregion-->
         <Style x:Key="ChatListBox" TargetType="{x:Type ListBox}">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -30,7 +58,8 @@
             <Setter Property="Focusable" Value="False"/>
         </Style>
 
-        <!-- Region styling item Listbox -->
+       
+        <!-- Region styling Listbox item-->
         <Style TargetType="{x:Type ListBoxItem}">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Height" Value="74"/>
@@ -42,19 +71,18 @@
                         <Border x:Name="border" BorderThickness="0" SnapsToDevicePixels="True">
                             <Grid Margin="0">
                                 <!-- Region Left side indicator for our buttons -->
-                                <Border Style="{StaticResource IndicatorStyle}">
-                                    
-                                </Border>
+                                <Border Style="{StaticResource IndicatorStyle}"/>
                                 <!-- End region -->
+                                <Path Data="{Binding PathData}" Style="{StaticResource PathStyle}"/>
                             </Grid>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            
+
         </Style>
     </UserControl.Resources>
     <ListBox Style="{StaticResource ChatListBox}">
-            
+
     </ListBox>
 </UserControl>
