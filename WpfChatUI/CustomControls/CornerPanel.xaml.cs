@@ -13,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfChatUI
+namespace WpfChatUI.CustomControls
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для CornerPanel.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CornerPanel : UserControl
     {
-        public MainWindow()
+        public CornerPanel()
         {
             InitializeComponent();
-            //mainFrame.Navigate(new Uri("/pages/Calculator.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }

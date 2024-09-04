@@ -70,6 +70,11 @@ namespace WpfChatUI.CustomControls
 
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
+            MaximizeOrMinimize();
+        }
+
+        private void MaximizeOrMinimize()
+        {
             if (mainWindow.WindowState == WindowState.Normal)
                 mainWindow.WindowState = WindowState.Maximized;
             else
@@ -79,6 +84,11 @@ namespace WpfChatUI.CustomControls
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void _this_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MaximizeOrMinimize();
         }
     }
 }
