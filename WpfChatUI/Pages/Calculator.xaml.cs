@@ -12,21 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WpfChatUI.Pages;
 
-namespace WpfChatUI
+namespace WpfChatUI.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для Calculator.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Calculator : Page
     {
-        public MainWindow()
+        public Calculator()
         {
             InitializeComponent();
-            //mainFrame.Navigate(new Uri("/pages/Calculator.xaml", UriKind.RelativeOrAbsolute));
-            //mainFrame.Navigate(new Uri("/pages/MainChatPage.xaml", UriKind.RelativeOrAbsolute));
-            
         }
     }
 }

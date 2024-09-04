@@ -111,12 +111,19 @@
     <Compile Include="CustomControls\TopWindowPanel.xaml.cs">
       <DependentUpon>TopWindowPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\MainChatPage.xaml.cs">
+      <DependentUpon>MainChatPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\Calculator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MainChatPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

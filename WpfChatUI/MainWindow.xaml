@@ -7,25 +7,44 @@
         xmlns:local="clr-namespace:WpfChatUI"
         xmlns:RoundProfileButton="clr-namespace:ChatUI.Custom_Controls"
         mc:Ignorable="d"
-       
+                     
         ResizeMode="CanResizeWithGrip"
-        WindowStyle="None"
-        AllowsTransparency="True"
-        
-        
         WindowStartupLocation="CenterScreen"
+        
         Background="Transparent"
-        MinHeight="768"
+        WindowStyle="None"
+        AllowsTransparency="True" 
+        
+        Height="768"
         Width="1024"
         Title="Chat App" 
         x:Name="_mainWindow">
+    <Window.Resources>
+        <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Thin"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+    </Window.Resources>
 
-    <StackPanel Orientation="Vertical" >
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <CustomControls:TopWindowPanel 
+            Grid.Row="0" Grid.Column="0"
             BackgroundColor="#2A2E4D" 
             TitleColor="#686383" 
             TitleWindow="Chat UI"/>
-        <Grid Background="CornflowerBlue" Width="Auto"  VerticalAlignment="Stretch">
+        <!--<Frame x:Name="mainFrame" Grid.Row="1" Height="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
+        <Grid  Grid.Row="1" Grid.Column="0" Background="CornflowerBlue" Width="Auto"  VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="95"/>
                 <ColumnDefinition Width="447"/>
@@ -38,68 +57,80 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
+
                 <!--#region Profile button-->
+
                 <RoundProfileButton:RoundProfileButton 
-                     Grid.Row="0" 
-                     Width="50" 
-                     ProfileImageSource="/assets/profile1.jpg"/>
+          Grid.Row="0" 
+          Width="50" 
+          ProfileImageSource="/assets/profile1.jpg"/>
+
                 <!--#endregion-->
+
                 <CustomControls:MenuListControl Grid.Row="1" 
-                                         Margin="0,50,0,0"/>
+                              Margin="0,50,0,0"/>
             </Grid>
             <StackPanel Grid.Column="1" 
-                Orientation="Vertical" 
-                Margin="0,30,0,0">
+     Orientation="Vertical" 
+     Margin="0,30,0,0">
                 <Grid Margin="30,0,30,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="90"/>
                     </Grid.ColumnDefinitions>
+
                     <!--#region SearchBar-->
+
                     <Border Grid.Column="0" 
-                            Background="Transparent"
-                            Height="Auto"
-                            Visibility="{Binding Visibility}">
+                 Background="Transparent"
+                 Height="Auto"
+                 Visibility="{Binding Visibility}">
                         <Border Background="#F8F6F7" 
-                                Height="48" 
-                                CornerRadius="25"
-                                HorizontalAlignment="Stretch">
+                     Height="48" 
+                     CornerRadius="25"
+                     HorizontalAlignment="Stretch">
                             <Grid Height="Auto">
                                 <Grid.ColumnDefinitions>
-                                    <!-- For icon searchbar-->
+
+                                    <!--For icon searchbar-->
+
                                     <ColumnDefinition Width="60"/>
-                                    <!-- For textbox-->
+
+                                    <!--For textbox-->
+
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+
                                 <!--placing icon-->
+
                                 <Image Source="/assets/search.png" 
-                                       Width="25" 
-                                       Stretch="Uniform"/>
+                            Width="25" 
+                            Stretch="Uniform"/>
                                 <TextBox x:Name="searchQuery" 
-                                         Grid.Column="1"
-                                         FontSize="16"
-                                         HorizontalAlignment="Stretch"
-                                         VerticalAlignment="Stretch"
-                                         VerticalContentAlignment="Center"
-                                         TextAlignment="Left"
-                                         BorderThickness="0"
-                                         Background="Transparent"
-                                         Margin="0,0,15,0"/>
+                              Grid.Column="1"
+                              FontSize="16"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              VerticalContentAlignment="Center"
+                              TextAlignment="Left"
+                              BorderThickness="0"
+                              Background="Transparent"
+                              Margin="0,0,15,0"/>
                                 <TextBlock Text="Enter to search"
-                                           Grid.Column="1"
-                                           FontWeight="SemiBold"
-                                           FontSize="16"
-                                           HorizontalAlignment="Left"
-                                           TextAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           Foreground="#b7b5b8"
-                                           IsHitTestVisible="False">
+                                Grid.Column="1"
+                                FontWeight="SemiBold"
+                                FontSize="16"
+                                HorizontalAlignment="Left"
+                                TextAlignment="Left"
+                                VerticalAlignment="Center"
+                                Foreground="#b7b5b8"
+                                IsHitTestVisible="False">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Text, ElementName=searchQuery}" 
-                                                             Value="">
+                                                  Value="">
                                                     <Setter Property="Visibility" Value="Visible"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -110,11 +141,16 @@
                         </Border>
                     </Border>
                     <!--#endregion-->
-                    
-                    
                 </Grid>
             </StackPanel>
         </Grid>
-    </StackPanel>
-
+    </Grid>
 </Window>
+<!--     
+    
+    
+   
+    
+    
+    
+    -->
