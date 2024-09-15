@@ -68,24 +68,32 @@ namespace TcpServer.ViewModels
 
         private void Loginning(CommandMessage cmd)
         {
-            UserName = cmd.UserName;
-            if (!string.IsNullOrWhiteSpace(UserName))
+            try
             {
-                IPAddress = cmd.IPAddress;
-                var message = $"вошел в чат!";
-                // посылаем сообщение о входе в чат всем подключенным пользователям
-                _logger.ShowMessage($"{UserName}: {message}");
+                UserName = cmd.UserName;
+                if (!string.IsNullOrWhiteSpace(UserName))
+                {
+                    IPAddress = cmd.IPAddress;
+                    var message = $"вошел в чат!";
+                    // посылаем сообщение о входе в чат всем подключенным пользователям
+                    _logger.ShowMessage($"{UserName}: {message}");
 
-                var cmdMessage = NewCommand(TcpCommands.Login, message, cmd.IPAddress);
-                _server.BroadcastMessage(cmdMessage, Id);
-                cmdMessage = NewCommand(TcpCommands.LoginSuccess, "Подключение успешно!", cmd.IPAddress);
-                Send(cmdMessage);
-            }
-            else
+                    var cmdMessage = NewCommand(TcpCommands.Login, message, cmd.IPAddress);
+                    _server.BroadcastMessage(cmdMessage, Id);
+                    cmdMessage = NewCommand(TcpCommands.LoginSuccess, "Подключение успешно!", cmd.IPAddress);
+                    Send(cmdMessage);
+                }
+                else
+                {
+                    var message = $"Пустое имя пользователя";
+                    _logger.ShowError(message);
+                    throw new Exception(message);
+                }
+            } 
+            catch (Exception)
             {
-                var message = $"Пустое имя пользователя";
-                _logger.ShowError(message);
-                throw new Exception(message);
+
+                throw;
             }
         }
         private bool HandleMessage(string line)

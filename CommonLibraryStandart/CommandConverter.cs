@@ -98,7 +98,7 @@ namespace CommonLibrary
         }
         public void FromJsonFile()
         {
-            string mainDir = FileSystem.AppDataDirectory;
+            //string mainDir = FileSystem.AppDataDirectory;
 
 
             //using (var file = new StreamReader("Commands.json", Encoding.UTF8))
