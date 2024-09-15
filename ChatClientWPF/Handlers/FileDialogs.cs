@@ -7,9 +7,9 @@ using System.Windows;
 
 namespace ChatClientWPF.Handlers
 {
-    internal class FileDialogs
+    internal  class FileDialogs
     {
-        public static string open()
+        public static string Open()
         {
             // Configure open file dialog box
             var dialog = new Microsoft.Win32.OpenFileDialog();
@@ -66,12 +66,13 @@ namespace ChatClientWPF.Handlers
                     // User pressed Cancel
                     break;
                 case MessageBoxResult.Yes:
-                    open();
+                    Open();
                     // User pressed Yes
                     break;
                 case MessageBoxResult.No:
                     // User pressed No
                     break;
+                default: throw new Exception("msg не опознан switch");
             }
         }
     }

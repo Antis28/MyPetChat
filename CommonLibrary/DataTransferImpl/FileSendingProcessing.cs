@@ -14,7 +14,7 @@ namespace CommonLibrary
     /// <summary>
     /// Реализация отправки файла с индикатором прогреса и завершения
     /// </summary>
-    public class FileSendingProcessing
+    public  class FileSendingProcessing
     {
         private int percent;
 

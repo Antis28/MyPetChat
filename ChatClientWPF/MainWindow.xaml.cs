@@ -16,13 +16,13 @@ namespace ChatClientWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<ClientUser> clientUsers = new List<ClientUser>();        
+        List<ClientUser> clientUsers = new List<ClientUser>();
 
         public MainWindow()
         {
-            InitializeComponent();           
+            InitializeComponent();
         }
-               
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (DataContext is MainViewModel viewModel)
@@ -40,7 +40,7 @@ namespace ChatClientWPF
         {
             clientUsers.Add(user);
             var userSerch = clientUsers.FirstOrDefault(x => x.ID == user.ID);
-            if (userSerch == null) return;
+            if (userSerch == null) { return; };
 
             UpdateUserList(clientUsers);
         }
@@ -53,16 +53,10 @@ namespace ChatClientWPF
         public void GoneUserCallBack(ClientUser user)
         {
             var userSerch = clientUsers.FirstOrDefault(x => x.ID == user.ID);
-            if (userSerch == null) return;
+            if (userSerch == null) { return; }
 
             clientUsers.Remove(user);
             UpdateUserList(clientUsers);
-        }
-
-        
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
         }
     }
 }

@@ -8,8 +8,9 @@
         xmlns:views="clr-namespace:ChatClientWPF.Views"        
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
         Closing="Window_Closing"
-        Title="MainWindow" MinHeight="400" MaxHeight="700" MinWidth="600" MaxWidth="800"  Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" MinHeight="400" MaxHeight="700" MinWidth="600" MaxWidth="800"   >
     
     <Window.DataContext>
         <viewmodels:MainViewModel/>

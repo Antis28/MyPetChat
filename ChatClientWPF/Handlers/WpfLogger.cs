@@ -9,11 +9,6 @@ namespace ChatClientWPF.Handlers
 {
     internal class WpfLogger : ILogger
     {
-        public WpfLogger()
-        {
-            
-        }
-
         public void ShowError(string message)
         {
             throw new NotImplementedException();

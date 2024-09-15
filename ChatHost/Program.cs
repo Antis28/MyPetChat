@@ -25,14 +25,6 @@ namespace ChatHost
                 CoreServer.StartServer(new Logger());
             });
             Console.ReadLine();
-
-            //using (var host = new ServiceHost(typeof(WcfChat.ServiceChat)))
-            //{
-            //    host.Open();
-
-            //    Console.WriteLine("Host started!");
-            //    Console.ReadLine();
-            //}
         }
     }
 }

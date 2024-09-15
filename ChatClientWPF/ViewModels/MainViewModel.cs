@@ -49,10 +49,11 @@ namespace ChatClientWPF.ViewModels
             get => userName;
             set
             {
-                if (EqualityComparer<string>.Default.Equals(userName, value)) return;
+                if (EqualityComparer<string>.Default.Equals(userName, value)) { return; }
+                
                 userName = value;
 
-                if (_client != null) SendNewUserName();
+                if (_client != null) { SendNewUserName(); }
 
                 RaisePropertyChanged(nameof(UserName));
             }
@@ -104,7 +105,7 @@ namespace ChatClientWPF.ViewModels
         ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
         CommandConverter _commandsHandler = new CommandConverter();
         DataTransfeHandler _dataTransfeHandler;
-        
+
         ServerSettings settings;
         ILogger _logger;
 
@@ -137,8 +138,8 @@ namespace ChatClientWPF.ViewModels
             ip = settings.Ip;
             port = settings.Port;
             userName = settings.UserName;
-            _logger = new WpfLogger((message) => { PrintInUI(message); }) ;
-            
+            _logger = new WpfLogger((message) => { PrintInUI(message); });
+
         }
 
         public AsyncCommand ConnectCommand
@@ -171,7 +172,7 @@ namespace ChatClientWPF.ViewModels
                     // Если не подключен к серверу
                 }, () => _client == null || _client?.Connected == false);
             }
-        }       
+        }
 
         public AsyncCommand GetUsersCommand
         {
@@ -198,7 +199,7 @@ namespace ChatClientWPF.ViewModels
         [GenerateCommand]
         void DisconnectCommand(object obj)
         {
-            if (_client == null) return;
+            if (_client == null) { return; }
 
             SendCloseAsync();
         }
@@ -211,10 +212,7 @@ namespace ChatClientWPF.ViewModels
                 {
                     return Task.Factory.StartNew(() =>
                     {
-
-                        //FileDialogs.Save();
-                        //FileDialogs.msg();
-                        SendFileAsync(FileDialogs.open());
+                        SendFileAsync(FileDialogs.Open());
                     });
                 });
             }
@@ -226,11 +224,7 @@ namespace ChatClientWPF.ViewModels
             {
                 return new AsyncCommand(() =>
                 {
-
-                    //JSaver.Save();
                     return SendMsgAsync(Message);
-
-                    //});
                 }, () => _client?.Connected == true, !string.IsNullOrWhiteSpace(Message));
 
 
@@ -299,7 +293,7 @@ namespace ChatClientWPF.ViewModels
         {
             string hostIp = GetClientIp();
 
-            var cmd = _chatJsonConverter.WriteToJson(new CommandMessage()
+            var cmd = _chatJsonConverter.WriteToJson(new CommandMessage
             {
                 Command = "Login",
                 Argument = string.Empty,
@@ -324,7 +318,7 @@ namespace ChatClientWPF.ViewModels
                 var IsEndNotWithOne = !ip.ToString().EndsWith(settings.ClientIpEnd);
 
 
-                if (isInterNet && IsStartWith192 & IsEndNotWithOne)
+                if (isInterNet && IsStartWith192 && IsEndNotWithOne)
                 {
                     hostIp = ip.ToString();
                     break;
@@ -422,7 +416,9 @@ namespace ChatClientWPF.ViewModels
         private string RandomeUserName()
         {
             var names = new string[] { "Biser", "Tiser", "Ruser", "Niser", "Miser", "Cuser", "User", "Diser" };
+           
             var r = new Random((int)DateTime.Now.Ticks);
+            
             return names[r.Next(names.Length)];
         }
         public Task GetUsersAsync()
