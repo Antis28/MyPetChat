@@ -41,7 +41,7 @@ namespace CommonLibrary.NetWork
                     //await Task.Delay(1000);
                     var result = await udpClient.ReceiveAsync();
                     string message = Encoding.UTF8.GetString(result.Buffer);
-                    if (message == "END") break;
+                    if (message == "END") { break; }
                     logger.ShowMessage(message);
                 }
             }
@@ -56,10 +56,11 @@ namespace CommonLibrary.NetWork
             udpClient.DropMulticastGroup(brodcastAddress);
             logger.ShowMessage("Udp-клиент завершил свою работу");
         }
-        public static async Task BroadSender(string IpAddress, ILogger logger = null)
+        public static async Task BroadSender(string IpAddress, ILogger logger)
         {
             await Task.Delay(1000);
             IpAddress = "235.5.5.11";
+            logger.ShowMessage($"{IpAddress} - IpAddress");
             var messages = new string[] { "Hello World!", "Hello METANIT.COM", "Hello work", "END" };
             var brodcastAddress = IPAddress.Parse(IpAddress); ; // хост для отправки данных 
             using var udpSender = new UdpClient();

@@ -48,7 +48,7 @@ namespace CommonLibrary
             {
                 //System.Windows.Forms.MessageBox.Show("Возникла следующая ошибка при копировании:\n" + e.Message);
                 //Отправляем сообщение что процесс копирования закончен неудачно
-                if (OnComplete != null) OnComplete(false, sourceFile.Name);
+                if (OnComplete != null) { OnComplete(false, sourceFile.Name); }
             }
         }
 

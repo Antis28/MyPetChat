@@ -20,7 +20,9 @@ namespace CommonLibraryStandart.Other
         async Task Init()
         {
             if (Database is not null)
+            {
                 return;
+            }
 
             Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
             var result = await Database.CreateTableAsync<T>();
@@ -51,9 +53,9 @@ namespace CommonLibraryStandart.Other
         {
             await Init();
             if (item.ID != 0)
-               { return await Database.UpdateAsync(item); }
+            { return await Database.UpdateAsync(item); }
             else
-               { return await Database.InsertAsync(item); }
+            { return await Database.InsertAsync(item); }
         }
 
         public async Task<int> DeleteItemAsync(T item)
@@ -66,8 +68,9 @@ namespace CommonLibraryStandart.Other
         public T LoadSetting()
         {
             T result = null;
-            Task.Run(async () => {
-               result =  await GetItemAsync(0);
+            Task.Run(async () =>
+            {
+                result = await GetItemAsync(0);
 
             });
             Task.Delay(1000);
@@ -82,11 +85,12 @@ namespace CommonLibraryStandart.Other
         public T LoadOrCreateSetting(T defaultSettings)
         {
             T result = defaultSettings;
-            var t = Task.Run(() => {
-                var t =  LoadSetting();
+            var t = Task.Run(() =>
+            {
+                var t = LoadSetting();
                 if (t == null)
                 {
-                    Save(defaultSettings);                    
+                    Save(defaultSettings);
                 }
             });
             t.Wait();
