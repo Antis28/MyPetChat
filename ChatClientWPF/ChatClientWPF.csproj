@@ -196,9 +196,9 @@
     <Analyzer Include="..\packages\DevExpress.Mvvm.CodeGenerators.22.1.1\analyzers\dotnet\cs\DevExpress.Mvvm.CodeGenerators.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj">
-      <Project>{f900818a-d4d0-4908-8406-9c2a609e7bcc}</Project>
-      <Name>CommonLibrary</Name>
+    <ProjectReference Include="..\CommonLibraryStandart\CommonLibraryStandart.csproj">
+      <Project>{aac80ce4-d759-4ae4-acf1-276bd23cc330}</Project>
+      <Name>CommonLibraryStandart</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

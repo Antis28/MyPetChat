@@ -1,4 +1,5 @@
 ﻿using CommonLibrary;
+using CommonLibrary.Settings;
 using CommonLibraryStandart.Interfaces;
 using SQLite;
 using System.Collections.Generic;

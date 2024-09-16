@@ -2,6 +2,8 @@
 using ChatClientWPF.Models;
 using CommonLibrary;
 using CommonLibrary.Interfaces;
+using CommonLibrary.Settings;
+using CommonLibraryStandart.Interfaces;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using System;

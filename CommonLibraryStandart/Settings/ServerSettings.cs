@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace CommonLibrary
+namespace CommonLibrary.Settings
 {
 
     public class ServerSettings
