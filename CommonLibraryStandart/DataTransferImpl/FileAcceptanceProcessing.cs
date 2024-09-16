@@ -1,7 +1,5 @@
-﻿using CommonLibrary;
-using CommonLibrary.Interfaces;
+﻿using CommonLibrary.Interfaces;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -13,10 +11,9 @@ namespace TcpServer.ViewModels.ClientHandlers
     /// </summary>
     public class FileAcceptanceProcessing
     {
-        TcpClient _client;
-        ILogger _logger;
-
-        int percent;
+        private readonly TcpClient _client;
+        private readonly ILogger _logger;
+        private int percent;
         /// <summary>
         /// Событие на завершение копирования файла
         /// </summary>
@@ -72,11 +69,11 @@ namespace TcpServer.ViewModels.ClientHandlers
                 //Записываем информацию о процессе
                 getInfo(curLen, totalBytesRead);
             }
-            
+
             OnComplete?.Invoke(true, savePath);
         }
 
-        void ReadBytes(int howmuch, byte[] buf)
+        private void ReadBytes(int howmuch, byte[] buf)
         {
             var stream = _client.GetStream();
             int readPos = 0;
@@ -84,7 +81,10 @@ namespace TcpServer.ViewModels.ClientHandlers
             {
                 var actuallyRead = stream.Read(buf, readPos, howmuch - readPos);
                 if (actuallyRead == 0)// Мы не смоги что-либо прочитать, выдаем исключение
+                {
                     throw new EndOfStreamException();
+                }
+
                 readPos += actuallyRead;
             }
         }
@@ -115,8 +115,7 @@ namespace TcpServer.ViewModels.ClientHandlers
             string message = string.Empty;
             double pctDone = (double)((double)bytesRead / (double)totalLength);
             var percentNow = (int)(pctDone * 100);
-            // Выводить только кратно 10 процентам
-            var per = percentNow % 10;
+            // Выводить только кратно 10 процентам            
             if (percentNow == 0 || percent == percentNow || (percentNow % 10 != 0))
             {
                 return;
@@ -128,12 +127,14 @@ namespace TcpServer.ViewModels.ClientHandlers
                 message = $"Считано: {bytesRead / 1000}KB из {totalLength / 1000}KB. Всего {(int)(pctDone * 100)}%";
             }
             else
+            {
                 //Выводить в мегабайтах
                 message = $"Считано: {bytesRead / 1000 / 1000}MB из {totalLength / 1000 / 1000}MB. Всего {(int)(pctDone * 100)}%";
+            }
 
 
             //Отправляем сообщение подписавшимся на него
-            if (OnProgress != null && percent > 0) OnProgress(message, percent);
+            if (OnProgress != null && percent > 0) { OnProgress(message, percent); }
         }
     }
 }

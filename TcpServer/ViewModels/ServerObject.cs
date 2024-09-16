@@ -1,27 +1,27 @@
-﻿using System;
+﻿using CommonLibrary.Interfaces;
+using CommonLibrary.NetWork;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using System.Threading;
-using CommonLibrary.Interfaces;
-using CommonLibrary.NetWork;
+using System.Threading.Tasks;
 
 namespace TcpServer.ViewModels
 {
     internal class ServerObject
     {
-        TcpListener _tcpListener = new TcpListener(System.Net.IPAddress.Any, 5050); // сервер для прослушивания
-        List<ClientObject> _clients = new(); // все подключения
-        ILogger _logger;
+        private readonly TcpListener _tcpListener = new TcpListener(System.Net.IPAddress.Any, 5050); // сервер для прослушивания
+        private readonly List<ClientObject> _clients = new(); // все подключения
+        private readonly ILogger _logger;
 
-        internal List<ClientObject> Clients { get => _clients;}
+        internal List<ClientObject> Clients => _clients;
 
         public ServerObject(ILogger logger)
         {
             _logger = logger;
         }
-       
+
         // прослушивание входящих подключений
         protected internal void ListenAsync()
         {
@@ -36,7 +36,7 @@ namespace TcpServer.ViewModels
                 }
                 _logger.ShowMessage("Сервер запущен. Ожидание подключений...");
 
-                
+
                 while (true)
                 {
                     TcpClient tcpClient = _tcpListener.AcceptTcpClient();
@@ -75,7 +75,11 @@ namespace TcpServer.ViewModels
             // получаем по id закрытого подключение
             var client = _clients.FirstOrDefault(c => c.Id == id);
             // и удаляем его из списка подключений
-            if (client != null) _clients.Remove(client);
+            if (client != null)
+            {
+                _clients.Remove(client);
+            }
+
             client?.Close();
         }
         // отключение всех клиентов, остановка сервера

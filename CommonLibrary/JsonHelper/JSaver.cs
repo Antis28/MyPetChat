@@ -2,13 +2,12 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Net.Sockets;
 
 namespace CommonLibrary
 {
     public class JSaver<T> : IDataSettingsService<T> where T : class, IDataItem, new()
     {
-        static string path = "Settings.json";
+        private static string path = "Settings.json";
 
         public static bool SettingExists()
         {
@@ -31,7 +30,7 @@ namespace CommonLibrary
 
             if (!SettingExists())
             {
-                var message = "Файл настроек команд не существует - settings.json";               
+                var message = "Файл настроек команд не существует - settings.json";
                 throw new Exception(message);
             }
 
@@ -51,7 +50,7 @@ namespace CommonLibrary
             return commandSettings;
         }
 
-        public T LoadOrCreateSetting(T defaultSettings) 
+        public T LoadOrCreateSetting(T defaultSettings)
         {
             T settings;
 
@@ -61,12 +60,12 @@ namespace CommonLibrary
             }
             else
             {
-                settings = defaultSettings;                   
+                settings = defaultSettings;
                 Save(settings);
             }
             return settings;
         }
 
-       
+
     }
 }

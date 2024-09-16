@@ -1,13 +1,10 @@
-﻿using System;
+﻿using ChatClientWPF.ServiceChat;
+using ChatClientWPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.Channels;
-
 //using System.ServiceModel;
 using System.Windows;
-using System.Windows.Input;
-using ChatClientWPF.ServiceChat;
-using ChatClientWPF.ViewModels;
 
 namespace ChatClientWPF
 {
@@ -16,7 +13,7 @@ namespace ChatClientWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<ClientUser> clientUsers = new List<ClientUser>();
+        private List<ClientUser> clientUsers = new List<ClientUser>();
 
         public MainWindow()
         {

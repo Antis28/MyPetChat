@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 
 namespace CommonLibrary
-{  
+{
     public class CommandConverter
     {
         #region commands        
@@ -34,21 +34,18 @@ namespace CommonLibrary
         public TcpCommands RecognizeCommand(string searchCommand)
         {
             if (searchCommand == _chatCommands.CloseConection)
-               { return TcpCommands.CloseConnection; }
+            { return TcpCommands.CloseConnection; }
             if (searchCommand == _chatCommands.Login)
-                { return TcpCommands.Login; }
+            { return TcpCommands.Login; }
             if (searchCommand == _chatCommands.GetUsers)
-                { return TcpCommands.GetUsers; }
-            if (searchCommand == _chatCommands.Message)
-                { return TcpCommands.Message; }
-            if (searchCommand == _chatCommands.FileTransfer)
-                { return TcpCommands.FileTransfer; }
-            if (searchCommand == _chatCommands.UpdateUserName)
-               { return TcpCommands.UpdateUserName; }
-            if (searchCommand == _chatCommands.LoginSuccess)
-                { return TcpCommands.LoginSuccess; }
-
-            throw new ArgumentException("Команда не распознана");
+            { return TcpCommands.GetUsers; }
+            return searchCommand == _chatCommands.Message
+                ? TcpCommands.Message
+                : searchCommand == _chatCommands.FileTransfer
+                ? TcpCommands.FileTransfer
+                : searchCommand == _chatCommands.UpdateUserName
+                ? TcpCommands.UpdateUserName
+                : searchCommand == _chatCommands.LoginSuccess ? TcpCommands.LoginSuccess : throw new ArgumentException("Команда не распознана");
         }
         public string CommandToString(TcpCommands searchCommand)
         {

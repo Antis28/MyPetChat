@@ -16,7 +16,7 @@ namespace ChatClientWPF.Models
         private string _name;
         public string UserName
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 if (_name != value)

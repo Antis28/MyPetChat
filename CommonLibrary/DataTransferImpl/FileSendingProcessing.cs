@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CommonLibrary
 {
@@ -152,7 +148,7 @@ namespace CommonLibrary
 
 
             //Отправляем сообщение подписавшимся на него
-            if (OnProgress != null){ OnProgress(message, percent); }
+            if (OnProgress != null) { OnProgress(message, percent); }
         }
 
 
@@ -211,7 +207,7 @@ namespace CommonLibrary
                 }
             }
             //Отправляем сообщение что процесс копирования закончен удачно
-            if (OnComplete != null){ OnComplete(true, sourceFile); }
+            if (OnComplete != null) { OnComplete(true, sourceFile); }
         }
         private bool ReadFromBuffer(ref long totalBytesRead, ref int numReads, FileStream sourceStream, FileStream destinationStream)
         {

@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Login_UI.CustomControls
 {
@@ -28,8 +16,8 @@ namespace Login_UI.CustomControls
 
         public string PlaceHolder
         {
-            get { return (string)GetValue(PlaceHolderProperty); }
-            set { SetValue(PlaceHolderProperty, value); }
+            get => (string)GetValue(PlaceHolderProperty);
+            set => SetValue(PlaceHolderProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for PlaceHolder.  This enables animation, styling, binding, etc...
@@ -40,8 +28,8 @@ namespace Login_UI.CustomControls
 
         public string Text
         {
-            get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for Text.  This enables animation, styling, binding, etc...
@@ -52,8 +40,8 @@ namespace Login_UI.CustomControls
 
         public bool IsPassword
         {
-            get { return (bool)GetValue(IsPasswordProperty); }
-            set { SetValue(IsPasswordProperty, value); }
+            get => (bool)GetValue(IsPasswordProperty);
+            set => SetValue(IsPasswordProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for IsPassword.  This enables animation, styling, binding, etc...

@@ -1,6 +1,4 @@
-﻿using CommonLibrary.Interfaces;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -11,9 +9,8 @@ namespace CommonLibrary
 {
     public class DataTransfeHandler
     {
-
-        int copyProgress;
-        TcpClient _client;
+        private int copyProgress;
+        private TcpClient _client;
 
         public event Action<string, int> OnProgress;
         public event Action<bool, string> OnComplete;
@@ -206,10 +203,8 @@ namespace CommonLibrary
 
             while (size > 0)
             {
-                byte[] buffer;
+                byte[] buffer = size < cl.ReceiveBufferSize ? (new byte[size]) : (new byte[cl.ReceiveBufferSize]);
                 // Проверяем чтобы буфер был не меньше необходимого для принятия
-                if (size < cl.ReceiveBufferSize){ buffer = new byte[size]; }
-                else { buffer = new byte[cl.ReceiveBufferSize]; }
 
                 // Получим данные в буфер
                 int rec = cl.Receive(buffer, 0, buffer.Length, 0);

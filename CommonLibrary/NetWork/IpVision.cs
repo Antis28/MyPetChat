@@ -1,10 +1,8 @@
 ﻿using CommonLibrary.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,13 +23,13 @@ namespace CommonLibrary.NetWork
             }
             return ips;
         }
-       
+
         public static async Task BroadClient(string IpAddress, ILogger logger)
         {
             IpAddress = "235.5.5.11";
             using var udpClient = new UdpClient(8001);
             var brodcastAddress = IPAddress.Parse(IpAddress); // хост для отправки данных 
-                                                                   // присоединяемся к группе
+                                                              // присоединяемся к группе
             udpClient.JoinMulticastGroup(brodcastAddress);
             logger.ShowMessage("Начало прослушивания сообщений");
             try
@@ -50,7 +48,7 @@ namespace CommonLibrary.NetWork
 
                 logger.ShowError(ex.Message);
             }
-            
+
             await Task.Delay(1000);
             // отсоединяемся от группы
             udpClient.DropMulticastGroup(brodcastAddress);

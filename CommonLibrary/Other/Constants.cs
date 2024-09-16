@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using System;
 using System.IO;
 //using Xamarin.Essentials;
 
@@ -9,7 +8,7 @@ namespace CommonLibraryStandart.Other
     {
         public static string DatabaseFilename => "ChatMauiSQLite.db3";
 
-        public static SQLiteOpenFlags Flags => 
+        public static SQLiteOpenFlags Flags =>
             // подключение может считывать и записывать данные.
             SQLite.SQLiteOpenFlags.ReadWrite |
             // подключение автоматически создаст файл базы данных, если он не существует.
@@ -22,7 +21,7 @@ namespace CommonLibraryStandart.Other
         public static string DatabasePath =>
             Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, DatabaseFilename);
 
-        
+
         // Path.Combine(Directory.GetCurrentDirectory(), DatabaseFilename);
         // Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
     }

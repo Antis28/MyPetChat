@@ -15,26 +15,25 @@ namespace TcpServer.ViewModels
 
         public string IPAddress { get; set; }
 
-        ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
-        CommandConverter _commandsHandler = new CommandConverter();
-        ILogger _logger;
+        private ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
+        private CommandConverter _commandsHandler = new CommandConverter();
+        private ILogger _logger;
+        private TcpClient _client;
+        private ServerObject _server; // объект сервера
 
-        TcpClient _client;
-        ServerObject _server; // объект сервера
-
-        FileAcceptanceProcessing _fileHandler;
-        DataTransfeHandler _dataTransferHandler;
+        private FileAcceptanceProcessing _fileHandler;
+        private DataTransfeHandler _dataTransferHandler;
 
         public ClientObject(TcpClient tcpClient, ServerObject serverObject, ILogger logger)
         {
             _client = tcpClient;
             _server = serverObject;
             _logger = logger;
-            
+
             _fileHandler = new(_client, _logger);
             _fileHandler.OnProgress += (message, percent) => _logger.ShowMessage(message);
             _fileHandler.OnComplete += (m, path) => _logger.ShowMessage($"Копирование завершено.\n{path}");
-            
+
             _dataTransferHandler = new(_client);
         }
 
@@ -109,11 +108,14 @@ namespace TcpServer.ViewModels
                 case TcpCommands.FileTransfer:
                     // Принять файл от клиента
                     string savePath = cmd.Argument;
-                   
+
                     _fileHandler.ReceiveFile(savePath);
                     break;
                 case TcpCommands.UpdateUserName:
-                    if (UserName == cmd.UserName) break;
+                    if (UserName == cmd.UserName)
+                    {
+                        break;
+                    }
 
                     UserName = cmd.UserName;
                     BroadcastUserList();

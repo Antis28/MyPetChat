@@ -1,5 +1,5 @@
-﻿using TcpServer.ViewModels;
-using CommonLibrary.Interfaces;
+﻿using CommonLibrary.Interfaces;
+using TcpServer.ViewModels;
 
 
 namespace TcpServer

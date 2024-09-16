@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 
 namespace CommonLibrary
 {
-    
+
     public class ServerSettings
     {
         public int ID { get; set; }

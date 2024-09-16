@@ -1,24 +1,18 @@
 ﻿using CommonLibrary;
 using SQLite;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CommonLibraryStandart.Other
 {
     public class TodoItemDatabase : IDataSettingsService
     {
-        SQLiteAsyncConnection Database;
+        private SQLiteAsyncConnection Database;
 
-        public TodoItemDatabase()
-        {
-        }
-
-        async Task Init()
+        private async Task Init()
         {
             if (Database is not null)
-                return;
+            { return; }
 
             Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
             var result = await Database.CreateTableAsync<ServerSettings>();
@@ -48,10 +42,7 @@ namespace CommonLibraryStandart.Other
         public async Task<int> SaveItemAsync(ServerSettings item)
         {
             await Init();
-            if (item.ID != 0)
-                return await Database.UpdateAsync(item);
-            else
-                return await Database.InsertAsync(item);
+            return item.ID != 0 ? await Database.UpdateAsync(item) : await Database.InsertAsync(item);
         }
 
         public async Task<int> DeleteItemAsync(ServerSettings item)

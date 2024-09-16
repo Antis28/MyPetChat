@@ -1,18 +1,14 @@
 ﻿using CommonLibrary;
 using CommonLibrary.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatClientWPF.ViewModels
 {
     internal class WpfLogger : ILogger
     {
-        ObservableCollection<CommandMessage> _chat;
-        Action<string> _showMessage;
+        private ObservableCollection<CommandMessage> _chat;
+        private Action<string> _showMessage;
 
         public WpfLogger(Action<string> showMessage)
         {

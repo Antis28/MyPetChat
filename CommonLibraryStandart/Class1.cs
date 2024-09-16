@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CommonLibrary
+﻿namespace CommonLibrary
 {
     public class Class1
     {

@@ -7,7 +7,7 @@ namespace ChatClientWPF.Handlers
 {
     public class JSaver
     {
-        static string path = "Settings.json";
+        private static string path = "Settings.json";
 
         public static bool SettingExists()
         {
@@ -31,7 +31,7 @@ namespace ChatClientWPF.Handlers
 
             if (!SettingExists())
             {
-                var message = "Файл настроек команд не существует - settings.json";               
+                var message = "Файл настроек команд не существует - settings.json";
                 throw new Exception(message);
             }
 

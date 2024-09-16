@@ -1,5 +1,4 @@
-﻿using CommonLibraryStandart.Other;
-//using SQLite;
+﻿//using SQLite;
 using System;
 using System.IO;
 

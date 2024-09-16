@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Login_UI
 {
@@ -25,7 +13,8 @@ namespace Login_UI
             InitializeComponent();
             mainFrame.Navigate(new Uri("/pages/loginpage.xaml", UriKind.RelativeOrAbsolute));
         }
-        MainWindow mainWindow { get => Application.Current.MainWindow as MainWindow; }
+
+        private MainWindow mainWindow => Application.Current.MainWindow as MainWindow;
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {

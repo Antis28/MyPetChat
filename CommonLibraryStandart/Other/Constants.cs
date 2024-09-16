@@ -3,11 +3,11 @@ using Xamarin.Essentials;
 
 namespace CommonLibraryStandart.Other
 {
-    public class Constants
+    protected class Constants
     {
-        public const string DatabaseFilename = "ChatMauiSQLite.db3";
+        public readonly string DatabaseFilename => "ChatMauiSQLite.db3";
 
-        public const SQLite.SQLiteOpenFlags Flags =
+        public const SQLite.SQLiteOpenFlags Flags =>
             // подключение может считывать и записывать данные.
             SQLite.SQLiteOpenFlags.ReadWrite |
             // подключение автоматически создаст файл базы данных, если он не существует.

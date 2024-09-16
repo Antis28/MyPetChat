@@ -1,10 +1,7 @@
 ﻿using ChatClientWPF.Handlers;
 using ChatClientWPF.Models;
-using ChatClientWPF.SampleSQL;
 using CommonLibrary;
 using CommonLibrary.Interfaces;
-using CommonLibrary.NetWork;
-using CommonLibraryStandart.Other;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using System;
@@ -30,20 +27,19 @@ namespace ChatClientWPF.ViewModels
         [GenerateProperty]
         public int port;
         [GenerateProperty]
-        string status;
+        private string status;
 
         [GenerateProperty]
-        ObservableCollection<CommandMessage> chat = new();
+        private ObservableCollection<CommandMessage> chat = new();
         [GenerateProperty]
-        ObservableCollection<ClientObject> userNames = new();
+        private ObservableCollection<ClientObject> userNames = new();
 
         [GenerateProperty]
         public int progressCopyFile;
 
         [GenerateProperty]
-        string message;
-
-        string userName;
+        private string message;
+        private string userName;
         public string UserName
         {
             get => userName;
@@ -62,7 +58,7 @@ namespace ChatClientWPF.ViewModels
         public string _IsSelected = "1";
         public string IsSelected
         {
-            get { return _IsSelected; }
+            get => _IsSelected;
             set
             {
                 if (value == "Все")
@@ -80,38 +76,35 @@ namespace ChatClientWPF.ViewModels
         public int _ItemIndex;
         public int ItemIndex
         {
-            get
-            {
-                return _ItemIndex;
-            }
-            set
-            {
-                _ItemIndex = value;
-            }
+            get => _ItemIndex;
+            set => _ItemIndex = value;
         }
 
         public ClientObject _ItemItem;
         public ClientObject ItemItem
         {
-            set
-            {
-                _ItemItem = value;
-            }
+            set => _ItemItem = value;
         }
 
-        TcpClient _client;
-        StreamReader _reader;
-        StreamWriter _writer;
-        ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
-        CommandConverter _commandsHandler = new CommandConverter();
-        DataTransfeHandler _dataTransfeHandler;
-
-        ServerSettings settings;
-        ILogger _logger;
+        private TcpClient _client;
+        private StreamReader _reader;
+        private StreamWriter _writer;
+        private ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
+        private CommandConverter _commandsHandler = new CommandConverter();
+        private DataTransfeHandler _dataTransfeHandler;
+        private ServerSettings settings;
+        private ILogger _logger;
 
         [GenerateCommand]
-        void Login() => Status = "User: " + userName;
-        bool CanLogin() => !string.IsNullOrEmpty(userName);
+        private void Login()
+        {
+            Status = "User: " + userName;
+        }
+
+        private bool CanLogin()
+        {
+            return !string.IsNullOrEmpty(userName);
+        }
 
         public MainViewModel()
         {
@@ -142,94 +135,68 @@ namespace ChatClientWPF.ViewModels
 
         }
 
-        public AsyncCommand ConnectCommand
-        {
-            get
-            {
-                return new AsyncCommand(() =>
-                {
-                    return Task.Factory.StartNew(() =>
-                    {
-                        try
-                        {
-                            _client = new TcpClient();
+        public AsyncCommand ConnectCommand => new AsyncCommand(() =>
+                                                           {
+                                                               return Task.Factory.StartNew(() =>
+                                                               {
+                                                                   try
+                                                                   {
+                                                                       _client = new TcpClient();
 
-                            DataTransferInit();
+                                                                       DataTransferInit();
 
-                            _client.Connect(Ip, Port);
-                            PrintInUI($"Подключение к ip:{ip}:{port}");
-                            _reader = new StreamReader(_client.GetStream());
-                            _writer = new StreamWriter(_client.GetStream());
-                            _writer.AutoFlush = true;
+                                                                       _client.Connect(Ip, Port);
+                                                                       PrintInUI($"Подключение к ip:{ip}:{port}");
+                                                                       _reader = new StreamReader(_client.GetStream());
+                                                                       _writer = new StreamWriter(_client.GetStream());
+                                                                       _writer.AutoFlush = true;
 
-                            Logining();
-                        }
-                        catch (Exception ex)
-                        {
-                            PrintInUI($"Ошибка: {ex.Message}");
-                        }
-                    });
-                    // Если не подключен к серверу
-                }, () => _client == null || _client?.Connected == false);
-            }
-        }
+                                                                       Logining();
+                                                                   }
+                                                                   catch (Exception ex)
+                                                                   {
+                                                                       PrintInUI($"Ошибка: {ex.Message}");
+                                                                   }
+                                                               });
+                                                               // Если не подключен к серверу
+                                                           }, () => _client == null || _client?.Connected == false);
 
-        public AsyncCommand GetUsersCommand
-        {
-            get
-            {
-                return new AsyncCommand(() =>
-                {
-                    return Task.Factory.StartNew(() =>
-                    {
-                        try
-                        {
-                            GetUsers();
-                        }
-                        catch (Exception ex)
-                        {
-                            PrintInUI($"Ошибка: {ex.Message}");
-                        }
-                    });
-                    // Если не подключен к серверу
-                }, () => _client != null || !(_client?.Connected == false));
-            }
-        }
+        public AsyncCommand GetUsersCommand => new AsyncCommand(() =>
+                                                            {
+                                                                return Task.Factory.StartNew(() =>
+                                                                {
+                                                                    try
+                                                                    {
+                                                                        GetUsers();
+                                                                    }
+                                                                    catch (Exception ex)
+                                                                    {
+                                                                        PrintInUI($"Ошибка: {ex.Message}");
+                                                                    }
+                                                                });
+                                                                // Если не подключен к серверу
+                                                            }, () => _client != null || !(_client?.Connected == false));
 
         [GenerateCommand]
-        void DisconnectCommand(object obj)
+        private void DisconnectCommand(object obj)
         {
             if (_client == null) { return; }
 
             SendCloseAsync();
         }
 
-        public AsyncCommand OpenFileCommand
-        {
-            get
-            {
-                return new AsyncCommand(() =>
-                {
-                    return Task.Factory.StartNew(() =>
-                    {
-                        SendFileAsync(FileDialogs.Open());
-                    });
-                });
-            }
-        }
+        public AsyncCommand OpenFileCommand => new AsyncCommand(() =>
+                                                            {
+                                                                return Task.Factory.StartNew(() =>
+                                                                {
+                                                                    SendFileAsync(FileDialogs.Open());
+                                                                });
+                                                            });
 
-        public AsyncCommand SendCommand
-        {
-            get
-            {
-                return new AsyncCommand(() =>
-                {
-                    return SendMsgAsync(Message);
-                }, () => _client?.Connected == true, !string.IsNullOrWhiteSpace(Message));
-
-
-            }
-        }
+        public AsyncCommand SendCommand => new AsyncCommand(() =>
+                                                        {
+                                                            return SendMsgAsync(Message);
+                                                        }, () => _client?.Connected == true, !string.IsNullOrWhiteSpace(Message));
 
         private Task SendCloseAsync()
         {

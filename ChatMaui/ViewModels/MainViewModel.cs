@@ -9,29 +9,32 @@ using System.Windows.Input;
 
 namespace ChatMaui.ViewModels
 {
-    class MainViewModel : INotifyPropertyChanged
+    internal class MainViewModel : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged
         //----------------INotifyPropertyChanged----------------//
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged([CallerMemberName] string name = "") =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public void OnPropertyChanged([CallerMemberName] string name = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
         //------------------------------------------------------//
         #endregion
 
-        string userName = "";
-        string ip = "";
-        int port = 0;
+        private string userName = "";
+        private string ip = "";
+        private int port = 0;
 
         public ICommand AddCommand { get; set; }
-       // public ICommand ConnectCommand { get; set; }
+        // public ICommand ConnectCommand { get; set; }
         public ObservableCollection<Person> People { get; } = new();
 
-        ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
-        CommandConverter _commandsHandler = new CommandConverter();
-        DataTransfeHandler _dataTransfeHandler;
-        ServerSettings settings;
+        private ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
+        private CommandConverter _commandsHandler = new CommandConverter();
+        private DataTransfeHandler _dataTransfeHandler;
+        private ServerSettings settings;
 
         public string UserName
         {
@@ -43,7 +46,7 @@ namespace ChatMaui.ViewModels
                     userName = value;
                     OnPropertyChanged();
                 }
-               
+
             }
         }
         public string Ip
@@ -74,16 +77,16 @@ namespace ChatMaui.ViewModels
         public string Message { get; set; }
         public ObservableCollection<string> Chat { get; set; } = new();
         public ObservableCollection<string> UserNames { get; set; } = new();
-        
-        TcpClient _client;
-        StreamReader _reader;
-        StreamWriter _writer;
+
+        private TcpClient _client;
+        private StreamReader _reader;
+        private StreamWriter _writer;
 
 
         public MainViewModel()
         {
             // устанавливаем команду 
-            
+
             UserName = RandomeseUserName();
             Ip = "192.168.1.105";
             Port = 5050;
@@ -124,73 +127,59 @@ namespace ChatMaui.ViewModels
             });
         }
 
-        public ICommand ConnectCommand
-        {
-            get
-            {
-                return new Command(() =>
-                {
-                     Task.Factory.StartNew(() =>
-                    {
-                        try
-                        {
-                            _client = new TcpClient();
+        public ICommand ConnectCommand => new Command(() =>
+                                                       {
+                                                           Task.Factory.StartNew(() =>
+                   {
+                       try
+                       {
+                           _client = new TcpClient();
 
 
 
-                            _dataTransfeHandler = new DataTransfeHandler(_client);
-                            _dataTransfeHandler.OnProgress += (x, y) =>
-                            {
-                                PrintInUI($"Подписка на прогресс пересылки файла!");
-                                //RunInUi(() =>
-                                //{
-                                //    chat.Add(new() { UserName = "System", Argument = x });
-                                //    ProgressCopyFile = y;
-                                //});
+                           _dataTransfeHandler = new DataTransfeHandler(_client);
+                           _dataTransfeHandler.OnProgress += (x, y) =>
+                           {
+                               PrintInUI($"Подписка на прогресс пересылки файла!");
+                               //RunInUi(() =>
+                               //{
+                               //    chat.Add(new() { UserName = "System", Argument = x });
+                               //    ProgressCopyFile = y;
+                               //});
 
-                            };
-                            _dataTransfeHandler.OnComplete += (isSuccess, fileName) =>
-                            {
-                                if (isSuccess)
-                                {
-                                    PrintInUI($"Файл принят: {fileName} успешно.");
-                                }
-                                else
-                                {
-                                    PrintInUI($"Не удалось принять файл: {fileName}");
-                                }
-                            };
+                           };
+                           _dataTransfeHandler.OnComplete += (isSuccess, fileName) =>
+                           {
+                               if (isSuccess)
+                               {
+                                   PrintInUI($"Файл принят: {fileName} успешно.");
+                               }
+                               else
+                               {
+                                   PrintInUI($"Не удалось принять файл: {fileName}");
+                               }
+                           };
 
-                            _client.Connect(Ip, Port);
-                            PrintInUI($"Подключение к ip:{ip}:{port}");
-                            _reader = new StreamReader(_client.GetStream());
-                            _writer = new StreamWriter(_client.GetStream());
-                            _writer.AutoFlush = true;
+                           _client.Connect(Ip, Port);
+                           PrintInUI($"Подключение к ip:{ip}:{port}");
+                           _reader = new StreamReader(_client.GetStream());
+                           _writer = new StreamWriter(_client.GetStream());
+                           _writer.AutoFlush = true;
 
-                            Logining();
-                        }
-                        catch (Exception ex)
-                        {
-                            PrintInUI($"Ошибка: {ex.Message}");
-                        }
-                    });
-                    // Если не подключен к серверу
-                });
-                //}, () => _client == null || _client?.Connected == false);
-            }
-        }
-        public ICommand SendCommand
-        {
-            get
-            {
-                return new Command(() =>
-                {
-                    SendMsgAsync($"{UserName}: {Message}");
+                           Logining();
+                       }
+                       catch (Exception ex)
+                       {
+                           PrintInUI($"Ошибка: {ex.Message}");
+                       }
+                   });
+                                                           // Если не подключен к серверу
+                                                       });//}, () => _client == null || _client?.Connected == false);
+        public ICommand SendCommand => new Command(() =>
+                                                    {
+                                                        SendMsgAsync($"{UserName}: {Message}");
 
-                });
-                //}, () => _client?.Connected == true);
-            }
-        }
+                                                    });//}, () => _client?.Connected == true);
 
         private Task SendMsgAsync(string msg)
         {

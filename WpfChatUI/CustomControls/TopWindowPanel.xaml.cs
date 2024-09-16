@@ -1,6 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows;
 using System.Windows.Media;
 
 namespace WpfChatUI.CustomControls
@@ -14,7 +14,8 @@ namespace WpfChatUI.CustomControls
         {
             InitializeComponent();
         }
-        MainWindow mainWindow { get => Application.Current.MainWindow as MainWindow; }
+
+        private MainWindow mainWindow => Application.Current.MainWindow as MainWindow;
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -29,8 +30,8 @@ namespace WpfChatUI.CustomControls
 
         public Brush BackgroundColor
         {
-            get { return (Brush)GetValue(BackgroundColorProperty); }
-            set { SetValue(BackgroundColorProperty, value); }
+            get => (Brush)GetValue(BackgroundColorProperty);
+            set => SetValue(BackgroundColorProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for BackgroundColor.  This enables animation, styling, binding, etc...
@@ -43,8 +44,8 @@ namespace WpfChatUI.CustomControls
 
         public string TitleWindow
         {
-            get { return (string)GetValue(TitleWindowProperty); }
-            set { SetValue(TitleWindowProperty, value); }
+            get => (string)GetValue(TitleWindowProperty);
+            set => SetValue(TitleWindowProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for TitleWindow.  This enables animation, styling, binding, etc...
@@ -55,8 +56,8 @@ namespace WpfChatUI.CustomControls
 
         public Brush TitleColor
         {
-            get { return (Brush)GetValue(TitleColorProperty); }
-            set { SetValue(TitleColorProperty, value); }
+            get => (Brush)GetValue(TitleColorProperty);
+            set => SetValue(TitleColorProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for TitleColor.  This enables animation, styling, binding, etc...
@@ -75,10 +76,7 @@ namespace WpfChatUI.CustomControls
 
         private void MaximizeOrMinimize()
         {
-            if (mainWindow.WindowState == WindowState.Normal)
-                mainWindow.WindowState = WindowState.Maximized;
-            else
-                mainWindow.WindowState = WindowState.Normal;
+            mainWindow.WindowState = mainWindow.WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
