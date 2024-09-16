@@ -8,7 +8,7 @@ namespace ChatClientWPF.ViewModels
     internal class WpfLogger : ILogger
     {
         private ObservableCollection<CommandMessage> _chat;
-        private Action<string> _showMessage;
+        private readonly Action<string> _showMessage;
 
         public WpfLogger(Action<string> showMessage)
         {

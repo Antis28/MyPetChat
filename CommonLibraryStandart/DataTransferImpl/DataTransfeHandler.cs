@@ -17,7 +17,6 @@ namespace CommonLibrary
 
         public DataTransfeHandler(TcpClient client)
         {
-            //  _logger = logger;
             _client = client;
         }
 

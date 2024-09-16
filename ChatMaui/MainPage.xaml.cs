@@ -12,11 +12,6 @@ namespace ChatMaui
 
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
-        {
-
-            //SemanticScreenReader.Announce(CounterBtn.Text);
-        }
     }
 
 }

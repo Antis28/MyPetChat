@@ -15,11 +15,11 @@ namespace TcpServer.ViewModels
 
         public string IPAddress { get; set; }
 
-        private ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
-        private CommandConverter _commandsHandler = new CommandConverter();
-        private ILogger _logger;
-        private TcpClient _client;
-        private ServerObject _server; // объект сервера
+        private readonly ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
+        private readonly CommandConverter _commandsHandler = new CommandConverter();
+        private readonly ILogger _logger;
+        private readonly TcpClient _client;
+        private readonly ServerObject _server; // объект сервера
 
         private FileAcceptanceProcessing _fileHandler;
         private DataTransfeHandler _dataTransferHandler;

@@ -1,11 +1,12 @@
 ﻿using CommonLibrary;
+using CommonLibraryStandart.Interfaces;
 using SQLite;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CommonLibraryStandart.Other
 {
-    public class TodoItemDatabase : IDataSettingsService
+    public class TodoItemDatabase<T> : IDataSettingsService<T> where T : class, IDataItem, new()
     {
         private SQLiteAsyncConnection Database;
 
@@ -49,6 +50,26 @@ namespace CommonLibraryStandart.Other
         {
             await Init();
             return await Database.DeleteAsync(item);
+        }
+
+        public void Save(object clientObject)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public T LoadSetting()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public T Load(string jsonString)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public T LoadOrCreateSetting(T defaultSettings)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

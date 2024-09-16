@@ -55,7 +55,7 @@ namespace CommonLibrary
                 ? TcpCommands.FileTransfer
                 : searchCommand == _chatCommands.UpdateUserName
                 ? TcpCommands.UpdateUserName
-                : searchCommand == _chatCommands.LoginSuccess ? TcpCommands.LoginSuccess : throw new Exception("Команда не распознана");
+                : searchCommand == _chatCommands.LoginSuccess ? TcpCommands.LoginSuccess : throw new ArgumentException("Команда не распознана");
         }
         public string CommandToString(TcpCommands searchCommand)
         {
@@ -78,7 +78,7 @@ namespace CommonLibrary
                 default:
                     break;
             }
-            throw new Exception("Команда не распознана");
+            throw new ArgumentException("Команда не распознана");
         }
 
         public void ToJsonFileAsync()
@@ -104,8 +104,7 @@ namespace CommonLibrary
         }
         public void FromJsonFile()
         {
-            string mainDir = FileSystem.AppDataDirectory;
-
+            //string mainDir = FileSystem.AppDataDirectory;
 
             //using (var file = new StreamReader("Commands.json", Encoding.UTF8))
             //{

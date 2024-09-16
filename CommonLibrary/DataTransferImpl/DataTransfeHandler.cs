@@ -10,14 +10,13 @@ namespace CommonLibrary
     public class DataTransfeHandler
     {
         private int copyProgress;
-        private TcpClient _client;
+        private readonly TcpClient _client;
 
         public event Action<string, int> OnProgress;
         public event Action<bool, string> OnComplete;
 
         public DataTransfeHandler(TcpClient client)
         {
-            //  _logger = logger;
             _client = client;
         }
 
@@ -57,7 +56,7 @@ namespace CommonLibrary
         public void SendBigSizeTCP(string cmdJs)
         {
             // сообщение для отправки
-            var message = cmdJs; // "Hello METANIT.COM";
+            var message = cmdJs; // Hello METANIT.COM;
             // получаем NetworkStream для взаимодействия с сервером
             var stream = _client.GetStream();
             // считыванием строку в массив байт
@@ -122,25 +121,13 @@ namespace CommonLibrary
             var stream = _client.GetStream();
             using (FileStream fileStream = File.OpenRead(fileName))
             {
-                // byte[] buffer = new byte[4096];
-                //int bytesRead;
                 var length = fileStream.Length;
                 byte[] size = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(length));
                 stream.Write(size, 0, size.Length);
+                
                 // отправляем данные
                 fileStream.CopyTo(stream);
-                //stream.Write(data, 0, data.Length);
             }
-
-
-            //var f1 = size1;
-            //var f2 = data.Length;
-            //// определяем размер данных
-            //byte[] size = BitConverter.GetBytes(data.Length);
-            // отправляем размер данных
-            //stream.Write(size, 0, 4);
-            // отправляем данные
-            // stream.Write(data, 0, data.Length);
         }
         public void SendBigSize(string text)
         {

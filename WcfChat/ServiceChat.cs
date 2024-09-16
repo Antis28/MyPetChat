@@ -36,7 +36,7 @@ namespace WcfChat
         public void Disconnect(int id)
         {
             var user = serverUsers.FirstOrDefault(x => x.ID == id);
-            if (user == null) return;
+            if (user == null) {return;}
 
             serverUsers.Remove(user);
             SendMsg($" {user.Name} покинул чат!", 0);
@@ -101,7 +101,7 @@ namespace WcfChat
             var cu = ConvertUsersList();            
             foreach (var item in serverUsers)
             {
-                if (ID == item.ID) continue;
+                if (ID == item.ID) {continue;}
                 
                 item.operationContext.GetCallbackChannel<IServerChatCallBack>().UserListUpdatedCallBack(cu.ToArray());
             }

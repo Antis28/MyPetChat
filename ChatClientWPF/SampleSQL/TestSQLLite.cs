@@ -12,12 +12,6 @@ namespace ChatClientWPF.SampleSQL
         {
             // Get an absolute path to the database file
             var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db");
-
-
-            //var db = new SQLiteConnection(databasePath);
-            //db = new SQLiteConnection(Constants.DatabasePath, Constants.Flags);
-            //db.CreateTable<Stock>();
-            //db.CreateTable<Valuation>();
         }
 
         public void AddStock(string symbol)
@@ -26,8 +20,7 @@ namespace ChatClientWPF.SampleSQL
             {
                 Symbol = symbol
             };
-            //var keyNum =  db.Insert(stock);
-            //Console.WriteLine("{0} == {1}", stock.Symbol, stock.Id);
+            
             var t = $"{stock.Symbol} == {stock.Id}";
         }
 
