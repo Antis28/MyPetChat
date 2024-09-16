@@ -5,7 +5,7 @@ using System.IO;
 
 namespace ChatClientWPF.Handlers
 {
-    public class JSaver
+    public static class JSaver
     {
         private static string path = "Settings.json";
 
@@ -27,7 +27,7 @@ namespace ChatClientWPF.Handlers
 
         public static T LoadSetting<T>() where T : new()
         {
-            T commandSettings = new T();
+            T commandSettings;
 
             if (!SettingExists())
             {
@@ -38,8 +38,15 @@ namespace ChatClientWPF.Handlers
             // deserialize JSON directly from a file
             var text = System.IO.File.ReadAllText(path);
             commandSettings = Load<T>(text);
+            if (commandSettings != null)
+            {
+                return commandSettings;
+            }
+            else
+            {
+                return new T();
+            }
 
-            return commandSettings;
         }
         public static T Load<T>(string jsonString) where T : new()
         {

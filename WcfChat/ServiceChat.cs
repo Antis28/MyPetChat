@@ -89,7 +89,7 @@ namespace WcfChat
             StringBuilder answer = new StringBuilder();
             answer.Append(DateTime.Now.ToShortTimeString());
             var user = serverUsers.FirstOrDefault(x => x.ID == toId);
-            if (user == null) return;
+            if (user == null) {return;}
             
             answer.Append($": {user.Name} {msg}");
 

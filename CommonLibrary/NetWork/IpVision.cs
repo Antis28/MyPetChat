@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CommonLibrary.NetWork
 {
-    public class IpVision
+    public static class IpVision
     {
         public static List<string> GetIp()
         {

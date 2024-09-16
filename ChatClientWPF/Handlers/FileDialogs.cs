@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace ChatClientWPF.Handlers
 {
-    protected class FileDialogs
+    internal class FileDialogs
     {
         public static string Open()
         {

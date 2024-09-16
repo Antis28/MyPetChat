@@ -160,7 +160,7 @@ namespace TcpServer.ViewModels
 
         private string NewCommand(TcpCommands commandName, string argument = null, string ipAddress = null)
         {
-            return _chatJsonConverter.WriteToJson(new CommandMessage()
+            return _chatJsonConverter.WriteToJson(new CommandMessage
             {
                 Command = _commandsHandler.CommandToString(commandName),
                 UserName = UserName,

@@ -11,8 +11,8 @@ namespace TcpServer.ViewModels.ClientHandlers
     /// </summary>
     public class FileAcceptanceProcessing
     {
-        private TcpClient _client;
-        private ILogger _logger;
+        private readonly TcpClient _client;
+        private readonly ILogger _logger;
         private int percent;
         /// <summary>
         /// Событие на завершение копирования файла
@@ -39,8 +39,6 @@ namespace TcpServer.ViewModels.ClientHandlers
         /// <param name="cmd"></param>
         public void ReceiveFile(string savePath)
         {
-            var stream = _client.GetStream();
-
             // формируем размер буфера для приема
             byte[] buf = new byte[65536];
 

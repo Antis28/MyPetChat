@@ -201,7 +201,7 @@ namespace ChatMaui.ViewModels
         private string RandomeseUserName()
         {
 
-            var names = new string[] { "Biser", "Tiser", "Ruser", "Niser", "Miser", "Cuser", "User", "Diser" };
+            string[] names = { "Biser", "Tiser", "Ruser", "Niser", "Miser", "Cuser", "User", "Diser" };
             var r = new Random((int)DateTime.Now.Ticks);
             return names[r.Next(names.Length)];
         }

@@ -94,7 +94,7 @@ namespace CommonLibrary
             // буфер для считывания размера данных
             byte[] sizeBuffer = new byte[4];
             // сначала считываем размер данных
-            var i = stream.Read(sizeBuffer, 0, sizeBuffer.Length);
+            _ = stream.Read(sizeBuffer, 0, sizeBuffer.Length);
             // узнаем размер и создаем соответствующий буфер
             int size = BitConverter.ToInt32(sizeBuffer, 0);
             // создаем соответствующий буфер
