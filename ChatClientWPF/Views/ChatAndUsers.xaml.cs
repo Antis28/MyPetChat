@@ -32,7 +32,7 @@ namespace ChatClientWPF.Views
 
         private void lbUsers_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (lbUsers.Items.Count <= 0) return;
+            if (lbUsers.Items.Count <= 0) { return; }
 
             lbUsers.ScrollIntoView(lbUsers.Items[lbUsers.Items.Count - 1]);
            

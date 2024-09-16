@@ -51,9 +51,9 @@ namespace CommonLibraryStandart.Other
         {
             await Init();
             if (item.ID != 0)
-                return await Database.UpdateAsync(item);
+               { return await Database.UpdateAsync(item); }
             else
-                return await Database.InsertAsync(item);
+               { return await Database.InsertAsync(item); }
         }
 
         public async Task<int> DeleteItemAsync(T item)

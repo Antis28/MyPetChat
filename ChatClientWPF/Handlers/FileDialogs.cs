@@ -72,7 +72,7 @@ namespace ChatClientWPF.Handlers
                 case MessageBoxResult.No:
                     // User pressed No
                     break;
-                default: throw new Exception("msg не опознан switch");
+                default: throw new ArgumentException("msg не опознан switch");
             }
         }
     }

@@ -84,7 +84,7 @@ namespace TcpServer.ViewModels.ClientHandlers
             {
                 var actuallyRead = stream.Read(buf, readPos, howmuch - readPos);
                 if (actuallyRead == 0)// Мы не смоги что-либо прочитать, выдаем исключение
-                    throw new EndOfStreamException();
+                    { throw new EndOfStreamException(); }
                 readPos += actuallyRead;
             }
         }
@@ -129,11 +129,11 @@ namespace TcpServer.ViewModels.ClientHandlers
             }
             else
                 //Выводить в мегабайтах
-                message = $"Считано: {bytesRead / 1000 / 1000}MB из {totalLength / 1000 / 1000}MB. Всего {(int)(pctDone * 100)}%";
+               { message = $"Считано: {bytesRead / 1000 / 1000}MB из {totalLength / 1000 / 1000}MB. Всего {(int)(pctDone * 100)}%"; }
 
 
             //Отправляем сообщение подписавшимся на него
-            if (OnProgress != null && percent > 0) OnProgress(message, percent);
+            if (OnProgress != null && percent > 0) { OnProgress(message, percent); }
         }
     }
 }

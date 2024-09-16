@@ -25,8 +25,8 @@ namespace CommonLibrary.NetWork
             }
             return ips;
         }
-
-        public static async Task BroadClient(string IpAddress, ILogger logger = null)
+       
+        public static async Task BroadClient(string IpAddress, ILogger logger)
         {
             IpAddress = "235.5.5.11";
             using var udpClient = new UdpClient(8001);

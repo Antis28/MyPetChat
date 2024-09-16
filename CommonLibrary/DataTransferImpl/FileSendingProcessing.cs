@@ -14,7 +14,7 @@ namespace CommonLibrary
     /// <summary>
     /// Реализация отправки файла с индикатором прогреса и завершения
     /// </summary>
-    public  class FileSendingProcessing
+    public class FileSendingProcessing
     {
         private int percent;
 
@@ -37,7 +37,7 @@ namespace CommonLibrary
         {
             BufferLenght = 8192;
         }
-                
+
         public void CopyFile(FileStream sourceFile, NetworkStream destinationFile)
         {
             try
@@ -70,7 +70,7 @@ namespace CommonLibrary
             }
 
             //Отправляем сообщение что процесс копирования закончен удачно
-            if (OnComplete != null) OnComplete(true, sourceStream.Name);
+            if (OnComplete != null) { OnComplete(true, sourceStream.Name); }
         }
 
         private bool ReadFromBufferNetwork(ref long totalBytesRead, ref int numReads, FileStream sourceStream, NetworkStream destinationStream)
@@ -132,7 +132,7 @@ namespace CommonLibrary
             string message = string.Empty;
             double pctDone = (double)((double)totalBytesRead / (double)sLenght);
             var percentNow = (int)(pctDone * 100);
-            
+
             // Выводить только кратно 10 процентам            
             if (percentNow == 0 || percent == percentNow || (percentNow % 10 != 0))
             {
@@ -145,12 +145,14 @@ namespace CommonLibrary
                 message = $"Считано: {totalBytesRead / 1000}KB из {sLenght / 1000}KB. Всего {(int)(pctDone * 100)}%";
             }
             else
-                //Выводить в мегабайтах
+            //Выводить в мегабайтах
+            {
                 message = $"Считано: {totalBytesRead / 1000 / 1000}MB из {sLenght / 1000 / 1000}MB. Всего {(int)(pctDone * 100)}%";
+            }
 
 
             //Отправляем сообщение подписавшимся на него
-            if (OnProgress != null) OnProgress(message, percent);
+            if (OnProgress != null){ OnProgress(message, percent); }
         }
 
 
@@ -175,7 +177,7 @@ namespace CommonLibrary
             {
                 //System.Windows.Forms.MessageBox.Show("Возникла следующая ошибка при копировании:\n" + e.Message);
                 //Отправляем сообщение что процесс копирования закончен неудачно
-                if (OnComplete != null) OnComplete(false, sourceFile);
+                if (OnComplete != null) { OnComplete(false, sourceFile); }
             }
             percent = 0;
         }
@@ -209,7 +211,7 @@ namespace CommonLibrary
                 }
             }
             //Отправляем сообщение что процесс копирования закончен удачно
-            if (OnComplete != null) OnComplete(true, sourceFile);
+            if (OnComplete != null){ OnComplete(true, sourceFile); }
         }
         private bool ReadFromBuffer(ref long totalBytesRead, ref int numReads, FileStream sourceStream, FileStream destinationStream)
         {

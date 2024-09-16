@@ -45,8 +45,8 @@ namespace CommonLibrary
                 byte[] size = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(sLenght));
                 netDestinationStream.Write(size, 0, size.Length);
 
-                fileCopyInstance.OnProgress += (message, procent) => { if (OnProgress != null) OnProgress(message, procent); };
-                fileCopyInstance.OnComplete += (isSuccess, path) => { if (OnComplete != null) OnComplete(isSuccess, fileName); };
+                fileCopyInstance.OnProgress += (message, procent) => { if (OnProgress != null) { OnProgress(message, procent); } };
+                fileCopyInstance.OnComplete += (isSuccess, path) => { if (OnComplete != null) { OnComplete(isSuccess, fileName); } };
                 fileCopyInstance.BufferLenght = 4096;
                 fileCopyInstance.CopyFile(fileSourceStream, netDestinationStream);
             }
@@ -208,8 +208,8 @@ namespace CommonLibrary
             {
                 byte[] buffer;
                 // Проверяем чтобы буфер был не меньше необходимого для принятия
-                if (size < cl.ReceiveBufferSize) buffer = new byte[size];
-                else buffer = new byte[cl.ReceiveBufferSize];
+                if (size < cl.ReceiveBufferSize){ buffer = new byte[size]; }
+                else { buffer = new byte[cl.ReceiveBufferSize]; }
 
                 // Получим данные в буфер
                 int rec = cl.Receive(buffer, 0, buffer.Length, 0);

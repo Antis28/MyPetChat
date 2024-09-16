@@ -40,7 +40,7 @@ namespace ChatClientWPF
         {
             clientUsers.Add(user);
             var userSerch = clientUsers.FirstOrDefault(x => x.ID == user.ID);
-            if (userSerch == null) { return; };
+            if (userSerch == null) { return; }
 
             UpdateUserList(clientUsers);
         }

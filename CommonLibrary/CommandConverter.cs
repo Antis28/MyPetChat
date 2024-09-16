@@ -34,21 +34,21 @@ namespace CommonLibrary
         public TcpCommands RecognizeCommand(string searchCommand)
         {
             if (searchCommand == _chatCommands.CloseConection)
-                return TcpCommands.CloseConnection;
+               { return TcpCommands.CloseConnection; }
             if (searchCommand == _chatCommands.Login)
-                return TcpCommands.Login;
+                { return TcpCommands.Login; }
             if (searchCommand == _chatCommands.GetUsers)
-                return TcpCommands.GetUsers;
+                { return TcpCommands.GetUsers; }
             if (searchCommand == _chatCommands.Message)
-                return TcpCommands.Message;
+                { return TcpCommands.Message; }
             if (searchCommand == _chatCommands.FileTransfer)
-                return TcpCommands.FileTransfer;
+                { return TcpCommands.FileTransfer; }
             if (searchCommand == _chatCommands.UpdateUserName)
-                return TcpCommands.UpdateUserName;
+               { return TcpCommands.UpdateUserName; }
             if (searchCommand == _chatCommands.LoginSuccess)
-                return TcpCommands.LoginSuccess;
+                { return TcpCommands.LoginSuccess; }
 
-            throw new Exception("Команда не распознана");
+            throw new ArgumentException("Команда не распознана");
         }
         public string CommandToString(TcpCommands searchCommand)
         {
