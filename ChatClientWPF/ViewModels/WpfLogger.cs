@@ -26,7 +26,7 @@ namespace ChatClientWPF.ViewModels
 
         public void ShowMessage(string message)
         {
-            _showMessage(message);            
+            _showMessage(message);
         }
     }
 }

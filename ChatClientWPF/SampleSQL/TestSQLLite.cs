@@ -7,7 +7,7 @@ namespace ChatClientWPF.SampleSQL
 {
     internal class TestSQLLite
     {
-      //  private SQLiteConnection db;
+        //  private SQLiteConnection db;
 
         public void TestCreateTable()
         {
@@ -27,14 +27,14 @@ namespace ChatClientWPF.SampleSQL
             {
                 Symbol = symbol
             };
-           //var keyNum =  db.Insert(stock);
+            //var keyNum =  db.Insert(stock);
             //Console.WriteLine("{0} == {1}", stock.Symbol, stock.Id);
             var t = $"{stock.Symbol} == {stock.Id}";
         }
 
         public void TestQuery()
         {
-           // var query = db.Table<Stock>().Where(v => v.Symbol.StartsWith("A"));
+            // var query = db.Table<Stock>().Where(v => v.Symbol.StartsWith("A"));
 
             //foreach (var stock in query)
             //    Console.WriteLine("Stock: " + stock.Symbol);

@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace ChatClientWPF.Handlers
 {
-    internal  class FileDialogs
+    internal class FileDialogs
     {
         public static string Open()
         {

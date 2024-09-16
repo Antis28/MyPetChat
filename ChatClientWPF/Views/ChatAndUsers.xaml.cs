@@ -35,9 +35,9 @@ namespace ChatClientWPF.Views
             if (lbUsers.Items.Count <= 0) { return; }
 
             lbUsers.ScrollIntoView(lbUsers.Items[lbUsers.Items.Count - 1]);
-           
+
         }
 
-       
+
     }
 }

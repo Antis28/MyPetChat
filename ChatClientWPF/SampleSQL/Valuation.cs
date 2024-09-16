@@ -9,13 +9,13 @@ namespace ChatClientWPF.SampleSQL
 {
     internal class Valuation
     {
-       // [PrimaryKey, AutoIncrement]
+        // [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-       // [Indexed]
+        // [Indexed]
         public int StockId { get; set; }
         public DateTime Time { get; set; }
         public decimal Price { get; set; }
-       // [Ignore]
+        // [Ignore]
         public string IgnoreField { get; set; }
     }
 }

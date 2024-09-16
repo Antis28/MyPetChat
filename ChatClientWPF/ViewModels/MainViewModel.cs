@@ -50,7 +50,7 @@ namespace ChatClientWPF.ViewModels
             set
             {
                 if (EqualityComparer<string>.Default.Equals(userName, value)) { return; }
-                
+
                 userName = value;
 
                 if (_client != null) { SendNewUserName(); }
@@ -416,9 +416,9 @@ namespace ChatClientWPF.ViewModels
         private string RandomeUserName()
         {
             var names = new string[] { "Biser", "Tiser", "Ruser", "Niser", "Miser", "Cuser", "User", "Diser" };
-           
+
             var r = new Random((int)DateTime.Now.Ticks);
-            
+
             return names[r.Next(names.Length)];
         }
         public Task GetUsersAsync()
