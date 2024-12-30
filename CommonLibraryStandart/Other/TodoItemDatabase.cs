@@ -1,11 +1,11 @@
 ﻿using CommonLibrary;
 using CommonLibrary.Settings;
-using CommonLibraryStandart.Interfaces;
 using SQLite;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CommonLibraryStandard.Interfaces;
 
-namespace CommonLibraryStandart.Other
+namespace CommonLibraryStandard.Other
 {
     public class TodoItemDatabase<T> : IDataSettingsService<T> where T : class, IDataItem, new()
     {
@@ -69,6 +69,11 @@ namespace CommonLibraryStandart.Other
         }
 
         public T LoadOrCreateSetting(T defaultSettings)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public T LoadOrCreateSetting()
         {
             throw new System.NotImplementedException();
         }

@@ -3,7 +3,7 @@ using ChatClientWPF.Models;
 using CommonLibrary;
 using CommonLibrary.Interfaces;
 using CommonLibrary.Settings;
-using CommonLibraryStandart.Interfaces;
+using CommonLibraryStandard.Interfaces;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using System;
@@ -118,17 +118,9 @@ namespace ChatClientWPF.ViewModels
         {
             IDataSettingsService<ServerSettings> settingsService = new JSaver<ServerSettings>();
             //IDataSettingsService<ServerSettings> settingsService = new TodoItemDatabase<ServerSettings>();
-            var defaultSettings = new ServerSettings()
-            {
-                Ip = "192.168.1.105",
-                Port = 5050,
-                UserName = RandomeUserName(),
-                ClientIpStart = "192",
-                ClientIpEnd = "1",
-                AddressFamily = AddressFamily.InterNetwork,
-            };
+            
 
-            settings = settingsService.LoadOrCreateSetting(defaultSettings);
+            settings = settingsService.LoadOrCreateSetting();
 
             ip = settings.Ip;
             port = settings.Port;

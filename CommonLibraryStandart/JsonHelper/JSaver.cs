@@ -1,8 +1,10 @@
 ﻿
-using CommonLibraryStandart.Interfaces;
+using CommonLibraryStandard.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Net.Sockets;
+using CommonLibrary.Settings;
 
 namespace ChatClientWPF.Handlers
 {
@@ -59,8 +61,20 @@ namespace ChatClientWPF.Handlers
             return commandSettings;
         }
 
-        public T LoadOrCreateSetting(T defaultSettings)
+       
+        public T LoadOrCreateSetting()
         {
+            // Create standard data for settings
+            ServerSettings defaultSettings = new ServerSettings()
+            {
+                Ip = "192.168.1.105",
+                Port = 5050,
+                UserName = "StandardName",
+                ClientIpStart = "192",
+                ClientIpEnd = "1",
+                AddressFamily = AddressFamily.InterNetwork,
+            };
+            
             // Save settings in new created file
             if (!SettingExists())
             {
