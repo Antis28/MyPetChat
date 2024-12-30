@@ -111,6 +111,12 @@ namespace CommonLibrary
             //    var t = file.ReadToEnd();
             //    _chatCommands = JsonConvert.DeserializeObject<ChatCommands>(t);
             //}
+
+            using (var file = new StreamReader("Commands.json", Encoding.UTF8))
+            {
+                var t = file.ReadToEnd();
+                _chatCommands = JsonConvert.DeserializeObject<ChatCommands>(t);
+            }
         }
     }
 }
