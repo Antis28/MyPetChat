@@ -61,7 +61,12 @@ namespace ChatClientWPF.Handlers
 
         public T LoadOrCreateSetting(T defaultSettings)
         {
-            throw new NotImplementedException();
+            // Save settings in new created file
+            if (!SettingExists())
+            {
+                Save(defaultSettings);
+            }
+            return LoadSetting();
         }
     }
 }

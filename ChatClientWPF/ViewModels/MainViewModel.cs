@@ -116,7 +116,7 @@ namespace ChatClientWPF.ViewModels
 
         private void InitSettings()
         {
-            //IDataSettingsService<ServerSettings> settingsService = new JSaver<ServerSettings>();
+            IDataSettingsService<ServerSettings> settingsService = new JSaver<ServerSettings>();
             //IDataSettingsService<ServerSettings> settingsService = new TodoItemDatabase<ServerSettings>();
             var defaultSettings = new ServerSettings()
             {
@@ -128,7 +128,7 @@ namespace ChatClientWPF.ViewModels
                 AddressFamily = AddressFamily.InterNetwork,
             };
 
-            //settings = settingsService.LoadOrCreateSetting(defaultSettings);
+            settings = settingsService.LoadOrCreateSetting(defaultSettings);
 
             ip = settings.Ip;
             port = settings.Port;

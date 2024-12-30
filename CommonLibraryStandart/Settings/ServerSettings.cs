@@ -1,9 +1,10 @@
 ﻿using System.Net.Sockets;
+using CommonLibraryStandart.Interfaces;
 
 namespace CommonLibrary.Settings
 {
 
-    public class ServerSettings
+    public class ServerSettings : IDataItem
     {
         public int ID { get; set; }
 
