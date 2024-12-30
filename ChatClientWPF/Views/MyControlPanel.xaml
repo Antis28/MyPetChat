@@ -6,43 +6,54 @@
              xmlns:local="clr-namespace:ChatClientWPF.Views" xmlns:viewmodels="clr-namespace:ChatClientWPF.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
              mc:Ignorable="d" 
              d:MinHeight="30" d:MinWidth="100">
-    <StackPanel Orientation="Vertical">
-        <UniformGrid Columns="4">
-            <!--  User name -->
-            <StackPanel>
-                <TextBlock  Text="UserName"   TextWrapping="Wrap" Height="30" FontSize="16"/>
-                <TextBox x:Name="tbUserName" Text="{Binding UserName}"  TextWrapping="Wrap"    Height="30" FontSize="16"/>
-            </StackPanel>
-            <!--  Ip Address -->
-            <StackPanel>
-                <TextBlock  Text="Ip"  TextWrapping="Wrap" Height="30" FontSize="16"/>
-                <TextBox x:Name="tbAdress" Text="{Binding Ip}"  TextWrapping="Wrap" Height="30" FontSize="16"/>
-            </StackPanel>
-            <!--  Port -->
-            <StackPanel>
-                <TextBlock  Text="Port"  TextWrapping="Wrap" Height="30" FontSize="16"/>
-                <TextBox x:Name="tbPort" Text="{Binding Port}"  TextWrapping="Wrap" Height="30" FontSize="16" PreviewTextInput="NumericTextBox_PreviewTextInput" DataObject.Pasting="NumericTextBox_Pasting" />
-            </StackPanel>
-            <Rectangle AllowDrop="True"
-                       Fill="WhiteSmoke"
-                       RadiusX="10"
-                       RadiusY="10"
-                       StrokeDashArray="10"
-                       StrokeThickness="2"
-                       StrokeDashCap="Round"
-                       Stroke="Silver"
-                       Height="100"
-                       Margin="5,1,10,1"
-            >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical">
+            <UniformGrid Columns="4">
+                <!--  User name -->
+                <StackPanel>
+                    <TextBlock  Text="UserName"   TextWrapping="Wrap" Height="20" FontSize="16"/>
+                    <TextBox x:Name="tbUserName" Text="{Binding UserName}"  TextWrapping="Wrap"    Height="30" FontSize="16"/>
+                </StackPanel>
+                <!--  Ip Address -->
+                <StackPanel>
+                    <TextBlock  Text="Ip"  TextWrapping="Wrap" Height="20" FontSize="16"/>
+                    <TextBox x:Name="tbAdress" Text="{Binding Ip}"  TextWrapping="Wrap" Height="30" FontSize="16"/>
+                </StackPanel>
+                <!--  Port -->
+                <StackPanel>
+                    <TextBlock  Text="Port"  TextWrapping="Wrap" Height="20" FontSize="16"/>
+                    <TextBox x:Name="tbPort" Text="{Binding Port}"  TextWrapping="Wrap" Height="30" FontSize="16" PreviewTextInput="NumericTextBox_PreviewTextInput" DataObject.Pasting="NumericTextBox_Pasting" />
+                </StackPanel>
+            </UniformGrid>
+            <UniformGrid Columns="5">
+                <Button x:Name="btnConDiscon" Command="{Binding ConnectCommand}" Content="Подключить" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="100"  FontSize="16"/>
+                <Button Command="{Binding GetUsersCommand}" Content="Users" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
+                <Button x:Name="btnOpenFile" Command="{Binding OpenFileCommand}" Content="open file" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
+                <ProgressBar HorizontalAlignment="Left" Height="15"  Width="150" Maximum="100" Value="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Text="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}"/>
+            </UniformGrid>
+        </StackPanel>
+        <StackPanel Grid.Column="1" >
+           <TextBlock Text="Drop area" FontSize="12"></TextBlock>
+           <Rectangle  AllowDrop="True"
+                      Fill="WhiteSmoke"
+                      RadiusX="10"
+                      RadiusY="10"
+                      StrokeDashArray="6"
+                      StrokeThickness="2"
+                      StrokeDashCap="Round"
+                      Stroke="Silver"
+                      Height="80"
+                      Width="100"
+                      Margin="5,3,10,3"
+           >
 
-            </Rectangle>
-        </UniformGrid>
-        <UniformGrid Columns="5">
-            <Button x:Name="btnConDiscon" Command="{Binding ConnectCommand}" Content="Подключить" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="100"  FontSize="16"/>
-            <Button Command="{Binding GetUsersCommand}" Content="Users" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
-            <Button x:Name="btnOpenFile" Command="{Binding OpenFileCommand}" Content="open file" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
-            <ProgressBar HorizontalAlignment="Left" Height="15"  Width="150" Maximum="100" Value="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Text="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}"/>
-        </UniformGrid>
-    </StackPanel>
+           </Rectangle>
+        </StackPanel>
+    </Grid>
+
 </UserControl>
