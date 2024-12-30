@@ -321,6 +321,12 @@ namespace ChatClientWPF.ViewModels
             {
                 try
                 {
+                    if (_dataTransfeHandler == null)
+                    {
+                        PrintInUI($"Отправка файла невозможна! Вы не подключены к серверу!");
+                        return; 
+                    }
+
 
                     var cmdJs = _chatJsonConverter.WriteToJson(new CommandMessage()
                     {
