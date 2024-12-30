@@ -49,7 +49,7 @@
                     <ColumnDefinition Width="4*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="tbMessege" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" MinWidth="200" MinHeight="40" FontSize="14" TextAlignment="Left">
+                <TextBox x:Name="TbMessage" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" MinWidth="200" MinHeight="40" FontSize="14" TextAlignment="Left">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Return" Command="{Binding SendCommand}"/>
                 </TextBox.InputBindings>

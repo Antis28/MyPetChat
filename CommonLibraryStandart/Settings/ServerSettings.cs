@@ -1,5 +1,5 @@
 ﻿using System.Net.Sockets;
-using CommonLibraryStandart.Interfaces;
+using CommonLibraryStandard.Interfaces;
 
 namespace CommonLibrary.Settings
 {

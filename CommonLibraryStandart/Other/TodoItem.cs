@@ -1,4 +1,4 @@
-﻿namespace CommonLibraryStandart.Other
+﻿namespace CommonLibraryStandard.Other
 {
     public class TodoItem
     {

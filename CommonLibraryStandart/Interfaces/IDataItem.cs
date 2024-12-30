@@ -1,4 +1,4 @@
-﻿namespace CommonLibraryStandart.Interfaces
+﻿namespace CommonLibraryStandard.Interfaces
 {
     public interface IDataItem
     {

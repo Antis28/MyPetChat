@@ -2,7 +2,7 @@
 using System.IO;
 //using Xamarin.Essentials;
 
-namespace CommonLibraryStandart.Other
+namespace CommonLibraryStandard.Other
 {
     public class Constants
     {

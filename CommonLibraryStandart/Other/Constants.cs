@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Xamarin.Essentials;
 
-namespace CommonLibraryStandart.Other
+namespace CommonLibraryStandard.Other
 {
     internal class Constants
     {

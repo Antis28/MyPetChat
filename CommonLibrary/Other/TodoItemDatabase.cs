@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CommonLibraryStandart.Other
+namespace CommonLibraryStandard.Other
 {
     public class TodoItemDatabase<T> : IDataSettingsService<T> where T : class, IDataItem, new()
     {
