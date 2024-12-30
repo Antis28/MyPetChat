@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen"
         Closing="Window_Closing"
         Title="MainWindow" MinHeight="400" MaxHeight="700" MinWidth="600" MaxWidth="800"   >
-    
+
     <Window.DataContext>
         <viewmodels:MainViewModel/>
     </Window.DataContext>
@@ -46,22 +46,41 @@
         <UniformGrid Columns="1" Grid.Row="2" Grid.ColumnSpan="3">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="TbMessage" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" MinWidth="200" MinHeight="40" FontSize="14" TextAlignment="Left">
-                <TextBox.InputBindings>
-                    <KeyBinding Key="Return" Command="{Binding SendCommand}"/>
-                </TextBox.InputBindings>
-            </TextBox>
-            <!-- Drag&Drop files here section -->
-            <StackPanel VerticalAlignment="Center">
-                <Rectangle/>
-                <Button/>
-            </StackPanel>
+                <TextBox Grid.Column="0" x:Name="TbMessage" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" MinWidth="200" MinHeight="40" FontSize="14" TextAlignment="Left">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Return" Command="{Binding SendCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+                <ScrollViewer Grid.Column="1"
+                              Margin="0,3"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Hidden">
+                    <Grid>
+                        <TextBlock Text="Uploaded files"
+                                   FontWeight="SemiBold"/>
+                        <!-- Custom control there -->
+                    </Grid>
+
+                </ScrollViewer>
+                <!-- Drag&Drop files here section -->
+                <StackPanel  Grid.Column="2" VerticalAlignment="Center">
+                   
+                    <Button Content="Upload"
+                        Style="{StaticResource LoadButton}">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="10"></Setter>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
             </Grid>
         </UniformGrid>
-        
+
 
     </Grid>
 </Window>
