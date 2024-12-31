@@ -21,6 +21,8 @@ namespace ChatClientWPF.CustomControls
     /// </summary>
     public partial class FileDetail : UserControl
     {
+        // To convert bytes to Mb => bytes /  1.049e+6
+        private const double RatioBytesOnMb = 1.049e+6;
         public FileDetail()
         {
             InitializeComponent();

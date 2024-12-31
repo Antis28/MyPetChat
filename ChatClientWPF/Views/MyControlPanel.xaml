@@ -32,7 +32,7 @@
             <UniformGrid Columns="5">
                 <Button x:Name="btnConDiscon" Command="{Binding ConnectCommand}" Content="Подключить" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="100"  FontSize="16"/>
                 <Button Command="{Binding GetUsersCommand}" Content="Users" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
-                <Button x:Name="btnOpenFile" Command="{Binding OpenFileCommand}" Content="open file" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
+
                 <ProgressBar HorizontalAlignment="Left" Height="15"  Width="150" Maximum="100" Value="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock Text="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}"/>
             </UniformGrid>
@@ -40,20 +40,25 @@
         <StackPanel Grid.Column="1" >
             <TextBlock Text="Drop area" FontSize="12"></TextBlock>
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
                 <Rectangle  AllowDrop="True"
-                      Fill="WhiteSmoke"
-                      RadiusX="10"
-                      RadiusY="10"
-                      StrokeDashArray="6"
-                      StrokeThickness="2"
-                      StrokeDashCap="Round"
-                      Stroke="Silver"
-                      Height="80"
-                      Width="120"
-                      Margin="5,3,10,3"
-           >
+                            Fill="WhiteSmoke"
+                            Drop="Rectangle_Drop"
+                            RadiusX="10"
+                            RadiusY="10"
+                            StrokeDashArray="6"
+                            StrokeThickness="2"
+                            StrokeDashCap="Round"
+                            Stroke="Silver"
+                            Height="80"
+                            Width="120"
+                            Margin="5,3,10,3"
+                >
                 </Rectangle>
-                <StackPanel HorizontalAlignment="Center"
+                <StackPanel IsHitTestVisible="False" Grid.Row="0" HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         >
                     <Path HorizontalAlignment="Center" Margin="5" Stroke="#ff000000" StrokeThickness="2.0" StrokeDashCap="Flat" StrokeDashArray="">
@@ -64,6 +69,18 @@
                     <TextBlock HorizontalAlignment="Center" Text="Drop files to upload" FontSize="12"></TextBlock>
 
                 </StackPanel>
+                <Button x:Name="btnOpenFile"
+                        Grid.Row="1" 
+                        VerticalContentAlignment="Center" 
+                        HorizontalContentAlignment="Center" 
+                        Margin="0,3"
+                         
+                        Content="open file" 
+                        Height="30" 
+                        MinWidth="70"  
+                        FontSize="16" Click="btnOpenFile_Click"
+                        />
+                <!--Command="{Binding OpenFileCommand}"-->
             </Grid>
         </StackPanel>
     </Grid>

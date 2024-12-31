@@ -60,6 +60,10 @@
                               HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Hidden">
                     <Grid>
+                        <ItemsControl
+                            x:Name="UploadingFilesList">
+
+                        </ItemsControl>
                         <TextBlock Text="Uploaded files"
                                    FontWeight="SemiBold"/>
                         <!-- Custom control there -->

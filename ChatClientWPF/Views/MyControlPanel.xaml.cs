@@ -1,7 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ChatClientWPF.CustomControls;
+using Microsoft.Win32;
 
 namespace ChatClientWPF.Views
 {
@@ -44,6 +47,32 @@ namespace ChatClientWPF.Views
             else
             {
                 e.CancelCommand(); // Cancel the paste command if the data is not a string
+            }
+        }
+
+        private void Rectangle_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                string fileName = System.IO.Path.GetFileName(files[0]);
+            }
+        }
+
+        private void btnOpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog() { Multiselect = true };
+            bool? responce = openFileDialog.ShowDialog();
+            if (responce == false) return;
+
+            //Get selected files
+            string[] files = openFileDialog.FileNames;
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                string fileName = System.IO.Path.GetFileName(files[i]);
+                FileInfo fileInfo = new FileInfo(files[i]);
+
             }
         }
     }
