@@ -82,6 +82,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomControls\FileDetail.xaml.cs">
+      <DependentUpon>FileDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\FileDialogs.cs" />
     <Compile Include="Handlers\WpfLogger.cs" />
     <Compile Include="Models\ClientObject.cs" />
@@ -96,6 +99,10 @@
     <Compile Include="Views\MyControlPanel.xaml.cs">
       <DependentUpon>MyControlPanel.xaml</DependentUpon>
     </Compile>
+    <Page Include="CustomControls\FileDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -201,5 +208,6 @@
       <Name>CommonLibraryStandart</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
