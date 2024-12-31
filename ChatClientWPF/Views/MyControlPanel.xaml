@@ -59,7 +59,7 @@
                             Margin="5,3,10,3"
                 >
                 </Rectangle>
-                <StackPanel Grid.Row="0" HorizontalAlignment="Center"
+                <StackPanel IsHitTestVisible="False" Grid.Row="0" HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                 >
                     <Path HorizontalAlignment="Center" Margin="5" Stroke="#ff000000" StrokeThickness="2.0" StrokeDashCap="Flat" StrokeDashArray="">
