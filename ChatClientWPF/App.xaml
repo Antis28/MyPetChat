@@ -80,6 +80,19 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard>
+                        <!--to add slowing effect while reach 100%-->
+                        <Storyboard DecelerationRatio="1">
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Value"
+                                From="0"
+                                ></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
         </Style>
     </Application.Resources>
 </Application>
