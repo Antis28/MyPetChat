@@ -85,7 +85,7 @@
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Text" Value="{Binding Value, 
-                            ElementName=pb, StringFormat={}{0:#,#.0% done}}"/>
+                            ElementName=pb, StringFormat={}{0:#,#.0}% done}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Value, ElementName=pb}" 
                                          Value="100">
@@ -99,7 +99,8 @@
                        HorizontalAlignment="Right">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Text" Value="{Binding UploadSpeed, ElementName=pb, StringFormat={}{0 Kb/sec}}"/>
+                        <Setter Property="Text" 
+                                Value="{Binding UploadSpeed, ElementName=pb, StringFormat={}{0} Kb/sec}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Value, 
                             ElementName=pb}" 
