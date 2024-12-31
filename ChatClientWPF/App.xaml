@@ -48,11 +48,12 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="3"/>
                             <Rectangle x:Name="PART_Track"/>
                             <Grid x:Name="PART_Indicator" ClipToBounds="true" HorizontalAlignment="Left">
-                                <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}"/>
-                                <Rectangle x:Name="Animation" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5">
+                                <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}" RadiusX="3" RadiusY="3"/>
+                                <Rectangle x:Name="Animation" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5" RadiusX="3" RadiusY="3">
                                     <Rectangle.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform/>

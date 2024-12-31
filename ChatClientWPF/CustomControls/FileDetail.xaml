@@ -79,7 +79,8 @@
                 Grid.Row="1"
                 Height="8"
                 Foreground="#47BDFF"
-                Value="{Binding UploadProgress, ElementName=this}"></ProgressBar>
+                Value="50"/>
+            <!--Value="{Binding UploadProgress, ElementName=this}"-->
         </Grid>
 
 
