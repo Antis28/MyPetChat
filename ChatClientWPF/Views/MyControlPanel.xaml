@@ -44,9 +44,10 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <Rectangle  AllowDrop="True"
-                            Fill="WhiteSmoke"
+                <Rectangle  
                             Drop="Rectangle_Drop"
+                            AllowDrop="True"
+                            Fill="WhiteSmoke"
                             RadiusX="10"
                             RadiusY="10"
                             StrokeDashArray="6"
@@ -58,9 +59,9 @@
                             Margin="5,3,10,3"
                 >
                 </Rectangle>
-                <StackPanel IsHitTestVisible="False" Grid.Row="0" HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        >
+                <StackPanel Grid.Row="0" HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                >
                     <Path HorizontalAlignment="Center" Margin="5" Stroke="#ff000000" StrokeThickness="2.0" StrokeDashCap="Flat" StrokeDashArray="">
                         <Path.Data>
                             <PathGeometry Figures="m 0.97026 17.0297 v 6 H 22.9703 v -6 m -11 -15 V 19.0297 M 4.97026 9.02974 l 7 -7 l 7 7" FillRule="Nonzero"/>
