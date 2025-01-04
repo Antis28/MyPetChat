@@ -3,11 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ChatClientWPF.Views" 
+             xmlns:local="clr-namespace:ChatClientWPF.Views"
              xmlns:viewModels="clr-namespace:ChatClientWPF.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
              mc:Ignorable="d"
-             xmlns:viewmodels="clr-namespace:ChatClientWPF.ViewModels"
              d:MinHeight="30" d:MinWidth="100"
              >
     <Grid>
@@ -21,21 +20,21 @@
                 <!--  User name -->
                 <StackPanel>
                     <TextBlock  Text="UserName"   TextWrapping="Wrap" Height="20" FontSize="16"/>
-                    <TextBox x:Name="tbUserName" Text="{Binding UserName}"  TextWrapping="Wrap"    Height="30" FontSize="16"/>
+                    <TextBox x:Name="UserName" Text="{Binding UserName}"  TextWrapping="Wrap"    Height="30" FontSize="16"/>
                 </StackPanel>
                 <!--  Ip Address -->
                 <StackPanel>
                     <TextBlock  Text="Ip"  TextWrapping="Wrap" Height="20" FontSize="16"/>
-                    <TextBox x:Name="tbAdress" Text="{Binding Ip}"  TextWrapping="Wrap" Height="30" FontSize="16"/>
+                    <TextBox Text="{Binding Ip}"  TextWrapping="Wrap" Height="30" FontSize="16"/>
                 </StackPanel>
                 <!--  Port -->
                 <StackPanel>
                     <TextBlock  Text="Port"  TextWrapping="Wrap" Height="20" FontSize="16"/>
-                    <TextBox x:Name="tbPort" Text="{Binding Port}"  TextWrapping="Wrap" Height="30" FontSize="16" PreviewTextInput="NumericTextBox_PreviewTextInput" DataObject.Pasting="NumericTextBox_Pasting" />
+                    <TextBox Text="{Binding Port}"  TextWrapping="Wrap" Height="30" FontSize="16" PreviewTextInput="NumericTextBox_PreviewTextInput" DataObject.Pasting="NumericTextBox_Pasting" />
                 </StackPanel>
             </UniformGrid>
             <UniformGrid Columns="5">
-                <Button x:Name="btnConDiscon" Command="{Binding ConnectCommand}" Content="Подключить" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="100"  FontSize="16"/>
+                <Button Command="{Binding ConnectCommand}" Content="Подключить" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="100"  FontSize="16"/>
                 <Button Command="{Binding GetUsersCommand}" Content="Users" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="30" MinWidth="70"  FontSize="16"/>
 
                 <ProgressBar HorizontalAlignment="Left" Height="15"  Width="150" Maximum="100" Value="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}" />
@@ -64,9 +63,6 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <Grid.DataContext>
-                    <viewmodels:MainViewModel/>
-                </Grid.DataContext>
                 <Rectangle  
                             Drop="Rectangle_Drop"
                             

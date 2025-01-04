@@ -125,7 +125,7 @@ namespace ChatClientWPF.ViewModels
             ip = settings.Ip;
             port = settings.Port;
             userName = settings.UserName;
-            _logger = new WpfLogger((message) => { PrintInUI(message); });
+            _logger = new WpfLogger(PrintInUI);
 
         }
 
