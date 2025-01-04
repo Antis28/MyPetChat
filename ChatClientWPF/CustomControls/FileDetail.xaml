@@ -48,6 +48,7 @@
                 <!--File name-->
                 <TextBlock 
                     TextTrimming="CharacterEllipsis"
+                    Margin="0,0,10,0"
                     MaxHeight="100"
                     FontWeight="Bold"
                     Text="{Binding FileName,
@@ -57,6 +58,8 @@
                 <!--File size-->
                 <TextBlock 
                     Grid.Column="1" Grid.Row="0"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,8,0"
                     Padding="5,0"
                     Text="{Binding FileSize , 
                     FallbackValue=FileSizeInMb, TargetNullValue=FileSizeInMb}"
@@ -102,7 +105,8 @@
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Text" 
-                                Value="{Binding Path=Value, ElementName=pb, StringFormat={}{0} Kb/sec}"/>
+                                Value="{Binding Path=Value, 
+                            ElementName=pb, StringFormat={}{0} Kb/sec}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Value, 
                             ElementName=pb}" 

@@ -57,12 +57,27 @@ namespace ChatClientWPF.Views
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
+                //Get selected files
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                string fileName = System.IO.Path.GetFileName(files[0]);
+                //string fileName = System.IO.Path.GetFileName(files[0]);
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string fileName = System.IO.Path.GetFileName(files[i]);
+                    FileInfo fileInfo = new FileInfo(files[i]);
+                    UploadingFilesList.Items.Add(new FileDetail()
+                    {
+                        FileName = fileName,
+                        FileSize = $"{(fileInfo.Length / RatioBytesOnMb):0.0} Mb",
+                        UploadProgress = 100
+                    });
+                }
+
+                var a = sender as FrameworkElement;
+                var b = a.DataContext as MainViewModel;
+                b.SendFileCommand.Execute(files);
             }
 
-            var a = sender as FrameworkElement;
-            var b = a.DataContext as MainViewModel;
+            
 
 
         }
