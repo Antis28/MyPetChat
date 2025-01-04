@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ChatClientWPF.Views" xmlns:viewmodels="clr-namespace:ChatClientWPF.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+             xmlns:local="clr-namespace:ChatClientWPF.Views" 
+             xmlns:viewModels="clr-namespace:ChatClientWPF.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
              mc:Ignorable="d" 
-             d:MinHeight="30" d:MinWidth="100">
+             d:MinHeight="30" d:MinWidth="100"
+             >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -79,7 +82,8 @@
                         Content="open file" 
                         Height="30" 
                         MinWidth="70"  
-                        FontSize="16" Click="btnOpenFile_Click"
+                        FontSize="16" 
+                        Click="btnOpenFile_Click"
                         />
                 <!--Command="{Binding OpenFileCommand}"-->
             </Grid>
