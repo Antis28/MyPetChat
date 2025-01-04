@@ -4,15 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClientWPF" 
-        xmlns:viewmodels="clr-namespace:ChatClientWPF.ViewModels"
+        xmlns:viewModels="clr-namespace:ChatClientWPF.ViewModels"
         xmlns:views="clr-namespace:ChatClientWPF.Views"        
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"
         Closing="Window_Closing"
         Title="MainWindow" MinHeight="400" 
-        MaxHeight="700" MinWidth="600" MaxWidth="800">
-   
+        MaxHeight="700" MinWidth="600" MaxWidth="800"
+        >
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="3"/>
@@ -25,8 +25,9 @@
             <Setter Property="Margin" Value="3"/>
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
+        <viewModels:MainViewModel x:Key="MainViewModel" />
     </Window.Resources>
-    <Grid>
+    <Grid DataContext="{StaticResource MainViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -38,7 +39,7 @@
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <views:MyControlPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
+        <views:MyControlPanel  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
         <views:ChatAndUsers Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"/>
 
         <StackPanel  Grid.Row="2" Grid.ColumnSpan="3">
