@@ -6,15 +6,15 @@
              xmlns:local="clr-namespace:ChatClientWPF.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="300"
-             Background="White">
+             Background="White"
+             >
     <UserControl.Resources>
-
         <PathGeometry x:Key="DocIcon2" Figures="m 25.7 9.3 l -7 -7 c -0.2 -0.2 -0.4 -0.3 -0.7 -0.3 H 8 c -1.1 0 -2 0.9 -2 2 v 24 c 0 1.1 0.9 2 2 2 h 16 c 1.1 0 2 -0.9 2 -2 V 10 c 0 -0.3 -0.1 -0.5 -0.3 -0.7 M 18 4.4 l 5.6 5.6 H 18 z M 24 28 H 8 V 4 h 8 v 6 c 0 1.1 0.9 2 2 2 h 6 z M 10 22 h 12 v 2 H 10 z m 0 -6 h 12 v 2 H 10 z" FillRule="Nonzero"/>
         <PathGeometry x:Key="CloseIcon" Figures="M 17.414 16 L 26 7.414 L 24.586 6 L 16 14.586 L 7.414 6 L 6 7.414 L 14.586 16 L 6 24.586 L 7.414 26 L 16 17.414 L 24.586 26 L 26 24.586 z" FillRule="Nonzero"/>
 
         <PathGeometry x:Key="DocIcon" Figures="m 25.7 9.3 l -7 -7 A 0.908 0.908 0 0 0 18 2 H 8 a 2.006 2.006 0 0 0 -2 2 v 24 a 2.006 2.006 0 0 0 2 2 h 16 a 2.006 2.006 0 0 0 2 -2 V 10 a 0.908 0.908 0 0 0 -0.3 -0.7 M 18 4.4 l 5.6 5.6 H 18 Z M 24 28 H 8 V 4 h 8 v 6 a 2.006 2.006 0 0 0 2 2 h 6 Z" FillRule="Nonzero"/>
-
     </UserControl.Resources>
+    
     <Grid Margin="0,15">
         <Grid.ColumnDefinitions>
             <!--For icon-->
@@ -22,6 +22,7 @@
             <!--Details-->
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <TextBlock Text="{Binding FileName}"></TextBlock>
         <!--Doc Icon-->
         <Path 
             Data="{StaticResource DocIcon2}"
@@ -38,7 +39,9 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-
+            <Grid.DataContext>
+                <local:FileDetail/>
+            </Grid.DataContext>
             <!--File name & Size-->
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -58,7 +61,7 @@
                 <TextBlock 
                     Grid.Column="1" Grid.Row="0"
                     Padding="5,0"
-                    Text="{Binding FileSize, ElementName=this,
+                    Text="{Binding FileDetail.FileSize , ElementName=this,
                     FallbackValue=FileSizeInMb, TargetNullValue=FileSizeInMb}"
                 />
             </Grid>
@@ -79,8 +82,8 @@
                 Grid.Row="1"
                 Height="8"
                 Foreground="#47BDFF"
-                Value="{Binding UploadProgress, ElementName=this}"
                 />
+                
             <TextBlock Grid.Row="2">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">

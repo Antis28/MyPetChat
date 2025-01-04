@@ -43,11 +43,10 @@
         <views:MyControlPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
         <views:ChatAndUsers Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"/>
 
-        <UniformGrid Columns="1" Grid.Row="2" Grid.ColumnSpan="3">
+        <StackPanel  Grid.Row="2" Grid.ColumnSpan="3">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" x:Name="TbMessage" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" MinWidth="200" MinHeight="40" FontSize="14" TextAlignment="Left">
@@ -55,21 +54,7 @@
                         <KeyBinding Key="Return" Command="{Binding SendCommand}"/>
                     </TextBox.InputBindings>
                 </TextBox>
-                <ScrollViewer Grid.Column="1"
-                              Margin="0,3"
-                              HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Hidden">
-                    <Grid>
-                        <ItemsControl
-                            x:Name="UploadingFilesList">
-
-                        </ItemsControl>
-                        <TextBlock Text="Uploaded files"
-                                   FontWeight="SemiBold"/>
-                        <!-- Custom control there -->
-                    </Grid>
-
-                </ScrollViewer>
+               
                 <!-- Drag&Drop files here section -->
                 <StackPanel  Grid.Column="2" VerticalAlignment="Center">
                    
@@ -83,7 +68,7 @@
                     </Button>
                 </StackPanel>
             </Grid>
-        </UniformGrid>
+        </StackPanel>
 
 
     </Grid>

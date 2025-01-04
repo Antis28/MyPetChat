@@ -191,7 +191,7 @@ namespace ChatClientWPF.ViewModels
         {
             return Task.Factory.StartNew(() =>
             {
-                SendFileAsync();
+                //SendFileAsync();
             });
         });
 

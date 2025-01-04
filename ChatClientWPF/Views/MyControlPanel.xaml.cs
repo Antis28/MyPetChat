@@ -14,6 +14,8 @@ namespace ChatClientWPF.Views
     /// </summary>
     public partial class MyControlPanel : UserControl
     {
+        private const double RatioBytesOnMb = 1.049e+6;
+
         public MyControlPanel()
         {
             InitializeComponent();
@@ -61,7 +63,7 @@ namespace ChatClientWPF.Views
 
             var a = sender as FrameworkElement;
             var b = a.DataContext as MainViewModel;
-          
+
 
         }
 
@@ -78,8 +80,17 @@ namespace ChatClientWPF.Views
             {
                 string fileName = System.IO.Path.GetFileName(files[i]);
                 FileInfo fileInfo = new FileInfo(files[i]);
-
+                UploadingFilesList.Items.Add(new FileDetail()
+                {
+                    FileName = fileName,
+                    FileSize = $"{(fileInfo.Length / RatioBytesOnMb):0.0} Mb",
+                    UploadProgress = 100
+                });
             }
+
+            var a = sender as FrameworkElement;
+            var b = a.DataContext as MainViewModel;
+            b.SendFileCommand.Execute(files);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CV19Core.Infrastructure.Commands.Base;
+﻿using System;
+using CV19Core.Infrastructure.Commands.Base;
 
 
 namespace CV19Core.Infrastructure.Commands

@@ -13,6 +13,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
@@ -41,7 +42,22 @@
                 <TextBlock Text="{Binding ProgressCopyFile, UpdateSourceTrigger=PropertyChanged}"/>
             </UniformGrid>
         </StackPanel>
-        <StackPanel Grid.Column="1" >
+        <ScrollViewer Grid.Column="1"
+                      MinWidth="200"
+                      Margin="0,3"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Hidden">
+            <Grid>
+                <ItemsControl
+                    x:Name="UploadingFilesList">
+                </ItemsControl>
+                <TextBlock Text="Uploaded files"
+                           FontWeight="SemiBold"/>
+                <!-- Custom control there -->
+            </Grid>
+
+        </ScrollViewer>
+        <StackPanel Grid.Column="2" >
             <TextBlock Text="Drop area" FontSize="12"></TextBlock>
             <Grid>
                 <Grid.RowDefinitions>
@@ -84,7 +100,7 @@
                         VerticalContentAlignment="Center" 
                         HorizontalContentAlignment="Center" 
                         Margin="0,3"
-                         
+                       
                         Content="open file" 
                         Height="30" 
                         MinWidth="70"  
