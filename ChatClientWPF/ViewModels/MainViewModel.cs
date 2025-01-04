@@ -93,7 +93,7 @@ namespace ChatClientWPF.ViewModels
         private StreamWriter _writer;
         private ChatJsonConverter _chatJsonConverter = new ChatJsonConverter();
         private CommandConverter _commandsHandler = new CommandConverter();
-        private DataTransfeHandler _dataTransfeHandler;
+        private DataTransfeHandler _dataTransferHandler;
         private ServerSettings settings;
         private ILogger _logger;
 
@@ -180,12 +180,20 @@ namespace ChatClientWPF.ViewModels
         }
 
         public AsyncCommand OpenFileCommand => new AsyncCommand(() =>
-                                                            {
-                                                                return Task.Factory.StartNew(() =>
-                                                                {
-                                                                    SendFileAsync(FileDialogs.Open());
-                                                                });
-                                                            });
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                SendFileAsync(FileDialogs.Open());
+            });
+        });
+
+        public AsyncCommand SendFileCommand => new AsyncCommand(() =>
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                SendFileAsync();
+            });
+        });
 
         public AsyncCommand SendCommand => new AsyncCommand(() =>
                                                         {
@@ -204,7 +212,7 @@ namespace ChatClientWPF.ViewModels
                         Argument = null
                     });
 
-                    _dataTransfeHandler.SendBigSizeTCP(cmd);
+                    _dataTransferHandler.SendBigSizeTCP(cmd);
                     Message = string.Empty;
 
                 }
@@ -226,7 +234,7 @@ namespace ChatClientWPF.ViewModels
                         if ((_client?.Connected) == true)
                         {
                             //Прием данных от сервера                           
-                            var line = _dataTransfeHandler.ReceivingBigBufferTCP();
+                            var line = _dataTransferHandler.ReceivingBigBufferTCP();
                             var cmd = _chatJsonConverter.ReadFromJson(line);
 
                             if (!string.IsNullOrEmpty(line))
@@ -261,7 +269,7 @@ namespace ChatClientWPF.ViewModels
                 IPAddress = hostIp,
                 UserName = userName,
             });
-            _dataTransfeHandler.SendBigSizeTCP(cmd);
+            _dataTransferHandler.SendBigSizeTCP(cmd);
 
             GetUsers();
         }
@@ -307,7 +315,7 @@ namespace ChatClientWPF.ViewModels
                     Message = string.Empty;
 
                     var cmd = _chatJsonConverter.WriteToJson(cmdObj);
-                    _dataTransfeHandler.SendBigSizeTCP(cmd);
+                    _dataTransferHandler.SendBigSizeTCP(cmd);
                 }
                 catch (Exception ex)
                 {
@@ -321,7 +329,7 @@ namespace ChatClientWPF.ViewModels
             {
                 try
                 {
-                    if (_dataTransfeHandler == null)
+                    if (_dataTransferHandler == null)
                     {
                         PrintInUI($"Отправка файла невозможна! Вы не подключены к серверу!");
                         return; 
@@ -335,9 +343,9 @@ namespace ChatClientWPF.ViewModels
                     });
                     PrintInUI($"Отправка файла: {fileName}");
                     // Отправлям команду, что мы будем передавать файл
-                    _dataTransfeHandler.SendBigSizeTCP(cmdJs);
+                    _dataTransferHandler.SendBigSizeTCP(cmdJs);
                     // Оправляем сам файл
-                    _dataTransfeHandler.SendFromFileToNet(fileName);
+                    _dataTransferHandler.SendFromFileToNet(fileName);
                     Message = string.Empty;
 
                 }
@@ -401,7 +409,7 @@ namespace ChatClientWPF.ViewModels
         private void GetUsers()
         {
             string cmd = NewCommand(TcpCommands.GetUsers);
-            _dataTransfeHandler.SendBigSizeTCP(cmd);
+            _dataTransferHandler.SendBigSizeTCP(cmd);
         }
 
         private void SendNewUserName()
@@ -411,7 +419,7 @@ namespace ChatClientWPF.ViewModels
             UserNames.FirstOrDefault(x => x.Id == UserID).UserName = UserName;
 
 
-            _dataTransfeHandler.SendBigSizeTCP(cmd);
+            _dataTransferHandler.SendBigSizeTCP(cmd);
         }
 
 
@@ -430,8 +438,8 @@ namespace ChatClientWPF.ViewModels
 
         private void DataTransferInit()
         {
-            _dataTransfeHandler = new DataTransfeHandler(_client);
-            _dataTransfeHandler.OnProgress += (x, y) =>
+            _dataTransferHandler = new DataTransfeHandler(_client);
+            _dataTransferHandler.OnProgress += (x, y) =>
             {
                 RunInUi(() =>
                 {
@@ -440,7 +448,7 @@ namespace ChatClientWPF.ViewModels
                 });
 
             };
-            _dataTransfeHandler.OnComplete += (isSuccess, fileName) =>
+            _dataTransferHandler.OnComplete += (isSuccess, fileName) =>
             {
                 if (isSuccess)
                 {

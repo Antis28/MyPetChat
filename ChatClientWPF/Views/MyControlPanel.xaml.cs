@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ChatClientWPF.CustomControls;
+using ChatClientWPF.ViewModels;
 using Microsoft.Win32;
 
 namespace ChatClientWPF.Views
@@ -57,6 +58,11 @@ namespace ChatClientWPF.Views
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 string fileName = System.IO.Path.GetFileName(files[0]);
             }
+
+            var a = sender as FrameworkElement;
+            var b = a.DataContext as MainViewModel;
+          
+
         }
 
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)

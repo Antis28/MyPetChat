@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:ChatClientWPF.Views" 
              xmlns:viewModels="clr-namespace:ChatClientWPF.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             xmlns:viewmodels="clr-namespace:ChatClientWPF.ViewModels"
              d:MinHeight="30" d:MinWidth="100"
              >
     <Grid>
@@ -47,8 +48,12 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
+                <Grid.DataContext>
+                    <viewmodels:MainViewModel/>
+                </Grid.DataContext>
                 <Rectangle  
                             Drop="Rectangle_Drop"
+                            
                             AllowDrop="True"
                             Fill="WhiteSmoke"
                             RadiusX="10"
@@ -61,6 +66,7 @@
                             Width="120"
                             Margin="5,3,10,3"
                 >
+                
                 </Rectangle>
                 <StackPanel IsHitTestVisible="False" Grid.Row="0" HorizontalAlignment="Center"
                             VerticalAlignment="Center"
