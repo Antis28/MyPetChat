@@ -1,4 +1,4 @@
-﻿namespace CommonLibraryStandard.Interfaces
+namespace CommonLibraryStandard.Interfaces
 {
     public interface IDataSettingsService<T> where T : class, IDataItem, new()
     {

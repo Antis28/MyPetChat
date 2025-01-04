@@ -106,6 +106,7 @@ namespace CommonLibrary
         {
             //string mainDir = FileSystem.AppDataDirectory;
 
+
             //using (var file = new StreamReader("Commands.json", Encoding.UTF8))
             //{
             //    var t = file.ReadToEnd();

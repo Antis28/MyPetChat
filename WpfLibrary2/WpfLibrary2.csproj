@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3D7348B0-2CC6-4FD4-8FA3-94A6D19E0416}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>WpfChatUI</RootNamespace>
-    <AssemblyName>WpfChatUI</AssemblyName>
+    <ProjectGuid>{060CC234-18B5-4987-8A51-ED47D32F7485}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <RootNamespace>WpfLibrary2</RootNamespace>
+    <AssemblyName>WpfLibrary2</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -31,7 +30,6 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -41,7 +39,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -68,72 +65,35 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
     <Page Include="assets\icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="CustomControls\CornerPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\MenuListControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\RoundProfileButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\TopWindowPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="RoundProfileButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CustomControls\CornerPanel.xaml.cs">
-      <DependentUpon>CornerPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\MenuListControl.xaml.cs">
-      <DependentUpon>MenuListControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\RoundProfileButton.xaml.cs">
+    <Page Include="TextBoxWithPlaceHolder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="RoundProfileButton.xaml.cs">
       <DependentUpon>RoundProfileButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\TopWindowPanel.xaml.cs">
-      <DependentUpon>TopWindowPanel.xaml</DependentUpon>
+    <Compile Include="TextBoxWithPlaceHolder.xaml.cs">
+      <DependentUpon>TextBoxWithPlaceHolder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\MainChatPage.xaml.cs">
-      <DependentUpon>MainChatPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\ViewModel.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="UserControl1.xaml.cs">
+      <DependentUpon>UserControl1.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Pages\Calculator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\MainChatPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pages\Calculator.xaml.cs">
-      <DependentUpon>Calculator.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -157,46 +117,69 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\Login UI\Login UI.csproj">
+      <Project>{A3FB7E8F-1046-40DA-A7A1-EBBD0B38ACE3}</Project>
+      <Name>Login UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="assets\one.png" />
-    <Resource Include="assets\phone.png" />
-    <Resource Include="assets\play.png" />
-    <Resource Include="assets\plus.png" />
-    <Resource Include="assets\pray.png" />
-    <Resource Include="assets\profile1.jpg" />
-    <Resource Include="assets\right %281%29.png" />
-    <Resource Include="assets\right.png" />
-    <Resource Include="assets\search.png" />
-    <Resource Include="assets\send.png" />
-    <Resource Include="assets\smile.png" />
-    <Resource Include="assets\twitter.png" />
-    <Resource Include="assets\videocall.png" />
-    <Resource Include="assets\wink.png" />
-    <Resource Include="assets\image1.jpg" />
-    <Resource Include="assets\image2.jpg" />
-    <Resource Include="assets\image3.jpg" />
-    <Resource Include="assets\insta.png" />
-    <Resource Include="assets\mic.png" />
-    <Resource Include="assets\more.png" />
-    <Resource Include="assets\muscle.png" />
-    <Resource Include="assets\noimage.png" />
-    <Resource Include="assets\happy.png" />
     <Resource Include="assets\3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="assets\4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="assets\5.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="assets\6.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="assets\7.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="assets\8.jpg" />
-    <Resource Include="assets\connectedworld.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="assets\attachment.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="assets\badge.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="assets\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\connectedworld.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="assets\Database1.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="assets\wink.png" />
+    <Resource Include="assets\videocall.png" />
+    <Resource Include="assets\twitter.png" />
+    <Resource Include="assets\smile.png" />
+    <Resource Include="assets\send.png" />
+    <Resource Include="assets\search.png" />
+    <Resource Include="assets\right.png" />
+    <Resource Include="assets\right %281%29.png" />
+    <Resource Include="assets\profile1.jpg" />
+    <Resource Include="assets\pray.png" />
+    <Resource Include="assets\plus.png" />
+    <Resource Include="assets\play.png" />
+    <Resource Include="assets\phone.png" />
+    <Resource Include="assets\one.png" />
     <Resource Include="assets\ok.png" />
+    <Resource Include="assets\noimage.png" />
+    <Resource Include="assets\muscle.png" />
+    <Resource Include="assets\more.png" />
+    <Resource Include="assets\mic.png" />
+    <Resource Include="assets\insta.png" />
+    <Resource Include="assets\image3.jpg" />
+    <Resource Include="assets\image2.jpg" />
+    <Resource Include="assets\image1.jpg" />
+    <Resource Include="assets\happy.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

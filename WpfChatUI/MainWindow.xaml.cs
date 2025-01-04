@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 
 namespace WpfChatUI
 {
@@ -11,6 +11,8 @@ namespace WpfChatUI
         {
             InitializeComponent();
             //mainFrame.Navigate(new Uri("/pages/Calculator.xaml", UriKind.RelativeOrAbsolute));
+            //mainFrame.Navigate(new Uri("/pages/MainChatPage.xaml", UriKind.RelativeOrAbsolute));
+            
         }
     }
 }

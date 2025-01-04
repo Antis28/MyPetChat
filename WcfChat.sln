@@ -10,8 +10,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatClientWPF", "ChatClientWPF\ChatClientWPF.csproj", "{1888AC88-DFD4-4997-A7BD-30FD8759F327}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpServer", "TcpServer\TcpServer.csproj", "{62F47857-983B-4A36-9828-2107639E8561}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AAC80CE4-D759-4AE4-ACF1-276BD23CC330} = {AAC80CE4-D759-4AE4-ACF1-276BD23CC330}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatMaui", "ChatMaui\ChatMaui.csproj", "{7A225F4A-D2E9-4B43-8D9E-DBD3E391D8F1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{62F47857-983B-4A36-9828-2107639E8561} = {62F47857-983B-4A36-9828-2107639E8561}
+		{8A9D3CEA-A71F-4DB0-86EA-B62313A4FDA7} = {8A9D3CEA-A71F-4DB0-86EA-B62313A4FDA7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrary", "CommonLibrary\CommonLibrary.csproj", "{F900818A-D4D0-4908-8406-9C2A609E7BCC}"
 EndProject
@@ -22,6 +29,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfChatUI", "WpfChatUI\WpfChatUI.csproj", "{3D7348B0-2CC6-4FD4-8FA3-94A6D19E0416}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2PConsole", "P2PConsole\P2PConsole.csproj", "{D77829E2-E34A-4437-821C-64E7DB7E9D67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfLibrary2", "WpfLibrary2\WpfLibrary2.csproj", "{060CC234-18B5-4987-8A51-ED47D32F7485}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +80,10 @@ Global
 		{D77829E2-E34A-4437-821C-64E7DB7E9D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D77829E2-E34A-4437-821C-64E7DB7E9D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D77829E2-E34A-4437-821C-64E7DB7E9D67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{060CC234-18B5-4987-8A51-ED47D32F7485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{060CC234-18B5-4987-8A51-ED47D32F7485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{060CC234-18B5-4987-8A51-ED47D32F7485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{060CC234-18B5-4987-8A51-ED47D32F7485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
